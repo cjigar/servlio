@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /servlio/
+
+    #RewriteCond %{REQUEST_FILENAME} !-f
+    #RewriteCond %{REQUEST_FILENAME} !-d
+    
+    RewriteRule    images/(.*) application/theme/images/$1 [L]
+    RewriteRule    css/(.*) application/theme/css/$1 [L]
+    RewriteRule    js/(.*) application/theme/js/$1 [L]
+    
+    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+</IfModule>
