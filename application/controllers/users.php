@@ -141,5 +141,17 @@ class Users extends CI_Controller {
 
         echo $keywords;
     }
-    
+    function uploadfile() {
+        if ( ! empty($_FILES)) {
+                $tempFile = $_FILES['vImage']['tmp_name'];
+                $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/SVN/handinhand/assets/images/galleries';
+                $targetPath = "C:\wamp\www\servlio\application\theme\uploads\tmp";
+                $targetFile =  str_replace('//','/',$targetPath) . $_FILES['file_input']['name'];
+                
+                move_uploaded_file($tempFile,$targetFile);
+            
+            }
+            
+        echo '1';        
+    }   
 }

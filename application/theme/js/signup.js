@@ -238,7 +238,9 @@ $(function() {
             $('#listing_card_small_location').html($('#vCountryCode option:selected').text());
         }
     });
-    
+    $("#vCity").change(function(){
+        $('#listing_card_small_location').html($('#vCity').val()+","+$('#vCountryCode option:selected').text());
+    });
     $("#iServiceId").change(function() {
         if($.trim($('#iServiceId option:selected').text())=='') {
             $('#listing_card_small_profession').html('Services');
@@ -256,11 +258,11 @@ $(function() {
     });
     
     $("#iCurrencyId").change(function(){
-        alert($(this).attr('data-symbol'))
-        if($.trim($('#iCountryId option:selected').text())=='') {
+        //alert($('#iCurrencyId option:selected').length)
+        if($.trim($('#iCurrencyId option:selected').text())=='') {
             $('#listing_card_large_price_currency_small').html('£');
         } else {
-            $('#listing_card_large_price_currency_small').html($(this).attr('data-symbol'));
+            $('#listing_card_large_price_currency_small').html($('#iCurrencyId option:selected').attr('data-symbol'));
         }
     });
     
@@ -272,6 +274,18 @@ $(function() {
         }
     });
     
+
+    $('#vImage').uploadify({
+        'swf':"http://localhost/servlio/js/uploadify/uploadify.swf",
+        'uploader':'http://localhost/servlio/users/uploadfile',
+        'folder':'C:/wamp/www/servlio/application/theme/uploads/tmp',
+        'multi': false,
+        'auto': true,
+        'fileExt': '*.jpg;*.jpeg;*.png;*.gif',
+        'buttonText': 'Browse...',
+        'cancelImg': '/svn/handinhand/assets/js/uploadify/cancel.png'
+    });
+
     
 });
                 
