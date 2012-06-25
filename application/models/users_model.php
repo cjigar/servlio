@@ -64,7 +64,15 @@ class Users_model extends CI_Model {
         
         return $query->result_array();
     }
-    
+    function isValiduser($options = array()) {
+        $this->db->select('*');
+        $this->db->where('vEmail',$options['vEmail']);
+        $this->db->where('vPassword',$options['vPassword']);
+        $this->db->where('eStatus',1);
+        $query = $this->db->get('users');
+        #echo $this->db->last_query();
+        return $query->result_array();
+    }
     function GetAutocompleteCity($options = array()) {
         $this->db->select('iCityId,vCity');
         $this->db->like('vCity', $options['keyword'], 'after');

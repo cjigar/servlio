@@ -84,7 +84,7 @@
                 <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Find services you need by location and budget.</div>
                 <a href="users/signup" class="btn" title="Apply" style="width:95px; float:right; font-size:15px; height:28px; padding-top:2px; margin-top:2px; margin-left:0px;">Get Listed</a>
-                <div id="login" style="margin-right:17px;"><a href="login.html">Login</a></div>
+                <div id="login" style="margin-right:17px;"><a href="users/login">Login</a></div>
                 <div id="favourite_num" style="margin-right:10px;">)</div>
                 <div id="favourite_num">0</div>
                 <div id="favourite_num">(</div>

@@ -21,6 +21,39 @@ class Users extends CI_Controller {
         $this->template->build('home/index');
     }
 
+    function signin_a() {
+        $this->load->model('users_model');
+        //echo $this->input->post('vEmail', TRUE);
+        $check = array(
+            'vEmail' => $this->input->post('vEmail', TRUE),
+            'vPassword' => $this->input->post('vPassword', TRUE)
+        );
+        $users = $this->users_model->isValiduser($check);
+        //print_R($users);exit;
+        //Add UserId in Session;       
+        $this->load->library('session');
+        if (count($users)>0) {
+            $signin = array(
+                'vFirstName' => $users[0]['vFirstName'],
+                'vLastName' => $users[0]['vLastName'],
+                'vEmail' => $this->input->post('vEmail', TRUE),
+                'vCompanyName' => $users[0]['vCompanyName'],
+                'vCompanyLogo' => $users[0]['vCompanyLogo'],
+                'eStatus' => 1
+            );
+            $this->session->set_userdata($signin);
+            $this->session->set_flashdata('signin', 'You have been successfully signin !!');
+            redirect('users/profile');
+        } else {
+            $this->session->set_flashdata('signin', 'Email/password not recognised. Please try again.');
+            redirect('users/login');
+        }
+    }
+    function profile() {
+        //Add UserId in Session;       
+        $this->load->library('session'); 
+        $this->load->view('users/profile');
+    }
     public function login() {
         //$data = array();
         //$this->template->build('users/login');
@@ -41,6 +74,7 @@ class Users extends CI_Controller {
         $data['categories'] = $this->users_model->getCategories();
         $this->load->view('users/signup', $data);
     }
+
     function file_upload($type, $file) {
         $filename = time() . $file["name"];
         $path = APPPATH . "theme/uploads/" . $filename;
@@ -54,15 +88,14 @@ class Users extends CI_Controller {
             echo "File Not Uploded";
         }
         return $filename;
-        
     }
 
     public function signup_a() {
-        
+
         $this->load->model('users_model');
         //Image croping;
         $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
-        
+
         //insert into users;
         $userdata = array(
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
@@ -73,7 +106,7 @@ class Users extends CI_Controller {
             'vPhone' => $this->input->post('vPhone', TRUE),
         );
         $iUserId = $this->users_model->signup($userdata);
-        
+
         //Insert into  company_services;
         $serviceimage = $this->file_upload('small_image', $_FILES['vImage']);
         $services = array(
@@ -87,7 +120,7 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE)
         );
         $iCompanyServiceId = $this->users_model->signup_service($services);
-        
+
         $location = array(
             'iUserId' => $iUserId,
             'iCompanyServiceId' => $iCompanyServiceId,
@@ -96,25 +129,27 @@ class Users extends CI_Controller {
             'iCityId' => $this->input->post('iCityId', TRUE),
         );
         $iCompanyLocationId = $this->users_model->signup_location($location);
-        
+
         //Add UserId in Session;
         $this->load->library('session');
-        
+
         $signin = array(
             'iUserId' => $iUserId,
             'vEmail' => $this->input->post('vEmail', TRUE),
-            'vCompanyName' =>$this->input->post('vCompanyName', TRUE),
+            'vCompanyName' => $this->input->post('vCompanyName', TRUE),
             'eStatus' => 1
         );
         $this->session->set_userdata($signin);
         redirect('users/upgrade');
         exit;
     }
+
     function upgrade() {
         $this->load->model('users_model');
         $data = $this->users_model->getUpgrade();
-        $this->load->view('users/upgrade',$data);
+        $this->load->view('users/upgrade', $data);
     }
+
     function state_suggestions() {
         $this->load->model('users_model');
         $term = $this->input->get('term', TRUE);
@@ -133,13 +168,13 @@ class Users extends CI_Controller {
         $term = $this->input->get('term', TRUE);
         $vStateCode = $this->input->get('vStateCode', TRUE);
         $vCountryCode = $this->input->get('vCountryCode', TRUE);
-        
+
         if (strlen($term) < 2)
             break;
 
-        $keywords = $this->users_model->GetAutocompleteCity(array('keyword' => $term, 'vStateCode' => $vStateCode,'vCountryCode' => $vCountryCode));
+        $keywords = $this->users_model->GetAutocompleteCity(array('keyword' => $term, 'vStateCode' => $vStateCode, 'vCountryCode' => $vCountryCode));
 
         echo $keywords;
     }
-    
+
 }

@@ -188,8 +188,6 @@
                         <textarea class="new_service_input_area" onfocus="this.value=''" cols="45" rows="5" name="vDescription" id="vDescription"></textarea>
                         <div id="signup_subtitle"><span style="color:#333;">280</span></div>
 
-
-
                         <div id="signup_form_text8">Price</div>
                         <div id="signup_form_currency">Currency:</div>  
                         <div id="radio_btn_cont3">
