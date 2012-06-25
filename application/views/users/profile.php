@@ -29,7 +29,7 @@
             </div>  
         </div>
         <div id="inner_container">
-            <div id="breadcrumb"><a href="index.html">Home</a></div>
+            <div id="breadcrumb"><a href="/">Home</a></div>
             <div id="breadcrumb">&rarr;</div> 
             <div id="breadcrumb" style="color:#666">Matt Roberts</div> 
             <div class="booking_btn_back" id="payb3">

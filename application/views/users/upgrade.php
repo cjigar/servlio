@@ -17,11 +17,8 @@
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
-
                 <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
-
-
             </div>  
         </div>
 
@@ -46,20 +43,24 @@
             <div id="upgrade_top">
                 <div id="listing_card_small" style="margin-right:20px;">
                     <div id="listing_card_small_details_container">
-                        <div id="listing_card_small_name"><a href="profile.html">Matt Roberts</a></div>
+                        <div id="listing_card_small_name"><a href="javascript://"><?php echo $basic['vCompanyName']?></a></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_small_location" >Soho</div>
+                        <div id="listing_card_small_location" ><?php echo $basic['vCity']?></div>
                         <div id="listing_card_small_location3" >,</div>
-                        <div id="listing_card_small_location2" >London</div>
+                        <div id="listing_card_small_location2" ><?php echo $basic['vCountry']?></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_small_profession">Personal Training</div>
+                        <div id="listing_card_small_profession"><?php echo $basic['vService']?></div>
                     </div>
                     <div class="clearfloat"></div>
-                    <div id="card_small_img"><a href="profile.html"><img src="images/mr1_small.jpg" width="209" height="163" /></a></div>
+                    <div id="card_small_img">
+                            <a href="profile.html">
+                                <img src="uploads/<?php echo $basic['vImage']?>" width="209" height="163" />
+                            </a>
+                    </div>
                     <div id="listing_card_small_price">
                         <div id="listing_card_large_price_small">From</div>
-                        <div id="listing_card_large_price_currency_small">£</div>
-                        <div id="listing_card_large_price_num_small">45</div>
+                        <div id="listing_card_large_price_currency_small"><?php echo $basic['vCurrencySymbol']?></div>
+                        <div id="listing_card_large_price_num_small"><?php echo $basic['fPrice']?></div>
 
                         <div class="clearfloat"></div>
                     </div>
@@ -103,35 +104,36 @@
                     <div id="account_upgrade_text1"><span style="font-weight:bold; color:#09F;">3</span> locations</div>
                     <div id="account_upgrade_text1">Image galleries</div>
                     <a href="publish_pro.html" class="btn" title="Apply" style="width:166px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:10px;">Upgrade to Pro</a>
-
-
-
-
                 </div>	     
 
                 <div id="listing_card_large" style="margin-top:20px;">
                     <div id="listing_card_large_details_container">
-                        <div id="listing_card_large_name"><a href="profile_pro.html">Matt Roberts</a></div>
+                        <div id="listing_card_large_name"><a href="javascript:;"><?php echo $basic['vCompanyName']?></a></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_large_location" >Soho</div>
+                        <div id="listing_card_large_location" ><?php echo $basic['vCity']?></div>
                         <div id="listing_card_large_location3">,</div>
-                        <div id="listing_card_large_location2">London</div>
+                        <div id="listing_card_large_location2"><?php echo $basic['vCountry']?></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_large_profession" >Personal Training</div>
+                        <div id="listing_card_large_profession" ><?php echo $basic['vService']?></div>
                         <div class="clearfloat"></div>
                     </div>
-                    <div id="listing_card_large_logo"><a href="profile_pro.html"><img src="images/mrlogo.jpg"/></a></div>
+                    <div id="listing_card_large_logo">
+                        <a href="javascript:;"><img src="uploads/<?php echo $basic['vCompanyLogo']?>"/></a>
+                    </div>
                     <div class="clearfloat"></div>
-                    <div id="card_large_img"><a href="profile_pro.html"><img src="images/mr1.jpg" width="444" height="347" /></a></div>
+                    <div id="card_large_img">
+                        <a href="profile_pro.html">
+                            <img src="uploads/<?php echo $basic['vImage']?>" width="444" height="347" />
+                        </a>
+                    </div>
                     <div id="card_large_dots_container">
 
                     </div>
-                    <div id="listing_card_large_description">Personal Training is all about staying motivated, getting results and getting them on schedule. We recognise that every client is individual, and we know that every client requires a bespoke programme.</div>
+                    <div id="listing_card_large_description"><?php echo $basic['vDescription']?></div>
                     <div id="listing_card_large_bottom_container">
                         <div id="listing_card_large_price">From</div>
-                        <div id="listing_card_large_price_num">£</div>
-                        <div id="listing_card_large_price_num">45</div>
-
+                        <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol']?></div>
+                        <div id="listing_card_large_price_num"><?php echo $basic['fPrice']?></div>
                         <div class="clearfloat"></div>
                     </div>
                 </div>

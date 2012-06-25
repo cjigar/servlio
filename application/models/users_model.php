@@ -166,11 +166,20 @@ class Users_model extends CI_Model {
 
         return $result;
     }
-    function getUpgrade(){
+    function getUpgrade($iUserId){
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         //make query..  from user,services,location,etc..;
-        
+        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencySymbol,cs.fPrice,cs.vImage,c.vCountry,ci.vCity FROM users AS u 
+	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
+	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
+	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
+	LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
+	LEFT JOIN country AS c ON c.vCountryCode = cl.vCountryCode
+	LEFT JOIN city AS ci ON ci.iCityId = cl.iCityId AND ci.vCountryCode = cl.vCountryCode
+	WHERE u.iUserId =  '.$iUserId;
+        $query = $this->db->query($sql_query);
+        return $query->result_array();
         
     }
 }

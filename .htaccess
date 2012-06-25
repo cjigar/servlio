@@ -6,6 +6,7 @@
     #RewriteCond %{REQUEST_FILENAME} !-d
     
     RewriteRule    images/(.*) application/theme/images/$1 [L]
+    RewriteRule    uploads/(.*) application/theme/uploads/$1 [L]
     RewriteRule    css/(.*) application/theme/css/$1 [L]
     RewriteRule    js/(.*) application/theme/js/$1 [L]
     

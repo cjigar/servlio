@@ -1,23 +1,8 @@
 <?php
 
 class Users extends CI_Controller {
-
+    
     public function index() {
-
-        $data = array();
-        /*
-          $this->template->title('Hire PHP Developer', 'TechRevolutionWeb');
-          $this->template->set('data', $data);
-          $this->template->set('metaDesc', 'keyword list');
-          $this->template->set('metaKeyword', 'description list');
-         * 
-         */
-
-        /* Build sidebar menu */
-        //$sidebars = $this->Post->top10('10');
-        $sidebars = array();
-        //$this->template->set('sidebars', $sidebars);
-        //$this->template->set_partial('sidebar', 'posts/sidebar')->set_layout('default');
         $this->template->build('home/index');
     }
 
@@ -55,8 +40,8 @@ class Users extends CI_Controller {
         $this->load->view('users/profile');
     }
     public function login() {
-        //$data = array();
-        //$this->template->build('users/login');
+        //Add UserId in Session;       
+        $this->load->library('session');
         $this->load->view('users/login');
     }
 
@@ -91,11 +76,12 @@ class Users extends CI_Controller {
     }
 
     public function signup_a() {
-
+        print_R($_POST);exit;
+        
         $this->load->model('users_model');
         //Image croping;
         $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
-
+        
         //insert into users;
         $userdata = array(
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
@@ -124,8 +110,8 @@ class Users extends CI_Controller {
         $location = array(
             'iUserId' => $iUserId,
             'iCompanyServiceId' => $iCompanyServiceId,
-            'iCountryId' => $this->input->post('iCountryId', TRUE),
-            'iStateId' => $this->input->post('iStateId', TRUE),
+            'vCountryCode' => $this->input->post('vCountryCode', TRUE),
+            'vStateCode' => $this->input->post('vStateCode', TRUE),
             'iCityId' => $this->input->post('iCityId', TRUE),
         );
         $iCompanyLocationId = $this->users_model->signup_location($location);
@@ -145,8 +131,15 @@ class Users extends CI_Controller {
     }
 
     function upgrade() {
+        //Add UserId in Session;
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        
         $this->load->model('users_model');
-        $data = $this->users_model->getUpgrade();
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
+        //print_R($data['basic']);
+        print_R($data);
         $this->load->view('users/upgrade', $data);
     }
 
