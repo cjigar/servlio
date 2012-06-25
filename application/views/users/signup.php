@@ -15,6 +15,10 @@
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/cycle.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
+        <script src="<?php echo base_url(); ?>js/uploadify/jquery.uploadify-3.1.min.js"></script>
+        
+        <link href="<?php echo base_url(); ?>js/uploadify/uploadify.css" rel="stylesheet" />
+        
         <style>
                 .err{
                         color: #FF0000;
