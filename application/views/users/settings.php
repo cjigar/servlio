@@ -30,7 +30,7 @@
 
         <div id="inner_container" style="width:924px;">
             <div id="inner_container" style="width:924px;">
-                <div id="breadcrumb"><a href="account.html">Account</a></div>
+                <div id="breadcrumb"><a href="uesrs/account">Account</a></div>
                 <div id="breadcrumb">&rarr;</div> 
                 <div id="breadcrumb" style="color:#666">Settings</div> 
                 <div class="booking_btn_back" id="payb3">
@@ -53,7 +53,7 @@
                         <div class="clearfloat"></div>
 
                         <div id="signup_form_text8">Address</div>
-                        <input  type="text" onfocus="this.value=''" name="vAddress" id="vAddress" class="signup_input_login3" placeholder="Address" style="width:450px; margin-top:15px;" value="<?php echo $basic['vAddress'] ?>" />
+                        <input  type="text" name="vAddress" id="vAddress" class="signup_input_login3" placeholder="Address" style="width:450px; margin-top:15px;" value="<?php echo $basic['vAddress'] ?>" />
                         <div id="signup_sepline2"></div>
                         <div id="signup_form_text8" style="margin-top:20px;">Company logo</div>
                         <div id="update_images"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></div>
@@ -72,7 +72,7 @@
                         </div>			
                         <div class="clearfloat"></div> 
                         <div id="signup_form_text6" style="margin-top:40px;">Account details</div>
-                        <input  type="text" name="vEmail" id="vEmail" value="<?php echo $basic['vEmail'] ?>" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Email" />
+                        <input  type="text" name="vEmail" readonly id="vEmail" value="<?php echo $basic['vEmail'] ?>" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Email" />
                         <div class="clearfloat"></div>
                         <input  type="text" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
                         <div class="clearfloat"></div>

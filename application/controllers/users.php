@@ -297,22 +297,32 @@ class Users extends CI_Controller {
     }
 
     function settings_a() {
-        print_r($_POST);
-        exit;
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
-        
         $user = array(
             'iUserId' => $iUserId,
-            'vCompanyName' => $this->input->post['vCompanyName'],
-            'vAddress' => $this->input->post['vAddress'],
-            'vWebSite' => $this->input->post['vWebSite'],
-            'vTwitter' => $this->input->post['vTwitter'],
-            'vPhone' => $this->input->post['vPhone']
+            'vCompanyName' => $this->input->post('vCompanyName',TRUE),
+            'vAddress' => $this->input->post('vAddress',TRUE),
+            'vWebSite' => $this->input->post('vWebSite',TRUE),
+            'vTwitter' => $this->input->post('vTwitter',TRUE),
+            'vPhone' => $this->input->post('vPhone',TRUE)
         );
+        
         if(isset($this->input->post['vPassword']) && !empty($this->input->post['vPassword'])) {
             $user['vPassword'] = $this->input->post['vPassword'];
         }
+        
+        //Image Upload & Checking;
+        if(isset($_FILES['vCompanyLogo']['tmp_name']) && !empty($_FILES['vCompanyLogo']['tmp_name'])) {
+            //Image croping;
+            $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
+            $user['vCompanyLogo'] = $logoimage;
+            //unlink old;
+            unlink(APPPATH.'theme/uploads/'.$this->input->post('vOldCompanyLogo',TRUE));
+        }
+        
+        
+        $this->load->model('users_model');
         $this->users_model->updateUser($user);
         $location = array(
             'vCountryCode' => $this->input->post['vCountryCode'],
@@ -320,7 +330,8 @@ class Users extends CI_Controller {
             'iCityId' => $this->input->post['iCityId'],
         );
         $this->users_model->updateLocation($location);
-        
+        $this->session->set_flashdata('signin', 'Settings updated successfully !!');
+        redirect('users/account');
     }
 
     function edit_service() {
