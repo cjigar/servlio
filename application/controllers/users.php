@@ -344,9 +344,90 @@ class Users extends CI_Controller {
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['categories'] = $this->users_model->getCategories();
         $data['basic'] = $data['basic'][0];
         $this->load->view('users/new_service',$data);
     }
-    
+ 
+    function new_service_a(){
+        /*echo "<pre>";
+        print_r($_FILES);
+        print_r($_POST);exit;*/
+        $this->load->library('session');
+        $this->load->model('users_model');
+        $iUserId = $this->session->userdata('iUserId');
+        
+        $serviceimage = $this->file_upload('large_image', $_FILES['vImage']);
+        $services = array(
+            'iUserId' => $iUserId,
+            'iServiceId' => $this->input->post('iServiceId', TRUE),
+            'vServiceName' => $this->input->post('vServiceName', TRUE),
+            'iCategoryId' => $this->input->post('iCategoryId', TRUE),
+            'iCurrencyId' => $this->input->post('iCurrencyId', TRUE),
+            'fPrice' => $this->input->post('fPrice', TRUE),
+            'vImage' => $serviceimage,
+            'vDescription' => $this->input->post('vDescription', TRUE)
+        );
+        $iCompanyServiceId = $this->users_model->signup_service($services);
+        
+        if(is_array($_FILES['vGalleryImage'])){
+            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+        
+        if(is_array($_FILES['vGalleryImage1'])){
+            $vGalleryImage1 = $this->file_upload('large_image', $_FILES['vGalleryImage1']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage1
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+        
+        if(is_array($_FILES['vGalleryImage2'])){
+            $vGalleryImage2 = $this->file_upload('large_image', $_FILES['vGalleryImage2']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage2
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+        
+        if(is_array($_FILES['vGalleryImage3'])){
+            $vGalleryImage3 = $this->file_upload('large_image', $_FILES['vGalleryImage3']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage3
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+        
+        if(is_array($_FILES['vGalleryImage4'])){
+            $vGalleryImage4 = $this->file_upload('large_image', $_FILES['vGalleryImage4']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage4
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+        
+        redirect('users/new_service');
+        exit;
+               
+    }   
 
 }

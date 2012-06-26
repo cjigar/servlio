@@ -203,6 +203,7 @@ $(function() {
           
             $("#iServiceId").html(res);
             $('#iServiceId option:first').attr('selected', 'selected');
+            $("#iServiceId").trigger('change');
         });
     });
     $("#iServiceId").change(function(){

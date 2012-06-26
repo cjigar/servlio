@@ -206,5 +206,10 @@ class Users_model extends CI_Model {
         $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
         return $this->db->update('company_services', $options); 
     }
-    
+ 
+    function insert_template($data) {
+       $this->db->insert('templates', $data);
+        return $this->db->insert_id();
+    }
+       
 }
