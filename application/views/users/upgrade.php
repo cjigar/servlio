@@ -65,27 +65,18 @@
                         <div class="clearfloat"></div>
                     </div>
                 </div>
-
                 <div id="upgrade_text_container2">
-
                     <div id="upgrade_header">Basic</div>
                     <div id="upgrade_point_price_basic">FREE</div>
-
-
-
                     <div id="account_upgrade_text1">Small listing card</div>
                     <div id="account_upgrade_text1"><span style="font-weight:bold; color:#333;">1</span> service</div>
                     <div id="account_upgrade_text1"><span style="font-weight:bold; color:#333;">1</span> location</div>
                     <div id="account_upgrade_text1">Standard profile page</div>
-                    <a href="publish.html" class="popup_finish_btn" title="Apply" style="width:166px;font-size:15px; color: #666; height:28px; padding-top:6px; margin-top:20px; margin-left:0px;">Continue with Basic</a>
+                    <a href="users/publish" class="popup_finish_btn" title="Apply" style="width:166px;font-size:15px; color: #666; height:28px; padding-top:6px; margin-top:20px; margin-left:0px;">Continue with Basic</a>
                     <div class="clearfloat"></div>
-
-
                 </div>	
                 <div class="clearfloat"></div>
             </div>
-
-
             <div class="clearfloat"></div>
             <div id="upgrade_arrow"></div>
             <div id="upgrade_title">Or upgrade to a Pro.</div>

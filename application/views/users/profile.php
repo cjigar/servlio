@@ -31,24 +31,24 @@
         <div id="inner_container">
             <div id="breadcrumb"><a href="/">Home</a></div>
             <div id="breadcrumb">&rarr;</div> 
-            <div id="breadcrumb" style="color:#666">Matt Roberts</div> 
+            <div id="breadcrumb" style="color:#666"><?php echo $udetail['vCompanyName']?></div> 
             <div class="booking_btn_back" id="payb3">
                 <div style="margin-top:0px; float:left;"><a href="javascript:javascript:history.go(-1)">&larr; Back</a></div></div>
             <div class="clearfloat"></div>
             <div id="large_profile">
                 
                 <div id="large_profile_details_container">
-                    <div id="profile_logo"><img src="images/logo1.jpg" width="118" height="84" /></div>
+                    <div id="profile_logo"><img src="uploads/<?php echo $udetail['vCompanyLogo']?>" width="118" height="84" /></div>
                     <div id="large_profile_text_container">
-                        <div id="large_profile_name">Matt Roberts</div>
+                        <div id="large_profile_name"><?php echo $udetail['vCompanyName']?></div>
                         <div class="error_msg2"><?php echo $this->session->flashdata('signin');?></div>
                         <a href="#" id="twit"><span>Twitter</span></a>
                         <div class="sep_dot"></div>
-                        <div class="link"><a href="http://www.mattroberts.co.uk" target="_blank">http://www.mattroberts.co.uk</a></div>
+                        <div class="link"><a href="<?php echo $udetail['vTwitter']?>" target="_blank"><?php echo $udetail['vTwitter']?></a></div>
                         <div class="sep_dot"></div>
-                        <div class="link"><a href="mailto:mr@mattroberts.co.uk">mr@mattroberts.co.uk</a></div>
+                        <div class="link"><a href="mailto:<?php echo $udetail['vEmail']?>"><?php echo $udetail['vEmail']?></a></div>
                         <div class="sep_dot"></div>
-                        <div class="link">07890056474</div>
+                        <div class="link"><?php echo $udetail['vPhone']?></div>
                         <div class="clearfloat"></div>
                         <div class="fblike"> 
                             <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
@@ -68,37 +68,30 @@
 
                     <div id="profile_container_left">
                         <div id="profile_header4" style="margin-top:10px;">About</div>
-                        <div id="profile_header5" style="margin-top:10px;">Personal Training</div>
+                        <div id="profile_header5" style="margin-top:10px;"><?php echo (isset($udetail['vService']) && !empty($udetail['vService']))? $udetail['vService'] : '--'; ?></div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline_left"></div>
-                        <div id="large_profile_container_image"><img src="images/mattroberts.jpg"/> </div>
+                        <div id="large_profile_container_image"><img src="uploads/<?php echo $udetail['vImage']?>"/> </div>
 
 
-                        <div id="profile_text3">Personal Training is all about staying motivated, getting results and getting them on schedule. We recognise that every client is individual, and we know that every client requires a bespoke programme to achieve their goals.<br /><br />
-
-                            We know that Personal Training is not just about having someone with you in the gym, it is about having someone guiding you through your entire programme of health and fitness development, which includes your training inside and outside of the gym, your diet, your lifestyle and all support services to ensure that you are in full health.<br /><br />
-                            Personal Training at Matt Roberts is carried out in our beautiful private clubs. Training can only take place with one of the Matt Roberts Trainers, there are no gym memberships, ensuring that all clients are working one-on-one whilst in the club. This productive and inspiring setting allows you and your Trainer to focus on one thing, your results.
-                            <br /><br />
-                            Personal Training at Matt Roberts integrates a wide range of training disciplines and methods to ensure that your interest is high and your body is always being challenged in a wide range of ways. Following your initial Physical Analysis sessions, your Trainer will develop your bespoke plan of Training. Designed to be progressive and challenging, the plan will take you through all facets of fitness development, making sure that you are not just leaner, but also stronger, more flexible, more stable and agile.
-                            <br /><br />
-                            Through diligent planning and implementation we aim to make you feel like yourself again, only better!
-
+                        <div id="profile_text3">
+                            <?php echo nl2br($udetail['vDescription'])?>
                         </div>
                     </div>
                     <div id="profile_container_right">
                         <div id="profile_header4" style="margin-top:10px;">About</div>
-                        <div id="profile_header5" style="margin-top:10px;">Matt Roberts</div>
+                        <div id="profile_header5" style="margin-top:10px;"><?php echo $udetail['vCompanyName']?></div>
                         <div class="clearfloat"></div>
-                        <div id="profile_sepline"></div>
-                        <div id="profile_text">Matt Roberts is one of the world's most recognized and leading personal trainers, and is the name that is synonymous with training in the UK. Matt kick-started the personal training phenomenon by opening London's first exclusive one-to-one personal training centre in 1995.</div>
+                        <div id="profile_sepline"><?php echo nl2br($udetail['vDescription'])?></div>
+                        <div id="profile_text"></div>
                         <div id="profile_header4">Address</div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline"></div>
-                        <div id="profile_text">230 Brompton Road, London SW3 2BB</div>
+                        <div id="profile_text"><?php echo (isset($udetail['vService']) && !empty($udetail['vService']))?$udetail['vService']: '--'; ?></div>
                         <div id="profile_header4">Locations covered</div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline"></div>
-                        <div id="profile_text"><a href="index.html">Soho, London, United Kingdom</a></div>
+                        <div id="profile_text"><a href="index.html"><?php echo $udetail['vCity']?>, <?php echo (isset($udetail['vState']))? $udetail['vState'].',':'' ?><?php echo $udetail['vCountry']?></a></div>
                     </div>
                 </div>
                 <div class="clearfloat"></div>
@@ -106,11 +99,13 @@
                     <div id="action_container_text">Like what you see? Contact Matt Roberts.</div>
                     <div id="action_container_subtext">(Let them know Servlio sent you.)</div>
                     <div id="action_container">
-                        <div class="link"><a href="http://www.mattroberts.co.uk" target="_blank" style="font-size:18px;">http://www.mattroberts.co.uk</a></div>
+                        <?php if(isset($udetail['vWebSite']) && !empty($udetail['vWebSite'])):?>
+                        <div class="link"><a href="<?php echo $udetail['vWebSite']?>" target="_blank" style="font-size:18px;"><?php echo $udetail['vWebSite']?></a></div>
                         <div class="sep_dot" style="background-color:#666;"></div>
-                        <div class="link"><a href="mailto:mr@mattroberts.co.uk" style="font-size:18px;">mr@mattroberts.co.uk</a></div>
+                        <?php endif;?>
+                        <div class="link"><a href="mailto:<?php echo $udetail['vEmail']?>" style="font-size:18px;"><?php echo $udetail['vEmail']?></a></div>
                         <div class="sep_dot" style="background-color:#666;"></div>
-                        <div class="link" style="color:#CCC;">07890056474</div>
+                        <div class="link" style="color:#CCC;"><?php echo $udetail['vPhone']?></div>
                         <div class="clearfloat"></div>
                     </div>
                 </div>

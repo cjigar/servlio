@@ -170,7 +170,7 @@ class Users_model extends CI_Model {
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         //make query..  from user,services,location,etc..;
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencySymbol,cs.fPrice,cs.vImage,c.vCountry,ci.vCity FROM users AS u 
+        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencySymbol,cs.vDescription,cs.fPrice,cs.vImage,c.vCountry,ci.vCity FROM users AS u 
 	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
 	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
 	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
@@ -181,5 +181,9 @@ class Users_model extends CI_Model {
         $query = $this->db->query($sql_query);
         return $query->result_array();
         
+    }
+    function updatePassword($options = array()) {
+        $this->db->where('iUserId', $options['iUserId']);
+        return $this->db->update('users', $options); 
     }
 }

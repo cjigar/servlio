@@ -24,6 +24,10 @@
                         color: #FF0000;
                 }
         </style>
+        <script>
+           var site_url =  '<?= base_url() ?>';
+           var site_path =  '<?= APPPATH ?>';
+        </script>
 	    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	    <script src="<?php echo base_url(); ?>js/signup.js"></script>
         <script type="text/javascript">
@@ -197,7 +201,7 @@
                         <div id="radio_btn_cont3">
                             <select class="currency" name="iCurrencyId" id="iCurrencyId" style="margin-left:0px;">
                              <?php foreach($currency as $row): ?>       
-                                    <option class="<?php echo $row['vCurrencyVal']?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol']?>" value="<?php echo $row['vCurrencyVal']?>"><?php echo $row['vCurrency']?></option>
+                                    <option class="<?php echo $row['vCurrencyVal']?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol']?>" value="<?php echo $row['iCurrencyId']?>"><?php echo $row['vCurrency']?></option>
                              <?php endforeach;?>   
                             </select>
                         </div>			

@@ -274,18 +274,18 @@ $(function() {
         }
     });
     
-
+    /*
     $('#vImage').uploadify({
-        'swf':"http://localhost/servlio/js/uploadify/uploadify.swf",
-        'uploader':'http://localhost/servlio/users/uploadfile',
-        'folder':'C:/wamp/www/servlio/application/theme/uploads/tmp',
+        'swf':site_url+"js/uploadify/uploadify.swf",
+        'uploader':site_url+"/users/uploadfile",
+        'folder':'uploads/tmp',
         'multi': false,
         'auto': true,
         'fileExt': '*.jpg;*.jpeg;*.png;*.gif',
         'buttonText': 'Browse...',
         'cancelImg': '/svn/handinhand/assets/js/uploadify/cancel.png'
     });
-
+    */
     
 });
                 

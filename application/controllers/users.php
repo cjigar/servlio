@@ -1,7 +1,7 @@
 <?php
 
 class Users extends CI_Controller {
-    
+
     public function index() {
         $this->template->build('home/index');
     }
@@ -17,7 +17,7 @@ class Users extends CI_Controller {
         //print_R($users);exit;
         //Add UserId in Session;       
         $this->load->library('session');
-        if (count($users)>0) {
+        if (count($users) > 0) {
             $signin = array(
                 'vFirstName' => $users[0]['vFirstName'],
                 'vLastName' => $users[0]['vLastName'],
@@ -34,11 +34,18 @@ class Users extends CI_Controller {
             redirect('users/login');
         }
     }
+
     function profile() {
         //Add UserId in Session;       
-        $this->load->library('session'); 
-        $this->load->view('users/profile');
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        $this->load->model('users_model');
+        $data = $this->users_model->getUpgrade($iUserId);
+        $data['udetail'] = $data[0];
+
+        $this->load->view('users/profile', $data);
     }
+
     public function login() {
         //Add UserId in Session;       
         $this->load->library('session');
@@ -76,12 +83,12 @@ class Users extends CI_Controller {
     }
 
     public function signup_a() {
-        print_R($_POST);exit;
-        
+        #print_R($_POST);exit;
+
         $this->load->model('users_model');
         //Image croping;
         $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
-        
+
         //insert into users;
         $userdata = array(
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
@@ -106,14 +113,17 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE)
         );
         $iCompanyServiceId = $this->users_model->signup_service($services);
-
         $location = array(
             'iUserId' => $iUserId,
             'iCompanyServiceId' => $iCompanyServiceId,
             'vCountryCode' => $this->input->post('vCountryCode', TRUE),
-            'vStateCode' => $this->input->post('vStateCode', TRUE),
+            'vStateCode' => '',
             'iCityId' => $this->input->post('iCityId', TRUE),
         );
+        if ($this->input->post('vCountryCode', TRUE) == 'US') {
+            $location['vStateCode'] = $this->input->post('vStateCode', TRUE);
+        }
+
         $iCompanyLocationId = $this->users_model->signup_location($location);
 
         //Add UserId in Session;
@@ -125,6 +135,7 @@ class Users extends CI_Controller {
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
             'eStatus' => 1
         );
+
         $this->session->set_userdata($signin);
         redirect('users/upgrade');
         exit;
@@ -134,12 +145,11 @@ class Users extends CI_Controller {
         //Add UserId in Session;
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
-        
+
         $this->load->model('users_model');
         $data['basic'] = $this->users_model->getUpgrade($iUserId);
         $data['basic'] = $data['basic'][0];
         //print_R($data['basic']);
-        print_R($data);
         $this->load->view('users/upgrade', $data);
     }
 
@@ -171,16 +181,83 @@ class Users extends CI_Controller {
     }
 
     function uploadfile() {
-        if ( ! empty($_FILES)) {
-                $tempFile = $_FILES['vImage']['tmp_name'];
-                $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/SVN/handinhand/assets/images/galleries';
-                $targetPath = "C:\wamp\www\servlio\application\theme\uploads\tmp";
-                $targetFile =  str_replace('//','/',$targetPath) . $_FILES['file_input']['name'];
-                move_uploaded_file($tempFile,$targetFile);
-            
-            }
-            
-        echo '1';        
-    }   
+
+        if (!empty($_FILES)) {
+            $tempFile = $_FILES['vImage']['tmp_name'];
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/SVN/handinhand/assets/images/galleries';
+            $targetPath = APPPATH . "theme\uploads\tmp";
+            $targetFile = str_replace('//', '/', $targetPath) . $_FILES['file_input']['name'];
+            move_uploaded_file($tempFile, $targetFile);
+        }
+        echo '1';
+    }
+
+    function publish() {
+        //Add UserId in Session;
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+
+        $this->load->model('users_model');
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
+        //print_R($data['basic']);
+        $this->load->view('users/publish', $data);
+    }
+
+    function publish_a() {
+        $this->load->model('users_model');
+        //echo $this->input->post('vEmail', TRUE);
+        $update = array(
+            'iUserId' => $this->input->post('iUserId', TRUE),
+            'vPassword' => $this->input->post('vPassword', TRUE)
+        );
+
+        $users = $this->users_model->updatePassword($update);
+
+        $check = array(
+            'vEmail' => $this->input->post('vEmail', TRUE),
+            'vPassword' => $this->input->post('vPassword', TRUE)
+        );
+        $users = $this->users_model->isValiduser($check);
+
+        //print_R($users);exit;
+        //Add UserId in Session;       
+        $this->load->library('session');
+        if (count($users) > 0) {
+            $signin = array(
+                'vFirstName' => $users[0]['vFirstName'],
+                'vLastName' => $users[0]['vLastName'],
+                'vEmail' => $this->input->post('vEmail', TRUE),
+                'vCompanyName' => $users[0]['vCompanyName'],
+                'vCompanyLogo' => $users[0]['vCompanyLogo'],
+                'eStatus' => 1
+            );
+            $this->session->set_userdata($signin);
+            $this->session->set_flashdata('signin', 'You have been successfully signin !!');
+            redirect('users/profile');
+        } else {
+            $this->session->set_flashdata('signin', 'Password not updated successfully !!. Please try again.');
+            redirect('/');
+        }
+    }
+
+    function account() {
+        $this->load->view('users\account');
+    }
+
+    function signout() {
+        $this->load->library('session');
+        $signin = array(
+            'vFirstName' => '',
+            'vLastName' => '',
+            'vEmail' => '',
+            'vCompanyName' => '',
+            'vCompanyLogo' => '',
+            'eStatus' => 0
+        );
+        $this->session->unset_userdata($signin);
+        $this->session->set_flashdata('signout', 'You have been successfully signout !!');
+        redirect('/');
+    }
 
 }
