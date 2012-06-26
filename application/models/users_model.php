@@ -166,24 +166,44 @@ class Users_model extends CI_Model {
 
         return $result;
     }
+    function checkDuplicate($vEmail) {
+        
+        $this->db->where('vEmail',$vEmail);
+        $query = $this->db->get('users');
+        return $query->num_rows;
+    }
     function getUpgrade($iUserId){
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         //make query..  from user,services,location,etc..;
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencySymbol,cs.vDescription,cs.fPrice,cs.vImage,c.vCountry,ci.vCity FROM users AS u 
+        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.vDescription,cs.fPrice,cs.vImage,c.vCountry,c.vCountryCode,st.vState,st.vStateCode,ci.vCity,ci.iCityId FROM users AS u 
 	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
 	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
 	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
 	LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
 	LEFT JOIN country AS c ON c.vCountryCode = cl.vCountryCode
+        LEFT JOIN state as st ON st.vStateCode = cl.vStateCode
 	LEFT JOIN city AS ci ON ci.iCityId = cl.iCityId AND ci.vCountryCode = cl.vCountryCode
 	WHERE u.iUserId =  '.$iUserId;
         $query = $this->db->query($sql_query);
         return $query->result_array();
         
     }
-    function updatePassword($options = array()) {
+    
+    function updateUser($options = array()) {
         $this->db->where('iUserId', $options['iUserId']);
         return $this->db->update('users', $options); 
+    }
+    
+    function updateLocation($options = array()) {
+        $this->db->where('iUserId', $options['iUserId']);
+        $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
+        return $this->db->update('company_location', $options); 
+    }
+    
+    function updateService($options = array()) {
+        $this->db->where('iUserId', $options['iUserId']);
+        $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
+        return $this->db->update('company_services', $options); 
     }
 }

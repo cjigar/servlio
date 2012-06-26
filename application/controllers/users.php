@@ -3,7 +3,9 @@
 class Users extends CI_Controller {
 
     public function index() {
-        $this->template->build('home/index');
+        //$this->template->build('home/index');
+        redirect('/');
+        exit;
     }
 
     function signin_a() {
@@ -19,6 +21,7 @@ class Users extends CI_Controller {
         $this->load->library('session');
         if (count($users) > 0) {
             $signin = array(
+                'iUserId' => $users[0]['iUserId'],
                 'vFirstName' => $users[0]['vFirstName'],
                 'vLastName' => $users[0]['vLastName'],
                 'vEmail' => $this->input->post('vEmail', TRUE),
@@ -28,7 +31,7 @@ class Users extends CI_Controller {
             );
             $this->session->set_userdata($signin);
             $this->session->set_flashdata('signin', 'You have been successfully signin !!');
-            redirect('users/profile');
+            redirect('users/account');
         } else {
             $this->session->set_flashdata('signin', 'Email/password not recognised. Please try again.');
             redirect('users/login');
@@ -39,6 +42,7 @@ class Users extends CI_Controller {
         //Add UserId in Session;       
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
+
         $this->load->model('users_model');
         $data = $this->users_model->getUpgrade($iUserId);
         $data['udetail'] = $data[0];
@@ -84,8 +88,24 @@ class Users extends CI_Controller {
 
     public function signup_a() {
         #print_R($_POST);exit;
-
         $this->load->model('users_model');
+        //Add UserId in Session;
+        $this->load->library('session');
+
+        //Check email id dumplicate;
+        $vEmail = $this->input->post('vEmail', TRUE);
+        if (isset($vEmail) && !empty($vEmail)) {
+            $flag = $this->users_model->checkDuplicate($vEmail);
+            if ($flag) {
+                $this->session->set_flashdata('email', 'Email already exists !!.');
+                redirect('users/signup');
+                exit;
+            }
+        } else {
+            $this->session->set_flashdata('email', 'Invalid Email Address !!.');
+            redirect('users/signup');
+            exit;
+        }
         //Image croping;
         $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
 
@@ -125,9 +145,6 @@ class Users extends CI_Controller {
         }
 
         $iCompanyLocationId = $this->users_model->signup_location($location);
-
-        //Add UserId in Session;
-        $this->load->library('session');
 
         $signin = array(
             'iUserId' => $iUserId,
@@ -212,7 +229,7 @@ class Users extends CI_Controller {
             'vPassword' => $this->input->post('vPassword', TRUE)
         );
 
-        $users = $this->users_model->updatePassword($update);
+        $users = $this->users_model->updateUser($update);
 
         $check = array(
             'vEmail' => $this->input->post('vEmail', TRUE),
@@ -234,7 +251,7 @@ class Users extends CI_Controller {
             );
             $this->session->set_userdata($signin);
             $this->session->set_flashdata('signin', 'You have been successfully signin !!');
-            redirect('users/profile');
+            redirect('users/account');
         } else {
             $this->session->set_flashdata('signin', 'Password not updated successfully !!. Please try again.');
             redirect('/');
@@ -242,7 +259,15 @@ class Users extends CI_Controller {
     }
 
     function account() {
-        $this->load->view('users\account');
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+
+        $this->load->model('users_model');
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
+
+
+        $this->load->view('users\account', $data);
     }
 
     function signout() {
@@ -258,6 +283,59 @@ class Users extends CI_Controller {
         $this->session->unset_userdata($signin);
         $this->session->set_flashdata('signout', 'You have been successfully signout !!');
         redirect('/');
+    }
+
+    function settings() {
+        $this->load->helper('country');
+        $this->load->model('users_model');
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
+        $data['currency'] = $this->users_model->getCurrency();
+        $this->load->view('users/settings', $data);
+    }
+
+    function settings_a() {
+        print_r($_POST);
+        exit;
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        
+        $user = array(
+            'iUserId' => $iUserId,
+            'vCompanyName' => $this->input->post['vCompanyName'],
+            'vAddress' => $this->input->post['vAddress'],
+            'vWebSite' => $this->input->post['vWebSite'],
+            'vTwitter' => $this->input->post['vTwitter'],
+            'vPhone' => $this->input->post['vPhone']
+        );
+        if(isset($this->input->post['vPassword']) && !empty($this->input->post['vPassword'])) {
+            $user['vPassword'] = $this->input->post['vPassword'];
+        }
+        $this->users_model->updateUser($user);
+        $location = array(
+            'vCountryCode' => $this->input->post['vCountryCode'],
+            'vStateCode' => $this->input->post['vStateCode'],
+            'iCityId' => $this->input->post['iCityId'],
+        );
+        $this->users_model->updateLocation($location);
+        
+    }
+
+    function edit_service() {
+        $this->load->model('users_model');
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
+        $data['categories'] = $this->users_model->getCategories();
+        $this->load->view('users/edit_service', $data);
+    }
+
+    function edit_service_a() {
+        print_r($_POST);
+        exit;
     }
 
 }

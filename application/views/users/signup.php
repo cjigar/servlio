@@ -11,25 +11,21 @@
         <base href="<?= base_url(); ?>">
         <link href="<?= base_url() ?>css/style.css" rel="stylesheet" />
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
-        
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
-        <script src="<?php echo base_url(); ?>js/cycle.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/uploadify/jquery.uploadify-3.1.min.js"></script>
-        
         <link href="<?php echo base_url(); ?>js/uploadify/uploadify.css" rel="stylesheet" />
-        
         <style>
-                .err{
-                        color: #FF0000;
-                }
+            .err{
+                color: #FF0000;
+            }
         </style>
         <script>
-           var site_url =  '<?= base_url() ?>';
-           var site_path =  '<?= APPPATH ?>';
+            var site_url =  '<?= base_url() ?>';
+            var site_path =  '<?= APPPATH ?>';
         </script>
-	    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-	    <script src="<?php echo base_url(); ?>js/signup.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        <script src="<?php echo base_url(); ?>js/signup.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#cat_services").hide(); 
@@ -120,25 +116,25 @@
                 <div id="upgrade_breadcrumb_header">Publish</div>
                 <div class="clearfloat"></div>
             </div>
-            
+
             <form name="frmadd" id="frmadd" action="users/signup_a" method="post" enctype="multipart/form-data">
                 <div id="signup_left">
                     <div id="signup_form_text6">Tell us about your company</div>
-                    <input onfocus="this.value=''" name="vCompanyName" id="vCompanyName" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" type="text" value="<?=(isset($vCompanyName)?$vCompanyName:"")?>">
+                    <input onfocus="this.value=''" name="vCompanyName" id="vCompanyName" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" type="text" value="<?= (isset($vCompanyName) ? $vCompanyName : "") ?>">
                     <div id="signup_form_text8">Location of headquarters</div>
                     <div id="signup_subtitle">You can add more locations later.</div>
 
                     <?php
-                    echo country_dropdown('vCountryCode', 'vCountryCode', array('US','CA','GB','DE','BR','IT','ES','AU','NZ','HK'),' class="signup_input_loc2" ');
+                    echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ');
                     ?>
                     <div id="state_id" style="diplay:none;">
                         <input onfocus="this.value=''" name="vState" id="vState" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="State" type="text">
                         <input type="hidden" name="vStateCode" id="vStateCode" />
                     </div>
-                    
+
                     <input onfocus="this.value=''" name="vCity" id="vCity" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" type="text">
                     <input type="hidden" name="iCityId" id="iCityId" />
-                    
+
                     <div class="clearfloat"></div>
                     <div id="country_err" style="float:left;"></div>
                     <div id="state_err" style="float:left;"></div>
@@ -160,21 +156,21 @@
                     <div id="signup_service_bg">
 
                         <div id="signup_form_text8" style="margin-top:0px;">Category</div>
-                        
+
                         <select class="list" id="iCategoryId" name="iCategoryId" style="margin-left:0px; margin-top:10px;">
                             <option value="volvo">Choose a category</option>
                             <option value="volvo">All categories</option>
                             <?php
-                                foreach($categories as $key=>$val) {
-                            ?>                            
-                            <option value="<?=$val['iCategoryId']?>"><?=$val['vCategory']?></option>
+                            foreach ($categories as $key => $val) {
+                                ?>                            
+                                <option value="<?= $val['iCategoryId'] ?>"><?= $val['vCategory'] ?></option>
                             <? } ?>
                         </select>
                         <div style="display: none;" id="cat_services">
                             <div id="signup_form_text8">Service</div>
                             <div id="signup_form_subtext">If your service is not listed, choose “My service is not listed”.</div>
                             <select class="list" style="margin-left:0px; margin-top:10px;" name="iServiceId" id="iServiceId">
-                                
+
                             </select>
                         </div>
                         <div style="display: none;" id="not_listed">
@@ -199,10 +195,10 @@
                         <div id="signup_form_text8">Price</div>
                         <div id="signup_form_currency">Currency:</div>  
                         <div id="radio_btn_cont3">
-                            <select class="currency" name="iCurrencyId" id="iCurrencyId" style="margin-left:0px;">
-                             <?php foreach($currency as $row): ?>       
-                                    <option class="<?php echo $row['vCurrencyVal']?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol']?>" value="<?php echo $row['iCurrencyId']?>"><?php echo $row['vCurrency']?></option>
-                             <?php endforeach;?>   
+                            <select class="currency" name="iCurrencyId" id="iCurrencyId"  style="margin-left:0px;">
+                                <?php foreach ($currency as $row): ?>       
+                                    <option class="<?php echo $row['vCurrencyVal'] ?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol'] ?>" value="<?php echo $row['iCurrencyId'] ?>"><?php echo $row['vCurrency'] ?></option>
+                                <?php endforeach; ?>   
                             </select>
                         </div>			
                         <div class="clearfloat"></div> 

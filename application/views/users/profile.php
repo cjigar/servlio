@@ -87,7 +87,7 @@
                         <div id="profile_header4">Address</div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline"></div>
-                        <div id="profile_text"><?php echo (isset($udetail['vService']) && !empty($udetail['vService']))?$udetail['vService']: '--'; ?></div>
+                        <div id="profile_text"><?php echo (isset($udetail['vAddress']) && !empty($udetail['vAddress']))?$udetail['vAddress']: '--'; ?></div>
                         <div id="profile_header4">Locations covered</div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline"></div>
