@@ -206,4 +206,5 @@ class Users_model extends CI_Model {
         $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
         return $this->db->update('company_services', $options); 
     }
+    
 }

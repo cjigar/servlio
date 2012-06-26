@@ -337,5 +337,16 @@ class Users extends CI_Controller {
         print_r($_POST);
         exit;
     }
+    
+    function new_service() {
+        
+        $this->load->model('users_model');
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
+        $this->load->view('users/new_service',$data);
+    }
+    
 
 }
