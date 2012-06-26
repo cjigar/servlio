@@ -29,7 +29,7 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#cat_services").hide(); 
-                $("#iCategoryId").click(function() {					  
+                $("#iCategoryId").click(function() {
                     $("#cat_services").fadeIn("fast");
                 });
             });
