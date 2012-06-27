@@ -234,5 +234,11 @@ class Users_model extends CI_Model {
         $this->db->insert('templates', $data);
         return $this->db->insert_id();
     }
+    
+    function insert_payment($options) {
+        $this->db->insert('payment',$options);
+        return $this->db->insert_id();
+    } 
+    
 
 }

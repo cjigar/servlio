@@ -27,14 +27,17 @@
                 <div id="signup_form_text6">Your <?php echo $this->session->userdata('eType'); ?> account</div>
                 <div class="error_msg2"><?php echo $this->session->flashdata('signin'); ?></div>
                 <div id="profile_header4" style="margin-top:40px;">Services</div>
-                <?php if ($this->session->userdata('eType') == 'Basic') : ?>
-                    <div id="profile_header5" style="margin-top:42px; font-size:13px;"> &#8211; <a href="publish_pro.html">Upgrade to Pro</a> to add more services.</div>
-                    <div class="clearfloat"></div>
-                <?php endif; ?>
+                <div id="profile_header5" style="margin-top:42px; font-size:13px;"> 
+                    <?php if ($this->session->userdata('eType') == 'Basic') : ?>
+                        &#8211; <a href="publish_pro.html">Upgrade to Pro</a> to add more services.
+                    <?php endif; ?>
+                </div>
+                <div class="clearfloat"></div>
+
                 <div id="profile_sepline_left" style="margin-bottom:14px;"></div>
                 <div id="listing_card_small_profile">
                     <div id="listing_card_small_details_container">
-                        <div id="listing_card_small_name"><a href="profile_pro.html"><?php echo $basic['vCompanyName'] ?></a></div>
+                        <div id="listing_card_small_name"><a href="users/publish_pro"><?php echo $basic['vCompanyName'] ?></a></div>
                         <div class="clearfloat"></div>
                         <div id="listing_card_small_location" ><?php echo $basic['vCity'] ?></div>
                         <div id="listing_card_small_location3" >,</div>
@@ -44,7 +47,7 @@
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
-                        <a href="profile_pro.html">
+                        <a href="users/publish_pro">
                             <img src="uploads/<?php echo $basic['vImage'] ?>" width="209" height="163" />
                         </a>
                     </div>
@@ -56,8 +59,8 @@
                         <div class="clearfloat"></div>
                     </div>
                 </div>
-                <a href="publish_pro.html" id="listing_card_small_profile_new"></a>
-                <a href="publish_pro.html" id="listing_card_small_profile_new"></a>
+                <a href="users/publish_pro" id="listing_card_small_profile_new"></a>
+                <a href="users/publish_pro" id="listing_card_small_profile_new"></a>
                 <div class="clearfloat"></div>          
             </div>
             <div id="signup_right" style="width:218px;">
@@ -73,9 +76,10 @@
                         <div id="account_upgrade_text1"><span style="font-weight:bold; color:#09F;">3</span> services</div>
                         <div id="account_upgrade_text1"><span style="font-weight:bold; color:#09F;">3</span> locations</div>
                         <div id="account_upgrade_text1">Image galleries</div>
-                        <a href="publish_pro.html" class="btn" title="Apply" style="width:166px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-bottom:5px; margin-left:13px;">Upgrade to Pro</a>
+                        <a href="users/publish_pro" class="btn" title="Apply" style="width:166px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-bottom:5px; margin-left:13px;">Upgrade to Pro</a>
                         <div class="clearfloat"></div>
                     </div>
+                <?php else : ?>
                 <?php endif; ?>
             </div>
             <div class="clearfloat"></div>

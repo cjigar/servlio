@@ -346,9 +346,9 @@ class Users extends CI_Controller {
     }
 
     function edit_service_a() {
-        
+
         $service = array(
-            'iUserId'  => $this->session->userdata('iUserId'),
+            'iUserId' => $this->session->userdata('iUserId'),
             'iCompanyServiceId' => $this->input->post('iCompanyServiceId', TRUE),
             'iCategoryId' => $this->input->post('iCategoryId', TRUE),
             'iServiceId' => $this->input->post('iServiceId', TRUE),
@@ -356,7 +356,7 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE),
             'fPrice' => $this->input->post('fPrice', TRUE)
         );
-        if(isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
+        if (isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
             //Image croping;
             $image = $this->file_upload('large_image', $_FILES['vImage']);
             $user['vImage'] = $image;
@@ -368,11 +368,59 @@ class Users extends CI_Controller {
         redirect('users/account');
         exit;
     }
+
     function publish_pro() {
         $iUserId = $this->session->userdata('iUserId');
-        
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
         $this->load->view('users/publish_pro', $data);
     }
+
+    function publish_pro_a() {
+        $this->load->library('Stripe');
+        $stripeToken = $this->input->post('stripeToken', TRUE);
+
+        try {
+            if (isset($stripeToken) && !empty($stripeToken)) {
+                Stripe::setApiKey($this->config->config['Stripe']['ApiKey']);
+                $payObj = Stripe_Charge::create(array("amount" => $this->config->config['Stripe']['Amount'], "currency" => $this->config->config['Stripe']['Currency'], "card" => $this->input->post('stripeToken', TRUE)));
+                $payment = array(
+                    'iUserId' => $this->session->userdata('iUserId'),
+                    'iTransactionId' => $payObj->id,
+                    'fAmount' => $this->config->config['Stripe']['Amount']
+                );
+
+                $paymentid = $this->users_model->insert_payment($payment);
+
+                $users = array(
+                    'iUserId' => $this->session->userdata('iUserId'),
+                    'eType' => 'Pro'
+                );
+                $vPassword = $this->input->post('vPassword', TRUE);
+                if (isset($vPassword) && !empty($vPasswords)) {
+                    $users['vPassword'] = $this->input->post('vPassword', TRUE);
+                }
+                $this->users_model->updateUser($users);
+                //Update in session;
+                $this->session->set_userdata('eType', 'Pro');
+                //Mail to member...
+
+                $this->session->set_flashdata('signin', 'Your payment have been done successfuly !!');
+                redirect('users/account');
+               
+            } else {
+                //throw new Exception("The Stripe Token was not generated correctly");
+                $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time. ');
+            redirect('users/account');
+            }
+        } catch (Exception $e) {
+            $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time.');
+            redirect('users/account');
+            //echo $error = $e->getMessage();
+        }
+         exit;
+    }
+
     function new_service() {
 
         $this->load->model('users_model');
