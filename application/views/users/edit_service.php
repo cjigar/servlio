@@ -36,18 +36,17 @@
             <div class="booking_btn_back" id="payb3">
                 <div style="margin-top:0px; float:left;"><a href="javascript:javascript:history.go(-1)">&larr; Back</a></div></div>
             <div class="clearfloat"></div>
-            <form name="frmadd" id="frmadd" action="users/signup_a" method="post" enctype="multipart/form-data">
+            <form name="frmeditservice" id="frmeditservice" action="users/edit_service_a" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="iCompanyServiceId" value="<?php echo $basic['iCompanyServiceId'];?>" />
                 <div id="signup_left">
                     <div id="signup_form_text6" style="margin-top:10px;">Edit this service</div>
                     <div id="signup_service_bg">
                         <div id="signup_form_text8" style="margin-top:0px;">Category</div>
-                       
+
                         <select class="list" id="iCategoryId" name="iCategoryId" style="margin-left:0px; margin-top:10px;">
                             <option value="">Choose a category</option>
-                            <?php
-                            foreach ($categories as $key => $val) {
-                                ?>                            
-                                <option value="<?= $val['iCategoryId'] ?>" <?php echo ($val['iCategoryId'] == $basic['iCategoryId'])?'selected':''?>><?= $val['vCategory'] ?></option>
+                            <?php  foreach ($categories as $key => $val) { ?>                            
+                                <option value="<?= $val['iCategoryId'] ?>" <?php echo ($val['iCategoryId'] == $basic['iCategoryId']) ? 'selected' : '' ?>><?= $val['vCategory'] ?></option>
                             <? } ?>
                         </select>
                         <div id="cat_services">
@@ -57,7 +56,7 @@
 
                             </select>
                         </div>
-                        <div id="not_listed">
+                        <div id="not_listed" style="<?php echo ($basic['iServiceId'] > 0) ? 'display:none':''?>">
 
                             <div id="signup_form_text8">Enter service name</div>
                             <div id="signup_form_subtext">As you type we'll make recommendations — please select one if it's close.</div>
@@ -68,7 +67,7 @@
 
                         <div id="signup_form_text8">Main image</div>
                         <div id="signup_form_subtext">Upload an image that best represents this service. You can always change it after your listing has been created.</div>
-                        <div id="update_images"><img src="images/servimg.jpg"/></div>
+                        <div id="update_images"><img src="uploads/<?php echo $basic['vImage']?>" style="width:120px;height:93px;"/></div>
                         <div class="clearfloat"></div>
                         <input  type="file" onfocus="this.value=''" name="vImage" class="signup_file" value="" />
                         <input type="hidden" name="vOldImage" value="<?php echo $basic['vImage'] ?>" />
@@ -76,7 +75,7 @@
 
 
                         <div id="signup_form_text8">Gallery</div>
-                        <div id="signup_form_subtext"><a href="publish_pro.html">Upgrade to Pro</a> to add up to 5 extra images of this service.</div>
+                        <div id="signup_form_subtext"><a href="users/publish_pro">Upgrade to Pro</a> to add up to 5 extra images of this service.</div>
 
 
 
@@ -112,10 +111,10 @@
                             <div id="listing_card_small_location3" >,</div>
                             <div id="listing_card_small_location2" ><?php echo $basic['vCountry'] ?></div>
                             <div class="clearfloat"></div>
-                            <div id="listing_card_small_profession"><?php echo $basic['vService'] ?></div>
+                            <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService'])) ? $basic['vService'] : $basic['vServiceName'] ?></div>
                         </div>
                         <div class="clearfloat"></div>
-                        <div id="card_small_img"><img src="images/mr1_small.jpg" width="209" height="163" /></div>
+                        <div id="card_small_img"><img src="uploads/<?php echo $basic['vImage']?>" width="209" height="163" /></div>
                         <div id="listing_card_small_price">
                             <div id="listing_card_large_price_small">From</div>
                             <div id="listing_card_large_price_currency_small"><?php echo $basic['vCurrencySymbol'] ?></div>
@@ -125,24 +124,39 @@
                         <div class="clearfloat"></div>		
                     </div>
                     <div class="clearfloat"></div>
-                    <div id="upgrade_point2" style="margin-top:8px;">Want a large listing card? <a href="users/publish_pro">Upgrade</a>.</div>
+                    <div id="upgrade_point2" style="margin-top:8px;">Want a large listing card? <a href="javascript:;" id="frmeditservice">Upgrade</a>.</div>
                 </div>
-    </body>
-</html>
-<script type="text/javascript">
-    $("#iCategoryId").change(function() {					  
-        $.post('users/getService',{
-            iCategoryId:$(this).val()
-        },function(res){
-            $("#iServiceId").html(res);
-            $('#iServiceId option:first').attr('selected', 'selected');
-        });
-    });
-    $("#iServiceId").change(function(){
-        if($(this).val()=='-1') {
-            $("#not_listed").fadeIn('fast');
-        } else {
-            $("#not_listed").fadeOut('fast');
-        }
-    });
-</script>    
+                </body>
+                </html>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        var getServices = function() {
+                            $.post('users/getService',{
+                                iCategoryId:<?php echo $basic['iCategoryId'] ?>
+                            },function(res){
+                                $("#iServiceId").html(res);
+                                $("#iServiceId option").filter(function() {
+                                    //may want to use $.trim in here
+                                    return $(this).val() == '<?php echo $basic['iServiceId'] ?>'; 
+                                }).attr('selected', true);
+                            });
+                        }
+                        getServices();
+                    });
+    
+                    $("#iCategoryId").change(function() {					  
+                        $.post('users/getService',{
+                            iCategoryId:$(this).val()
+                        },function(res){
+                            $("#iServiceId").html(res);
+                            $('#iServiceId option:first').attr('selected', 'selected');
+                        });
+                    });
+                    $("#iServiceId").change(function(){
+                        if($(this).val()=='-1') {
+                            $("#not_listed").fadeIn('fast');
+                        } else {
+                            $("#not_listed").fadeOut('fast');
+                        }
+                    });
+                </script>    

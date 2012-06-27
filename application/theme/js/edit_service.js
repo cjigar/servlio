@@ -67,20 +67,9 @@ $(document).ready(function() {
         }
     });
     $('#sbmtButton').click(function(){
-        $("#frmsettings").submit();
-    })
-});
-
-$(function() {
-    function split( val ) {
-        return val.split( /,\s*/ );
-    }
-    function extractLast( term ) {
-        return split( term ).pop();
-    }
-
-    
-
+        $("#frmeditservice").submit();
+    });
     
 });
-                
+
+         

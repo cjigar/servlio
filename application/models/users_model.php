@@ -12,26 +12,29 @@ class Users_model extends CI_Model {
     }
 
     function signup_service($data) {
-       $this->db->insert('company_services', $data);
+        $this->db->insert('company_services', $data);
         return $this->db->insert_id();
     }
+
     function signup_location($data) {
         $this->db->insert('company_location', $data);
         return $this->db->insert_id();
-    } 
+    }
+
     function getService($options) {
         $this->db->select('iServiceId,vService');
         $this->db->where('iCategoryId', $options['iCategoryId'], 'after');
         $query = $this->db->get('services');
-        
+
         //$html = '<option value="0">All services</option>';
         foreach ($query->result_array() as $row) {
             $items[$row['iStateId']] = $row['vState'];
-            $html .= '<option value="'.$row['iServiceId'].'">'.$row['vService'].'</option>';
+            $html .= '<option value="' . $row['iServiceId'] . '">' . $row['vService'] . '</option>';
         }
         $html .= '<option value="-1">My service is not listed</option>';
         return $html;
     }
+
     function GetAutocomplete($options = array()) {
 
         $this->db->select('vStateCode,vState');
@@ -54,29 +57,31 @@ class Users_model extends CI_Model {
 
         $return = $this->array_to_json($result);
         #echo $this->db->last_query();exit;
-        
+
         return $return;
     }
-    
+
     function getCurrency() {
         $this->db->select('*');
         $query = $this->db->get('currencies');
-        
+
         return $query->result_array();
     }
+
     function isValiduser($options = array()) {
         $this->db->select('*');
-        $this->db->where('vEmail',$options['vEmail']);
-        $this->db->where('vPassword',$options['vPassword']);
-        $this->db->where('eStatus',1);
+        $this->db->where('vEmail', $options['vEmail']);
+        $this->db->where('vPassword', $options['vPassword']);
+        $this->db->where('eStatus', 1);
         $query = $this->db->get('users');
         #echo $this->db->last_query();
         return $query->result_array();
     }
+
     function GetAutocompleteCity($options = array()) {
         $this->db->select('iCityId,vCity');
         $this->db->like('vCity', $options['keyword'], 'after');
-        if($options['vCountryCode']=='US') {
+        if ($options['vCountryCode'] == 'US') {
             $this->db->where('vStateCode', $options['vStateCode'], 'after');
         }
         $this->db->where('vCountryCode', $options['vCountryCode'], 'after');
@@ -86,7 +91,7 @@ class Users_model extends CI_Model {
         foreach ($query->result_array() as $row) {
             $items[$row['iCityId']] = $row['vCity'];
         }
-        
+
         $result = array();
         foreach ($items as $key => $value) {
             array_push($result, array("id" => $key, "label" => $value, "value" => strip_tags($value)));
@@ -96,7 +101,7 @@ class Users_model extends CI_Model {
 
         $return = $this->array_to_json($result);
         #echo $this->db->last_query();exit;
-        
+
         return $return;
     }
 
@@ -166,17 +171,19 @@ class Users_model extends CI_Model {
 
         return $result;
     }
+
     function checkDuplicate($vEmail) {
-        
-        $this->db->where('vEmail',$vEmail);
+
+        $this->db->where('vEmail', $vEmail);
         $query = $this->db->get('users');
         return $query->num_rows;
     }
-    function getUpgrade($iUserId){
+
+    function getUpgrade($iUserId) {
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         //make query..  from user,services,location,etc..;
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.vDescription,cs.iCategoryId,cs.fPrice,cs.vImage,c.vCountry,c.vCountryCode,st.vState,st.vStateCode,ci.vCity,ci.iCityId FROM users AS u 
+        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,c.vCountry,c.vCountryCode,st.vState,st.vStateCode,ci.vCity,ci.iCityId FROM users AS u 
 	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
 	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
 	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
@@ -184,32 +191,48 @@ class Users_model extends CI_Model {
 	LEFT JOIN country AS c ON c.vCountryCode = cl.vCountryCode
         LEFT JOIN state as st ON st.vStateCode = cl.vStateCode
 	LEFT JOIN city AS ci ON ci.iCityId = cl.iCityId AND ci.vCountryCode = cl.vCountryCode
-	WHERE u.iUserId =  '.$iUserId;
+	WHERE u.iUserId =  ' . $iUserId;
         $query = $this->db->query($sql_query);
         return $query->result_array();
-        
     }
-    
+
+    function editService($iCompanyServiceId) {
+        $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        //make query..  from user,services,location,etc..;
+        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,c.vCountry,c.vCountryCode,st.vState,st.vStateCode,ci.vCity,ci.iCityId FROM users AS u 
+	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId AND cs.iCompanyServiceId = "'.$iCompanyServiceId .'"
+	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
+	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
+	LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
+	LEFT JOIN country AS c ON c.vCountryCode = cl.vCountryCode
+        LEFT JOIN state as st ON st.vStateCode = cl.vStateCode
+	LEFT JOIN city AS ci ON ci.iCityId = cl.iCityId AND ci.vCountryCode = cl.vCountryCode
+	WHERE u.iUserId =  ' . $iUserId .' AND cs.iCompanyServiceId = '.$iCompanyServiceId;
+        $query = $this->db->query($sql_query);
+        return $query->result_array();
+    }
+
     function updateUser($options = array()) {
         $this->db->where('iUserId', $options['iUserId']);
-        return $this->db->update('users', $options); 
+        return $this->db->update('users', $options);
     }
-    
+
     function updateLocation($options = array()) {
         $this->db->where('iUserId', $options['iUserId']);
         $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
-        return $this->db->update('company_location', $options); 
+        return $this->db->update('company_location', $options);
     }
-    
+
     function updateService($options = array()) {
         $this->db->where('iUserId', $options['iUserId']);
         $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
-        return $this->db->update('company_services', $options); 
+        return $this->db->update('company_services', $options);
     }
- 
+
     function insert_template($data) {
-       $this->db->insert('templates', $data);
+        $this->db->insert('templates', $data);
         return $this->db->insert_id();
     }
-       
+
 }

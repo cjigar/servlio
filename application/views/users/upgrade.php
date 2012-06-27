@@ -49,7 +49,7 @@
                         <div id="listing_card_small_location3" >,</div>
                         <div id="listing_card_small_location2" ><?php echo $basic['vCountry']?></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_small_profession"><?php echo $basic['vService']?></div>
+                        <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService']))?$basic['vService']:$basic['vServiceName']?></div>
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
@@ -105,7 +105,7 @@
                         <div id="listing_card_large_location3">,</div>
                         <div id="listing_card_large_location2"><?php echo $basic['vCountry']?></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_large_profession" ><?php echo $basic['vService']?></div>
+                        <div id="listing_card_large_profession" ><?php echo (isset($basic['vService']) && !empty($basic['vService']))?$basic['vService']:$basic['vServiceName']?></div>
                         <div class="clearfloat"></div>
                     </div>
                     <div id="listing_card_large_logo">
