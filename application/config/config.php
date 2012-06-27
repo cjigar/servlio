@@ -612,3 +612,6 @@ $config['large_image']['source_image'] = time().'.jpg';
 $config['large_image']['maintain_ratio'] = TRUE;
 $config['large_image']['width'] = 444;
 $config['large_image']['height'] = 347;
+
+$config['upload_path'] = APPPATH . 'theme/uploads/';
+$config['upload_url'] = $config['base_url'] . 'uploads/';
