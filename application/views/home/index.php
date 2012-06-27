@@ -11,36 +11,15 @@
         <base href="<?= base_url(); ?>">
         <link href="<?= base_url() ?>css/style.css" rel="stylesheet">
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+        <link href="<?= base_url() ?>css/nivo-slider.css" rel="stylesheet">        
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
+        <script src="<?php echo base_url(); ?>js/scrollpagination.js"></script>
+        <script src="<?php echo base_url(); ?>js/jquery.nivo.slider.pack.js"></script>        
+        <script src="<?php echo base_url(); ?>js/home.js"></script>
+        
         <script type="text/javascript">
-            $(document).ready(function(){
-                $("#cat_services").hide(); 
-                $("#categories").click(function() {					  
-                    $("#cat_services").fadeIn("fast");
-                });
-		
-            });
 
-        </script> 
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#country_active").hide(); 
-                $("#countries").click(function() {
-                    $("#country_inactive").hide();						  
-                    $("#country_active").show();
-                });
-                $("#country_cancel, #country_active").click(function() {						  
-                    $("#location").show();						  
-                    $(".filter_bar_selected_location").hide();
-                });
-		
-            });
-
-        </script> 
-
-        <script type="text/javascript">
-            $(document).ready(function(){
+            $(document).ready(function($){
                 $(".filter_bar_selected").hide(); 
                 $("#services").click(function() {
                     $("#services").hide();						  
@@ -52,10 +31,8 @@
                 });
             });
 
-        </script> 
 
-        <script type="text/javascript">
-            $(document).ready(function(){
+            $(document).ready(function($){
                 $(".filter_bar_selected_location").hide(); 
                 $("#location").click(function() {
                     $("#location").hide();						  
@@ -67,10 +44,7 @@
                 });
             });
 
-        </script> 
-
-        <script type="text/javascript">
-            $(document).ready(function(){
+            $(document).ready(function($){
                 $(".filter_bar_selected_budget").hide(); 
                 $("#budget").click(function() {
                     $("#budget").hide();						  
@@ -109,31 +83,7 @@
                         <img src="images/droplist.png" style="margin-left:115px; float:left; margin-top:9px;" />
                         <div class="clearfloat"></div>
                     </div>
-                    <!--
-                    <div id="selected_entry_container">
-                    <div class="selected_entry_header">POPULAR</div>
-                    <div class="selected_entry" id="current">All Services</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    
-                    <div style="background-color:#FFF; border-top:1px solid #ddd; margin-top:5px; padding-bottom:5px;">
-                    <div class="selected_entry_header">ALPHABETICAL</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    <div class="selected_entry">Personal Training</div>
-                    </div>
-                    </div>
-                    -->
+
                     <div class="selected_entry_header" style="font-size:11px;">Popular</div>
                     <select class="list">
                         <option value="volvo">Choose a service</option>
@@ -223,188 +173,9 @@
             </div>
         </div>
         <div id="inner_container">
-            <div id="listing_card_large">
-                <div id="listing_card_large_details_container">
-                    <div id="listing_card_large_name"><a href="profile_pro.html">Matt Roberts</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_large_location" >Soho</div>
-                    <div id="listing_card_large_location3">,</div>
-                    <div id="listing_card_large_location2">London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_large_profession" >Personal Training</div>
-                    <div class="clearfloat"></div>
-                </div>
-                <div id="listing_card_large_logo"><a href="profile_pro.html"><img src="images/mrlogo.jpg"/></a></div>
-                <div class="clearfloat"></div>
-                <div id="arrow_l"></div>
-                <div id="arrow_r"></div>
-                <div id="card_large_img"><a href="profile_pro.html"><img src="images/mr1.jpg" width="444" height="347" /></a></div>
-                <div id="card_large_dots_container">
-                    <div class="card_large_dots" id="card_large_dots_active"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots_last"></div>
-                    <div class="clearfloat"></div>
-                </div>
-                <div id="listing_card_large_description">Personal Training is all about staying motivated, getting results and getting them on schedule. We recognise that every client is individual, and we know that every client requires a bespoke programme.</div>
-                <div id="listing_card_large_bottom_container">
-                    <div id="listing_card_large_price">From</div>
-                    <div id="listing_card_large_price_num">£</div>
-                    <div id="listing_card_large_price_num">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-                </div>
-            </div>
-            <div id="listing_card_large">
-                <div id="listing_card_large_details_container">
-                    <div id="listing_card_large_name"><a href="profile_pro.html">Gold's Gym</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_large_location" >Soho</div>
-                    <div id="listing_card_large_location3">,</div>
-                    <div id="listing_card_large_location2">London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_large_profession" >Gym</div>
-                    <div class="clearfloat"></div>
-                </div>
-                <div id="listing_card_large_logo"><a href="profile_pro.html"><img src="images/goldlogo.jpg"/></a></div>
-                <div class="clearfloat"></div>
-                <div id="arrow_l"></div>
-                <div id="arrow_r"></div>
-                <div id="card_large_img"><a href="profile_pro.html"><img src="images/gold.jpg" width="444" height="347" /></a></div>
-                <div id="card_large_dots_container">
-                    <div class="card_large_dots" id="card_large_dots_active"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots_last"></div>
-                    <div class="clearfloat"></div>
-                </div>
-                <div id="listing_card_large_description">At Gold's Gym you'll find all of the latest cardio and strength training equipment along with a dynamic group exercise program that includes classes like yoga, group cycling, mixed martial arts and muscle endurance.</div>
-                <div id="listing_card_large_bottom_container">
-                    <div id="listing_card_large_price">From</div>
-                    <div id="listing_card_large_price_num">£</div>
-                    <div id="listing_card_large_price_num">35</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-                </div>
-            </div>
-            <div id="listing_card_large">
-                <div id="listing_card_large_details_container">
-                    <div id="listing_card_large_name"><a href="profile_pro.html">Matt Roberts</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_large_location" >Soho</div>
-                    <div id="listing_card_large_location3">,</div>
-                    <div id="listing_card_large_location2">London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_large_profession" >Personal Training</div>
-                    <div class="clearfloat"></div>
-                </div>
-                <div id="listing_card_large_logo"><a href="profile_pro.html"><img src="images/mrlogo.jpg"/></a></div>
-                <div class="clearfloat"></div>
-                <div id="arrow_l"></div>
-                <div id="arrow_r"></div>
-                <div id="card_large_img"><a href="profile_pro.html"><img src="images/mr1.jpg" width="444" height="347" /></a></div>
-                <div id="card_large_dots_container">
-                    <div class="card_large_dots" id="card_large_dots_active"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots"></div>
-                    <div class="card_large_dots_last"></div>
-                    <div class="clearfloat"></div>
-                </div>
-                <div id="listing_card_large_description">Personal Training is all about staying motivated, getting results and getting them on schedule. We recognise that every client is individual, and we know that every client requires a bespoke programme.</div>
-                <div id="listing_card_large_bottom_container">
-                    <div id="listing_card_large_price">From</div>
-                    <div id="listing_card_large_price_num">£</div>
-                    <div id="listing_card_large_price_num">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-                </div>
-            </div>
-
-
-            <div id="listing_card_small">
-                <div id="listing_card_small_details_container">
-                    <div id="listing_card_small_name"><a href="profile.html">Matt Roberts</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_location" >Soho</div>
-                    <div id="listing_card_small_location3" >,</div>
-                    <div id="listing_card_small_location2" >London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_profession">Personal Training</div>
-                </div>
-                <div class="clearfloat"></div>
-                <div id="card_small_img"><a href="profile.html"><img src="images/mr1_small.jpg" width="209" height="163" /></a></div>
-                <div id="listing_card_small_price">
-                    <div id="listing_card_large_price_small">From</div>
-                    <div id="listing_card_large_price_currency_small">£</div>
-                    <div id="listing_card_large_price_num_small">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-                </div>
-            </div>
-            <div id="listing_card_small">
-                <div id="listing_card_small_details_container">
-                    <div id="listing_card_small_name"><a href="profile.html">Matt Roberts</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_location" >Soho</div>
-                    <div id="listing_card_small_location3" >,</div>
-                    <div id="listing_card_small_location2" >London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_profession">Personal Training</div>
-                </div>
-                <div class="clearfloat"></div>
-                <div id="card_small_img"><a href="profile.html"><img src="images/mr1_small.jpg" width="209" height="163" /></a></div>
-                <div id="listing_card_small_price">
-                    <div id="listing_card_large_price_small">From</div>
-                    <div id="listing_card_large_price_currency_small">£</div>
-                    <div id="listing_card_large_price_num_small">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-                </div>
-            </div>
-            <div id="listing_card_small">
-                <div id="listing_card_small_details_container">
-                    <div id="listing_card_small_name"><a href="profile.html">Matt Roberts</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_location" >Soho</div>
-                    <div id="listing_card_small_location3" >,</div>
-                    <div id="listing_card_small_location2" >London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_profession">Personal Training</div>
-                </div>
-                <div class="clearfloat"></div>
-                <div id="card_small_img"><a href="profile.html"><img src="images/mr1_small.jpg" width="209" height="163" /></a></div>
-                <div id="listing_card_small_price">
-                    <div id="listing_card_large_price_small">From</div>
-                    <div id="listing_card_large_price_currency_small">£</div>
-                    <div id="listing_card_large_price_num_small">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-                </div>
-            </div>
-            <div id="listing_card_small">
-                <div id="listing_card_small_details_container">
-                    <div id="listing_card_small_name"><a href="profile.html">Matt Roberts</a></div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_location" >Soho</div>
-                    <div id="listing_card_small_location3" >,</div>
-                    <div id="listing_card_small_location2" >London</div>
-                    <div class="clearfloat"></div>
-                    <div id="listing_card_small_profession">Personal Training</div>
-                </div>
-                <div class="clearfloat"></div>
-                <div id="card_small_img"><a href="profile.html"><img src="images/mr1_small.jpg" width="209" height="163" /></a></div>
-                <div id="listing_card_small_price">
-                    <div id="listing_card_large_price_small">From</div>
-                    <div id="listing_card_large_price_currency_small">£</div>
-                    <div id="listing_card_large_price_num_small">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
-                    <div class="clearfloat"></div>
-
-                </div>
-
+            <input type="hidden" id="currpage" value="1">
+            <div id="ajax_content">
+              <?php echo $this->load->view('home/homepage_ajax'); ?>
             </div>
             <div class="clearfloat"></div>
             <div id="card_loader"></div>
