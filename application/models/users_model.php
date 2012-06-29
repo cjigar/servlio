@@ -254,4 +254,12 @@ class Users_model extends CI_Model {
         $res = $this->db->get('cardinfo');
         return $res->result_array();
     }
+    function getTransaction($iUserId) {
+        $this->db->select('*');
+        $this->db->where('iUserId',$iUserId);
+        $this->db->order_by('dtAddedDate','DESC');
+        $this->db->limit(10);
+        $res = $this->db->get('payment');
+        return $res->result_array();
+    }
 }

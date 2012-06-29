@@ -47,7 +47,7 @@
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
-                        <a href="users/publish_pro">
+                        <a href="users/profile">
                             <img src="uploads/<?php echo $basic['vImage'] ?>" width="209" height="163" />
                         </a>
                     </div>

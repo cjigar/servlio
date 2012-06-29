@@ -326,6 +326,11 @@ class Users extends CI_Controller {
         // Card info...
         $cardinfo = $this->users_model->getCardDetail($iUserId);
         $data['cardinfo'] = $cardinfo[0];
+        //get All Transaction info
+        
+        $transinfo = $this->users_model->getTransaction($iUserId);
+        $data['transinfo'] = $transinfo;
+        
         
         if($type=='Pro')
             $this->load->view('users/settings_pro', $data);
@@ -334,9 +339,61 @@ class Users extends CI_Controller {
         
         
     }
+    function settings_pro_a() {
+        
+        $iUserId = $this->session->userdata('iUserId');
+        $user = array(
+            'iUserId' => $iUserId,
+            'vCompanyName' => $this->input->post('vCompanyName', TRUE),
+            'vAddress' => $this->input->post('vAddress', TRUE),
+            'vWebSite' => $this->input->post('vWebSite', TRUE),
+            'vTwitter' => $this->input->post('vTwitter', TRUE),
+            'vPhone' => $this->input->post('vPhone', TRUE)
+        );
 
+        if (isset($this->input->post['vPassword']) && !empty($this->input->post['vPassword'])) {
+            $user['vPassword'] = $this->input->post['vPassword'];
+        }
+
+        //Image Upload & Checking;
+        if (isset($_FILES['vCompanyLogo']['tmp_name']) && !empty($_FILES['vCompanyLogo']['tmp_name'])) {
+            //Image croping;
+            $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
+            $user['vCompanyLogo'] = $logoimage;
+            //unlink old;
+            unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldCompanyLogo', TRUE));
+        }
+        $this->users_model->updateUser($user);
+        //Check here if location is not then Pro member will enter 3 Location..
+        
+        print_R($_POST);exit;
+        
+        
+        $location = array(
+            array(
+            'vCountryCode' => $this->input->post['vCountryCode'],
+            'vStateCode' => $this->input->post['vStateCode'],
+            'iCityId' => $this->input->post['iCityId']
+            ),
+            array(
+            'vCountryCode' => $this->input->post['vCountryCode'],
+            'vStateCode' => $this->input->post['vStateCode'],
+            'iCityId' => $this->input->post['iCityId']
+            ),
+            array(
+            'vCountryCode' => $this->input->post['vCountryCode'],
+            'vStateCode' => $this->input->post['vStateCode'],
+            'iCityId' => $this->input->post['iCityId']
+            ),
+        );
+        $this->users_model->updateLocation($location);
+        
+        $this->session->set_flashdata('signin', 'Settings updated successfully !!');
+        redirect('users/account');
+        
+    }
     function settings_a() {
-        $this->load->library('session');
+        
         $iUserId = $this->session->userdata('iUserId');
         $user = array(
             'iUserId' => $iUserId,
@@ -360,8 +417,7 @@ class Users extends CI_Controller {
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldCompanyLogo', TRUE));
         }
 
-
-        $this->load->model('users_model');
+        
         $this->users_model->updateUser($user);
         $location = array(
             'vCountryCode' => $this->input->post['vCountryCode'],

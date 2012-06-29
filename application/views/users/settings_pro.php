@@ -13,6 +13,7 @@
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
+        <script src="<?php echo base_url(); ?>js/settings_pro.js"></script>
         <style>
             .err{
                 color: #FF0000;
@@ -84,14 +85,11 @@
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
-
-                <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
+                <div id="logo"><a href="/"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
-
-
-            </div>  
+           </div>  
         </div>
-        <form name="frmsettings" id="frmsettings" action="users/settings_a" method="post" enctype="multipart/form-data" > 
+        <form name="frmsettings" id="frmsettings" action="users/settings_pro_a" method="post" enctype="multipart/form-data" > 
             <div id="inner_container" style="width:924px;">
                 <div id="breadcrumb"><a href="users/accounts">Account</a></div>
                 <div id="breadcrumb">&rarr;</div> 
@@ -110,6 +108,7 @@
                     ?>
                     <input  type="text"  name="vState[]" id="vState" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none;' : '' ?>" placeholder="State" />
                     <input type ="hidden" name="vStateCode[]" id="vStateCode" value="<?php echo $basic['vStateCode'] ?>" />
+                    
                     <input  type="text"  name="vCity[]" id="vCity" value="<?php echo $basic['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
                     <input type ="hidden" name="iCityId[]" id="iCityId" value="<?php echo $basic['iCityId'] ?>" />
                     <div class="clearfloat"></div>
@@ -162,7 +161,7 @@
                     <div class="clearfloat"></div> 
 
                     <div id="signup_form_text6" style="margin-top:40px;">Billing</div>
-                    <div id="signup_form_subtext" style="color:#333; margin-top:20px;">Next Charge: Aug. 18th, 2011</div>
+                    <div id="signup_form_subtext" style="color:#333; margin-top:20px;">Next Charge: <?php echo date('F, jS Y',strtotime('+1 Month',strtotime($transinfo[0]['dtAddeddate'])))?></div>
                     <div class="settings_link" style=" margin-top:10px;">Downgrade?</div>
                     <div class="clearfloat"></div> 
                     <div id="signup_sepline2"></div>
@@ -210,18 +209,21 @@
                     <div class="clearfloat"></div>
                     <div id="signup_sepline2"></div>
                     <div id="signup_form_text8" style="margin-top:22px;">Last invoice</div>
-                    <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
+                    <div class="account_invoices">
+                    <a href="http://area20.com/servlio/email_paid_invoice.html">$<?php echo $this->config->config['Stripe']['Amount']/100?> for Pro on <?php echo date('F, d Y',strtotime($transinfo[0]['dtAddeddate']))?></a></div>
                     <div id="past_invoices">
-                        <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
-                        <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
-                        <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
-                        <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
-                        <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
-                        <div class="account_invoices"><a href="http://area20.com/servlio/email_paid_invoice.html">$79 for Pro on June 14, 2012</a></div>
+                        <?php unset($transinfo[0]);?>
+                        <?php foreach($transinfo as $row) : ?>
+                        <div class="account_invoices">
+                                <a href="http://area20.com/servlio/email_paid_invoice.html">
+                                    $<?php echo $this->config->config['Stripe']['Amount']/100?> for Pro on <?php echo date('F, d Y',strtotime($row['dtAddeddate']))?>
+                                </a>
+                        </div>
+                        <?php endforeach; ?>
                         <div class="settings_link" id="past_close" style=" margin-top:10px;">Close</div>
                         <div class="clearfloat"></div>
-
                     </div>
+                    
                     <div class="settings_link" id="past" style=" margin-top:10px;">See all past invoices</div>
                     <div class="clearfloat"></div>
 
@@ -236,7 +238,7 @@
 
                     <div id="signup_form_text6" style="margin-top:40px;">Contact details</div>
 
-                    <input  type="text" name="vWebsite" id="vWebsite" value="<?php echo $basic['vWebsite'] ?>" class="signup_input_login3" style="width:450px; margin-top:10px;" placeholder="Website URL" />
+                    <input  type="text" name="vWebSite" id="vWebSite" value="<?php echo $basic['vWebSite'] ?>" class="signup_input_login3" style="width:450px; margin-top:10px;" placeholder="Website URL" />
                     <div class="clearfloat"></div>
                     <div id="signup_subtitle" style="margin-top:8px; margin-bottom:10px;">e.g. 'http://www.yourdomain.com'</div>
 
@@ -257,7 +259,7 @@
         </form>
     </body>
 </html>
-<script>
+<script type="text/javascript">
     $("#login_btn").click(function() {
         $("#fromlogin").submit();
     });
