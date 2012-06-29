@@ -14,6 +14,34 @@ class Users extends CI_Controller {
         exit;
     }
 
+    function forget() {
+        $this->load->view('users/forget');
+    }
+
+    function forget_a() {
+        $email = $this->input->post('vEmail', TRUE);
+        $res = $this->users_model->getUserPassword($email);
+        if (count($res) > 0) {
+            $this->load->library('email');
+            $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
+            $this->email->to('root.nodes@gmail.com');
+            $this->email->subject('Here is your info ' . $name);
+            $data['data'] = $res[0];
+            $msg = $this->load->view('email/forgot_password',$data,TRUE);
+            $this->email->message($msg);
+            $this->email->send();
+            #echo $this->email->print_debugger();
+            $this->session->set_flashdata('signin', 'Your forgot password successfully send to email!!');
+            redirect('users/login');
+        } else {
+            $this->session->set_flashdata('signin', 'Your email is not match with our database !!');
+            redirect('users/forget');
+        }
+        print_R($res);
+        exit;
+        // send mail template to user.
+    }
+
     function signin_a() {
         $this->load->model('users_model');
         //echo $this->input->post('vEmail', TRUE);
@@ -294,7 +322,17 @@ class Users extends CI_Controller {
         $data['basic'] = $this->users_model->getUpgrade($iUserId);
         $data['basic'] = $data['basic'][0];
         $data['currency'] = $this->users_model->getCurrency();
-        $this->load->view('users/settings', $data);
+        $type = $this->session->userdata('eType');
+        // Card info...
+        $cardinfo = $this->users_model->getCardDetail($iUserId);
+        $data['cardinfo'] = $cardinfo[0];
+        
+        if($type=='Pro')
+            $this->load->view('users/settings_pro', $data);
+        else
+            $this->load->view('users/settings', $data);
+        
+        
     }
 
     function settings_a() {
@@ -346,9 +384,9 @@ class Users extends CI_Controller {
     }
 
     function edit_service_a() {
-        
+
         $service = array(
-            'iUserId'  => $this->session->userdata('iUserId'),
+            'iUserId' => $this->session->userdata('iUserId'),
             'iCompanyServiceId' => $this->input->post('iCompanyServiceId', TRUE),
             'iCategoryId' => $this->input->post('iCategoryId', TRUE),
             'iServiceId' => $this->input->post('iServiceId', TRUE),
@@ -356,7 +394,7 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE),
             'fPrice' => $this->input->post('fPrice', TRUE)
         );
-        if(isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
+        if (isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
             //Image croping;
             $image = $this->file_upload('large_image', $_FILES['vImage']);
             $user['vImage'] = $image;
@@ -368,11 +406,69 @@ class Users extends CI_Controller {
         redirect('users/account');
         exit;
     }
+
     function publish_pro() {
         $iUserId = $this->session->userdata('iUserId');
-        
+        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $data['basic'][0];
         $this->load->view('users/publish_pro', $data);
     }
+
+    function publish_pro_a() {
+        $this->load->library('Stripe');
+        $stripeToken = $this->input->post('stripeToken', TRUE);
+
+        try {
+            if (isset($stripeToken) && !empty($stripeToken)) {
+                Stripe::setApiKey($this->config->config['Stripe']['ApiKey']);
+                $payObj = Stripe_Charge::create(array("amount" => $this->config->config['Stripe']['Amount'], "currency" => $this->config->config['Stripe']['Currency'], "card" => $this->input->post('stripeToken', TRUE)));
+                $payment = array(
+                    'iUserId' => $this->session->userdata('iUserId'),
+                    'iTransactionId' => $payObj->id,
+                    'fAmount' => $this->config->config['Stripe']['Amount']
+                );
+
+                $paymentid = $this->users_model->insert_payment($payment);
+
+                $users = array(
+                    'iUserId' => $this->session->userdata('iUserId'),
+                    'eType' => 'Pro'
+                );
+                $vPassword = $this->input->post('vPassword', TRUE);
+                if (isset($vPassword) && !empty($vPasswords)) {
+                    $users['vPassword'] = $this->input->post('vPassword', TRUE);
+                }
+                $this->users_model->updateUser($users);
+                //Update in session;
+                
+                //insert cardinfo;
+                $detail = array(
+                  'iUserId' =>   $this->session->userdata('iUserId'),
+                  'vCardNumber'  => $this->input->post('cardnumber', TRUE),
+                  'vExpireMonth' => $this->input->post('card-expiry-month', TRUE),
+                  'vExpireYear' =>  $this->input->post('card-expiry-year', TRUE),
+                  'vCvv' => $this->input->post('card-cvc', TRUE),
+                );
+                $info = $this->users_model->insertCardinfo($detail);
+                
+                $this->session->set_userdata('eType', 'Pro');
+                //Mail to member...
+
+                $this->session->set_flashdata('signin', 'Your payment have been done successfuly !!');
+                redirect('users/account');
+            } else {
+                //throw new Exception("The Stripe Token was not generated correctly");
+                $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time. ');
+                redirect('users/account');
+            }
+        } catch (Exception $e) {
+            $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time.');
+            redirect('users/account');
+            //echo $error = $e->getMessage();
+        }
+        exit;
+    }
+
     function new_service() {
 
         $this->load->model('users_model');

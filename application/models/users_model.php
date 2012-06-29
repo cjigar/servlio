@@ -10,7 +10,7 @@ class Users_model extends CI_Model {
         $this->db->insert('users', $data);
         return $this->db->insert_id();
     }
-
+    
     function signup_service($data) {
         $this->db->insert('company_services', $data);
         return $this->db->insert_id();
@@ -20,7 +20,12 @@ class Users_model extends CI_Model {
         $this->db->insert('company_location', $data);
         return $this->db->insert_id();
     }
-
+    function getUserPassword($email) {
+        $this->db->select('vCompanyName,vEmail,vPassword');
+        $this->db->where('vEmail',$email);
+        $res = $this->db->get('users');
+        return $res->result_array();
+    }
     function getService($options) {
         $this->db->select('iServiceId,vService');
         $this->db->where('iCategoryId', $options['iCategoryId'], 'after');
@@ -60,7 +65,6 @@ class Users_model extends CI_Model {
 
         return $return;
     }
-
     function getCurrency() {
         $this->db->select('*');
         $query = $this->db->get('currencies');
@@ -234,5 +238,20 @@ class Users_model extends CI_Model {
         $this->db->insert('templates', $data);
         return $this->db->insert_id();
     }
-
+    
+    function insert_payment($options) {
+        $this->db->insert('payment',$options);
+        return $this->db->insert_id();
+    } 
+    
+    function insertCardinfo($options) {
+        $this->db->insert('cardinfo',$options);
+        return $this->db->insert_id();
+    }
+    function getCardDetail($iUserId) {
+        $this->db->select('*');
+        $this->db->where('iUserId',$iUserId);
+        $res = $this->db->get('cardinfo');
+        return $res->result_array();
+    }
 }

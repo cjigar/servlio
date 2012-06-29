@@ -51,15 +51,15 @@
         <div id="left_side_interface_login">
 
             <div id="structure_left_container_login">
-                
-                <?php $signin = $this->session->flashdata('signin');?>
-                <?php if(isset($signin) && !empty($signin)) :?>
-                    <div id="error_msg2"><?php echo $signin;?></div>     
-                <?php endif;?>
-                    
+
+                <?php $signin = $this->session->flashdata('signin'); ?>
+                <?php if (isset($signin) && !empty($signin)) : ?>
+                    <div id="error_msg2"><?php echo $signin; ?></div>     
+                <?php endif; ?>
+
                 <form name="fromlogin" id="fromlogin" method="post" action="users/signin_a" >
                     <input  class="signup_input_login3" placeholder="Email" name="vEmail" id="vEmail" type="text">
-                    <input  class="signup_input_login4" id="password" placeholder="Password" name="vPassword" id="vPassword" type="text">
+                    <input  class="signup_input_login4"  placeholder="Password" name="vPassword" id="vPassword" type="text">
                     <div class="btn" id="login_btn" title="Apply" style="width:65px; float:left; font-size:15px; height:28px; padding-top:2px; margin-top:15px; margin-left:0px;">Login</div>
                     <div style="float:left;">&nbsp;</div>
                     <div class="btn" id="reset_btn" title="Apply" style="width: 65px; float: left; font-size: 15px; height: 28px; padding-top: 2px; margin-top: 15px; margin-left: 0px; ;">Reset</div>
@@ -73,9 +73,17 @@
 </html>
 <script>
     $("#login_btn").click(function() {
-       $("#fromlogin").submit();
+        $("#fromlogin").submit();
     });
     $("#reset_btn").click(function(){
         $("#fromlogin")[0].reset();
+    });
+    $("#vPassword").keyup(function(event){
+        if(event.keyCode == 13){
+            $("#login_btn").click();
+        }
+    });
+    $("#forgot").click(function(){
+       window.location.href = 'users/forget'; 
     });
 </script>    

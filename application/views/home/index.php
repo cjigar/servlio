@@ -16,10 +16,37 @@
         <script src="<?php echo base_url(); ?>js/scrollpagination.js"></script>
         <script src="<?php echo base_url(); ?>js/slider.js"></script>        
         <script src="<?php echo base_url(); ?>js/home.js"></script>
-        
-        <script type="text/javascript">
 
-            $(document).ready(function($){
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#cat_services").hide(); 
+                $("#categories").click(function() {					  
+                    $("#cat_services").fadeIn("fast");
+                });
+		
+            });
+
+        </script> 
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#country_active").hide(); 
+                $("#countries").click(function() {
+                    $("#country_inactive").hide();						  
+                    $("#country_active").show();
+                });
+                $("#country_cancel, #country_active").click(function() {						  
+                    $("#location").show();						  
+                    $(".filter_bar_selected_location").hide();
+                });
+		
+            });
+
+        </script> 
+
+        <script type="text/javascript">
+            $(document).ready(function(){
                 $(".filter_bar_selected").hide(); 
                 $("#services").click(function() {
                     $("#services").hide();						  
@@ -31,8 +58,10 @@
                 });
             });
 
+        </script> 
 
-            $(document).ready(function($){
+        <script type="text/javascript">
+            $(document).ready(function(){
                 $(".filter_bar_selected_location").hide(); 
                 $("#location").click(function() {
                     $("#location").hide();						  
@@ -44,7 +73,10 @@
                 });
             });
 
-            $(document).ready(function($){
+        </script> 
+
+        <script type="text/javascript">
+            $(document).ready(function(){
                 $(".filter_bar_selected_budget").hide(); 
                 $("#budget").click(function() {
                     $("#budget").hide();						  
@@ -56,7 +88,7 @@
                 });
             });
 
-        </script> 
+        </script>
     </head>
 
     <body>
@@ -175,7 +207,7 @@
         <div id="inner_container">
             <input type="hidden" id="currpage" value="1">
             <div id="ajax_content">
-              <?php echo $this->load->view('home/homepage_ajax'); ?>
+                <?php echo $this->load->view('home/homepage_ajax'); ?>
             </div>
             <div class="clearfloat"></div>
             <div id="card_loader"></div>
