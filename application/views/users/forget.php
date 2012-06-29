@@ -57,14 +57,12 @@
                     <div id="error_msg2"><?php echo $signin; ?></div>     
                 <?php endif; ?>
 
-                <form name="fromlogin" id="fromlogin" method="post" action="users/signin_a" >
+                <form name="fromlogin" id="fromlogin" method="post" action="users/forget_a" >
                     <input  class="signup_input_login3" placeholder="Email" name="vEmail" id="vEmail" type="text">
-                    <input  class="signup_input_login4"  placeholder="Password" name="vPassword" id="vPassword" type="text">
-                    <div class="btn" id="login_btn" title="Apply" style="width:65px; float:left; font-size:15px; height:28px; padding-top:2px; margin-top:15px; margin-left:0px;">Login</div>
+                    <div class="btn" id="login_btn" title="Apply" style="width:65px; float:left; font-size:15px; height:28px; padding-top:2px; margin-top:15px; margin-left:0px;">Submit</div>
                     <div style="float:left;">&nbsp;</div>
-                    <div class="btn" id="reset_btn" title="Apply" style="width: 65px; float: left; font-size: 15px; height: 28px; padding-top: 2px; margin-top: 15px; margin-left: 0px; ;">Reset</div>
-                    <div class="login_text_new" id="forgot">Forgot your password?</div>
-                    <div style="display: none;" class="login_text_new" id="back">Back to login?</div>
+                    <div style="display: none;" class="login_text_new" id="forgot">Forgot your password?</div>
+                    <div  class="login_text_new" id="back">Back to login?</div>
                     <div class="clearfloat"></div>
                 </form>
             </div>
@@ -72,6 +70,9 @@
     </body>
 </html>
 <script>
+    $("#back").click(function(){
+       window.location.href = 'users/login'; 
+    });
     $("#login_btn").click(function() {
         $("#fromlogin").submit();
     });
@@ -82,8 +83,5 @@
         if(event.keyCode == 13){
             $("#login_btn").click();
         }
-    });
-    $("#forgot").click(function(){
-       window.location.href = 'users/forget'; 
     });
 </script>    

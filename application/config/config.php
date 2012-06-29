@@ -15,8 +15,10 @@
 |
 */
 
-
-$config['base_url'] = "http://localhost/servlio/";
+if($_SERVER['HTTP_HOST']=='localhost')
+    $config['base_url'] = "http://localhost/servlio/";
+else 
+    $config['base_url'] = "http://servlio.techrevolutionweb.com/";
 
 /*
 |--------------------------------------------------------------------------
@@ -618,6 +620,9 @@ $config['Stripe']['ApiKey'] = 'Q7LzQNsbmZdsueZzVVHXVJLdTpGeXyjS';
 $config['Stripe']['PublishableKey'] = 'pk_eSkCMiU5CWys1fEFx9ovy6quMhSMH';
 $config['Stripe']['Amount'] = '7600';
 $config['Stripe']['Currency'] = 'USD';
+
+$config['supportemail'] = 'alex.php1982@gmail.com';
+$config['supportname'] = 'Alex Jones';
 
 $config['upload_path'] = APPPATH . 'theme/uploads/';
 $config['upload_url'] = $config['base_url'] . 'uploads/';
