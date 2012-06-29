@@ -11,10 +11,10 @@
         <base href="<?= base_url(); ?>">
         <link href="<?= base_url() ?>css/style.css" rel="stylesheet">
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
-        <link href="<?= base_url() ?>css/nivo-slider.css" rel="stylesheet">        
+        <link href="<?= base_url() ?>css/slider.css" rel="stylesheet">
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/scrollpagination.js"></script>
-        <script src="<?php echo base_url(); ?>js/jquery.nivo.slider.pack.js"></script>        
+        <script src="<?php echo base_url(); ?>js/slider.js"></script>        
         <script src="<?php echo base_url(); ?>js/home.js"></script>
         
         <script type="text/javascript">
