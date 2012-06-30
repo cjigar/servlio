@@ -87,7 +87,7 @@
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
-                <div id="logo"><a href="/"><img alt="Servlio" src="images/logo.png" /></a></div>
+                <div id="logo"><a href=""<?= base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
            </div>  
         </div>
@@ -105,32 +105,44 @@
                     <input  type="text"  name="vCompanyName" name="vCompanyName" value="<?php echo $basic['vCompanyName'] ?>" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" />
                     <div id="signup_form_text8">Locations</div>
                     <div id="signup_subtitle">You can add up to 3 locations.</div>
+                    <!--
+                    <input type ="hidden" name="iCompanyLocationId[]" id="iCompanyLocationId" value="<?php echo $basic['iCompanyLocationId'] ?>" />
+                    
+                    <input type ="hidden" name="iCompanyLocationId[]" id="iCompanyLocationId3" value="<?php echo $basic['iCompanyLocationId'] ?>" />
                     <?php
-                    echo country_dropdown('vCountryCode[]', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
+                     country_dropdown('vCountryCode[]', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
                     ?>
+                    <input type ="hidden" name="vCountry[]" id="vCountry" value="<?php echo $basic['vCountry'] ?>" />
+                    
                     <input  type="text"  name="vState[]" id="vState" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none1;' : '' ?>" placeholder="State" />
                     <input type ="hidden" name="vStateCode[]" id="vStateCode" value="<?php echo $basic['vStateCode'] ?>" />
                     
                     <input  type="text"  name="vCity[]" id="vCity" value="<?php echo $basic['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
                     <input type ="hidden" name="iCityId[]" id="iCityId" value="<?php echo $basic['iCityId'] ?>" />
                     <div class="clearfloat"></div>
-
-                    <div style="margin-top:10px;" id="location_2">
-                        <?php
-                        echo country_dropdown('vCountryCode[]', 'vCountryCode2', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
-                        ?>
-                        <input  type="text"  name="vState[]" id="vState2" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none;' : '' ?>" placeholder="State" />
-                        <input type ="hidden" name="vStateCode[]" id="vStateCode2" value="<?php echo $basic['vStateCode'] ?>" />
-                        <input  type="text"  name="vCity[]" id="vCity2" value="<?php echo $basic['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
-                        <input type ="hidden" name="iCityId[]" id="iCityId2" value="<?php echo $basic['iCityId'] ?>" />
-                        <div id="signup_delete_link" data-location="2">Remove</div>
+                    -->
+                    <?php  for($f=0;$f<3;$f++):  ?>
+                    <div style="margin-top:10px;" class="locationpro" id="location_<?php echo $f?>" >
+                        <input type ="hidden" name="Location[<?php echo $f?>][iCompanyLocationId]" id="iCompanyLocationId_<?php echo $f?>" value="<?php echo $location[$f]['iCompanyLocationId'] ?>" />
+                        <input type ="hidden" name="Location[<?php echo $f?>][iCompanyServiceId]" id="iCompanyServiceId_<?php echo $f?>" value="<?php echo $location[$f]['iCompanyServiceId'] ?>" />
+                        <?php echo country_dropdown('Location['. $f .'][vCountryCode]', 'vCountryCode_'.$f, array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $location[$f]['vCountryCode']); ?>
+                        <input type ="hidden" name="Location[<?php echo $f?>][vCountry]" id="vCountry_<?php echo $f?>" value="<?php echo $location[$f]['vCountry'] ?>" />
+                        <input  type="text"  name="Location[<?php echo $f?>][vState]" id="vState_<?php echo $f?>" value="<?php echo $location[$f]['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo (empty($location[$f]['vState'])) ? 'display:none;' : '' ?>" placeholder="State" />
+                        <input type ="hidden" name="Location[<?php echo $f?>][vStateCode]" id="vStateCode_<?php echo $f?>" value="<?php echo $location[$f]['vStateCode'] ?>" />
+                        <input  type="text"  name="Location[<?php echo $f?>][vCity]" id="vCity_<?php echo $f?>" value="<?php echo $location[$f]['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
+                        <input type ="hidden" name="Location[<?php echo $f?>][iCityId]" id="iCityId_<?php echo $f?>" value="<?php echo $location[$f]['iCityId'] ?>" />
+                        <?php if($f!=0): ?>
+                            <div id="signup_delete_link" class="location_delete_link" data-location="<?php echo $f?>">Remove</div>
+                        <?php endif;?>
                         <div class="clearfloat"></div>
                     </div>
-
+                    <?php endfor; ?>
+                    <!--
                     <div style="margin-top:10px;" id="location_3">
                         <?php
                         echo country_dropdown('vCountryCode[]', 'vCountryCode3', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
                         ?>
+                        <input type ="hidden" name="vCountry[]" id="vCountry3" value="<?php echo $basic['vCountry'] ?>" />
                         <input  type="text"  name="vState[]" id="vState3" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none;' : '' ?>" placeholder="State" />
                         <input type ="hidden" name="vStateCode[]" id="vStateCode3" value="<?php echo $basic['vStateCode'] ?>" />
                         <input  type="text"  name="vCity[]" id="vCity3" value="<?php echo $basic['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
@@ -138,6 +150,7 @@
                         <div id="signup_delete_link" data-location="3">Remove</div>
                         <div class="clearfloat"></div>
                     </div>
+                    -->
                     <div id="signup_subtitle_link">Add another location that you cover</div>
                     <div id="signup_form_text8">Address</div>
                     <input  type="text" name="vAddress" id="vAddress" value="<?php echo $basic['vAddress'] ?>" class="signup_input_login3" placeholder="Address" style="width:450px; margin-top:15px;" />
@@ -156,7 +169,7 @@
                     <div id="radio_btn_cont3" style="margin-left:0px;">
                         <select class="currency" style="margin-left:0px;" name="iCurrencyId" id="iCurrencyId">
                             <?php foreach ($currency as $row): ?>       
-                                <option class="<?php echo $row['vCurrencyVal'] ?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol'] ?>" value="<?php echo $row['iCurrencyId'] ?>"><?php echo $row['vCurrency'] ?></option>
+                                <option class="<?php echo $row['vCurrencyVal'] ?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol'] ?>" value="<?php echo $row['iCurrencyId'] ?>" <?php echo ($row['iCurrencyId']==$basic['iCurrencyId'])? 'selected="selected"':"" ?> ><?php echo $row['vCurrency'] ?></option>
                             <?php endforeach; ?>   
                         </select>
                     </div>			
@@ -200,7 +213,7 @@
                             <div id="signup_form_text8" style="margin-top:20px;">Safety code <span style="color:#999; font-size:11px; font-weight:normal;">&#8212; Last 3 digits on back of your card.</span></div>
                             <input  type="text" name="vCvv" id="vCvv" value="<?php echo $cardinfo['vCvv'];?>" class="signup_input_login3" style="width:50px; margin-top:10px;" />
                         </div>
-                        <a href="account_pro.html" class="btn" title="Apply" style="width:60px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:0px;">Save</a>
+                        <a href="javascript:;" id="savecardinfo"  class="btn" title="Apply" style="width:60px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:0px;">Save</a>
                         <div class="clearfloat"></div>
                         <div class="settings_link" id="cancel_card" style=" margin-top:15px;">Cancel</div>
                         <div class="clearfloat"></div>
@@ -251,7 +264,7 @@
                     <input  type="text" name="vPhone" id="vPhone" value="<?php echo $basic['vPhone'] ?>" class="signup_input_login3" style="width:450px;" placeholder="Telephone" />
                     <div class="clearfloat"></div>
 
-                    <a href="account_pro.html" class="btn" title="Apply" style="width:75px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:0px;">Update</a>
+                    <a href="javascript:;" class="btn" id="sbmtButton" title="Apply" style="width:75px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:0px;">Update</a>
                     <div class="clearfloat"></div>
                     <div id="cancel_account"><a href="index.html">Cancel your Fitlister account</a> &#8212; No undo. All account info will be permanently deleted.</div>
                     <div id="logo_icon_text">© 2012 Area 20 Technology Ltd. All screenshots are owned by their respective owners.</div>
@@ -260,20 +273,5 @@
             </div>
         </form>
     </body>
+      
 </html>
-<script type="text/javascript">
-    $("#login_btn").click(function() {
-        $("#fromlogin").submit();
-    });
-    $("#reset_btn").click(function(){
-        $("#fromlogin")[0].reset();
-    });
-    $("#vPassword").keyup(function(event){
-        if(event.keyCode == 13){
-            $("#login_btn").click();
-        }
-    });
-    $("#forgot").click(function(){
-        window.location.href = 'users/forget'; 
-    });
-</script>    

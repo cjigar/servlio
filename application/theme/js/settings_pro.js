@@ -68,7 +68,28 @@ $(document).ready(function() {
     });
     $('#sbmtButton').click(function(){
         $("#frmsettings").submit();
-    })
+    });
+    $('#savecardinfo').click(function(){
+        $("#frmsettings").submit();
+    });
+    
+    
+    $(".location_delete_link").click(function(e){
+        e.preventDefault();
+        var no = $(this).attr('data-location');
+        $("#location_"+no).fadeOut('fast');
+    });
+    
+    $("#signup_subtitle_link").click(function(){
+        $.each($(".locationpro"), function(i, obj) {
+            if(!$(obj).is(':visible')) {
+                $(obj).find('input').show();
+                $(obj).fadeIn('fast');
+                return false;
+            }
+        });
+    });
+    
 });
 
 $(function() {
@@ -78,25 +99,35 @@ $(function() {
     function extractLast( term ) {
         return split( term ).pop();
     }
-    
-    $("#vCountryCode2").change(function(){
+    $("#vCountryCode_0").change(function(){
+        $("#vCountry_0").val($("#vCountryCode_0 :selected").text());
         if($(this).val()=='US') {
-            $("#vStateCode2").show();
+            $("#vState_0").show();
         } else {
-            $("#vStateCode2").hide();
+            $("#vState_0").hide();
         }
     });
     
-    $("#vCountryCode3").change(function(){
+    $("#vCountryCode_1").change(function(){
+        $("#vCountry_1").val($("#vCountryCode_1 :selected").text());
         if($(this).val()=='US') {
-            $("#vStateCode3").show();
+            $("#vState_1").show();
         } else {
-            $("#vStateCode3").hide();
+            $("#vState_1").hide();
+        }
+    });
+    
+    $("#vCountryCode_2").change(function(){
+        $("#vCountry_2").val($("#vCountryCode_2 :selected").text());
+        if($(this).val()=='US') {
+            $("#vState_2").show();
+        } else {
+            $("#vState_2").hide();
         }
     });
     
     
-    $( "#vState" )
+    $( "#vState_0" )
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -108,7 +139,7 @@ $(function() {
         source: function( request, response ) {
             $.getJSON( "users/state_suggestions", {
                 term: extractLast( request.term ),
-                vCountryCode:$('#vCountryCode').val()
+                vCountryCode:$('#vCountryCode_0').val()
             }, response );
         },
         search: function() {
@@ -124,12 +155,13 @@ $(function() {
         },
         select: function( event, ui ) {
             this.value = ui.item.value;
-            $('#vStateCode').val(ui.item.id);
+            $("#vState_0").val(this.value);
+            $('#vStateCode_0').val(ui.item.id);
             return false;
         }
     });
     
-    $( "#vCity" )
+    $( "#vCity_0" )
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -142,7 +174,7 @@ $(function() {
             $.getJSON( "users/city_suggestions", {
                 term: extractLast( request.term ),
                 vStateCode:$('#vStateCode').val(),
-                vCountryCode:$('#vCountryCode').val()
+                vCountryCode:$('#vCountryCode_0').val()
             }, response );
         },
         search: function() {
@@ -158,12 +190,13 @@ $(function() {
         },
         select: function( event, ui ) {
             this.value = ui.item.value;
-            $('#iCityId').val(ui.item.id);
+            $("#vCity_0").val(this.value);
+            $('#iCityId_0').val(ui.item.id);
             return false;
         }
     });
     
-    $( "#vState2" )
+    $( "#vState_1" )
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -175,7 +208,7 @@ $(function() {
         source: function( request, response ) {
             $.getJSON( "users/state_suggestions", {
                 term: extractLast( request.term ),
-                vCountryCode:$('#vCountryCode').val()
+                vCountryCode:$('#vCountryCode_1').val()
             }, response );
         },
         search: function() {
@@ -191,12 +224,13 @@ $(function() {
         },
         select: function( event, ui ) {
             this.value = ui.item.value;
-            $('#vStateCode2').val(ui.item.id);
+            $("#vState_1").val(this.value);
+            $('#vStateCode_1').val(ui.item.id);
             return false;
         }
     });
     
-    $( "#vCity2" )
+    $( "#vCity_1" )
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -208,8 +242,8 @@ $(function() {
         source: function( request, response ) {
             $.getJSON( "users/city_suggestions", {
                 term: extractLast( request.term ),
-                vStateCode:$('#vStateCode').val(),
-                vCountryCode:$('#vCountryCode').val()
+                vStateCode:$('#vStateCode_1').val(),
+                vCountryCode:$('#vCountryCode_1').val()
             }, response );
         },
         search: function() {
@@ -225,12 +259,13 @@ $(function() {
         },
         select: function( event, ui ) {
             this.value = ui.item.value;
-            $('#iCityId2').val(ui.item.id);
+            $("#vCity_1").val(this.value);
+            $('#iCityId_1').val(ui.item.id);
             return false;
         }
     });
     
-    $( "#vState3" )
+    $( "#vState_2" )
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -242,7 +277,7 @@ $(function() {
         source: function( request, response ) {
             $.getJSON( "users/state_suggestions", {
                 term: extractLast( request.term ),
-                vCountryCode:$('#vCountryCode').val()
+                vCountryCode:$('#vCountryCode_2').val()
             }, response );
         },
         search: function() {
@@ -258,12 +293,13 @@ $(function() {
         },
         select: function( event, ui ) {
             this.value = ui.item.value;
-            $('#vStateCode3').val(ui.item.id);
+            $("#vState_2").val(this.value);
+            $('#vStateCode_2').val(ui.item.id);
             return false;
         }
     });
     
-    $( "#vCity3" )
+    $( "#vCity_2" )
     // don't navigate away from the field on tab when selecting an item
     .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -275,8 +311,8 @@ $(function() {
         source: function( request, response ) {
             $.getJSON( "users/city_suggestions", {
                 term: extractLast( request.term ),
-                vStateCode:$('#vStateCode').val(),
-                vCountryCode:$('#vCountryCode').val()
+                vStateCode:$('#vStateCode_2').val(),
+                vCountryCode:$('#vCountryCode_2').val()
             }, response );
         },
         search: function() {
@@ -292,7 +328,8 @@ $(function() {
         },
         select: function( event, ui ) {
             this.value = ui.item.value;
-            $('#iCityId3').val(ui.item.id);
+            $("#vCity_2").val(this.value);
+            $('#iCityId_2').val(ui.item.id);
             return false;
         }
     });
