@@ -13,6 +13,7 @@
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <link href="<?= base_url() ?>css/slider.css" rel="stylesheet">
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>        
         <script src="<?php echo base_url(); ?>js/scrollpagination.js"></script>
         <script src="<?php echo base_url(); ?>js/slider.js"></script>        
         <script src="<?php echo base_url(); ?>js/home.js"></script>
@@ -20,22 +21,11 @@
 
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#cat_services").hide(); 
-                $("#categories").click(function() {					  
-                    $("#cat_services").fadeIn("fast");
-                });
-		
-            });
-
-        </script> 
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#country_active").hide(); 
-                $("#countries").click(function() {
+                /*$("#country_active").hide(); 
+                $("#vCountryCode").click(function() {
                     $("#country_inactive").hide();						  
                     $("#country_active").show();
-                });
+                });*/
                 $("#country_cancel, #country_active").click(function() {						  
                     $("#location").show();						  
                     $(".filter_bar_selected_location").hide();
@@ -108,6 +98,35 @@
 
             </div>  
             <div id="filter_bar">
+                <?php
+                    if($search_text!="") {
+                      $selected_val = "textsearch";
+                      ?>
+                      <input type="hidden" name="selected_text" id="selected_text" value="<?=$search_text?>">
+                      <?
+                    } elseif($service_id!="") {
+                      $selected_val = "servicesearch";
+                      ?>
+                        <input type="hidden" name="selected_service" id="selected_service" value="<?=$service_id?>">
+                      <?  
+                    } elseif($budget_select!="") {
+                      $selected_val = "budgetsearch";
+                      ?>
+                        <input type="hidden" name="selected_budget" id="selected_budget" value="<?=$budget_select?>">
+                      <?  
+                    } 
+                    if($country!="" && $city!="") {
+                      $selected_val = "countrysearch";
+                    } 
+
+                    if($selected_val == "countrysearch") {?>
+                        <input type="hidden" name="selected_country" id="selected_country" value="<?=$country?>">
+                        <input type="hidden" name="selected_city" id="selected_city" value="<?=$city?>">
+                    <? }
+                    //echo $selected_val;
+                ?>
+                <input type="hidden" name="selected_val" id="selected_val" value="<?=$selected_val?>">
+
                 <div class="filter_bar_button" id="services">ALL SERVICES <img src="images/droplist.png" style="margin-left:112px;" /></div>
                 <div class="filter_bar_selected" style="height:auto; padding-bottom:15px;">
                     <div id="selected" style="height:40px; padding-top:8px; cursor:pointer;">
@@ -117,41 +136,29 @@
                     </div>
 
                     <div class="selected_entry_header" style="font-size:11px;">Popular</div>
-                    <select class="list">
+                    <select id="popular_service" name="popular_service" class="list">
                         <option value="volvo">Choose a service</option>
-                        <option value="volvo">Personal Training</option>
-                        <option value="volvo">Pilates</option>
-                        <option value="volvo">Yoga</option>
-                        <option value="volvo">Jogging</option>
-                        <option value="volvo">Boxing</option>
-                        <option value="volvo">Bootcamp</option>
+                            <?php
+                            foreach ($popularservices as $key => $val) {
+                                ?>                            
+                                <option value="<?= $val['iServiceId'] ?>"><?= $val['vService'] ?></option>
+                            <? } ?>
                     </select>
                     <div class="selected_entry_header" style="font-size:11px; margin-top:10px;">Category</div>
-                    <select class="list"  id="categories">
-                        <option value="volvo">Choose a category</option>
-                        <option value="volvo">All categories</option>
-                        <option value="volvo">Beauty</option>
-                        <option value="volvo">Charity</option>
-                        <option value="volvo">Dental</option>
-                        <option value="volvo">Events</option>
-                        <option value="volvo">Fitness</option>
-                        <option value="volvo">Medical</option>
-                        <option value="volvo">Restaurants</option>
-                        <option value="volvo">Shopping</option>
-                        <option value="volvo">Spas &amp; Wellness</option>
-                        <option value="volvo">Other</option>
-                    </select>
+                        <select class="list" id="iCategoryId" name="iCategoryId" >
+                            <option value="volvo">Choose a category</option>
+                            <option value="volvo">All categories</option>
+                            <?php
+                            foreach ($categories as $key => $val) {
+                                ?>                            
+                                <option value="<?= $val['iCategoryId'] ?>"><?= $val['vCategory'] ?></option>
+                            <? } ?>
+                        </select>
                     <div id="cat_services">
                         <div class="selected_entry_header" style="font-size:11px; margin-top:10px;">Services</div>
-                        <select class="list">
-                            <option value="volvo">All services</option>
-                            <option value="volvo">Personal Training</option>
-                            <option value="volvo">Pilates</option>
-                            <option value="volvo">Yoga</option>
-                            <option value="volvo">Jogging</option>
-                            <option value="volvo">Boxing</option>
-                            <option value="volvo">Bootcamp</option>
-                        </select>
+                            <select class="list" name="iServiceId" id="iServiceId">
+
+                            </select>
                     </div>
 
 
@@ -164,19 +171,14 @@
                         <div class="clearfloat"></div>
                     </div>
                     <div class="selected_entry_header" style="font-size:11px;">Country</div>
-                    <select class="list" id="countries">
-
-                        <option value="volvo">All countries</option>
-                        <option value="volvo">United Kingdom</option>
-                        <option value="volvo">United States</option>
-                        <option value="volvo">Germany</option>
-                        <option value="volvo">Canada</option>
-                        <option value="volvo">Spain</option>
-                    </select>
+                    <?php
+                    echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="list" ');
+                    ?>
                     <div class="selected_entry_header" style="font-size:11px; margin-top:10px;">City</div>
-                    <input type="text"  class="field" placeholder="City"/>
+                    <input onfocus="if(this.value='City')this.value='';" name="vCity" id="vCity" class="field"  placeholder="City" type="text">
+                    <input type="hidden" name="iCityId" id="iCityId" />
                     <div id="popup_bottom_cont">
-                        <div class="inactive" id="country_inactive" title="Apply">Apply</div>
+                        <!--div class="inactive" id="country_inactive" title="Apply">Apply</div-->
                         <div class="btn" id="country_active" title="Apply">Apply</div>
                         <div class="cancel" id="country_cancel" title="Cancel">Cancel</div>
                         <div class="clearfloat"></div>
@@ -190,17 +192,17 @@
                         <div class="clearfloat"></div>
                     </div>
                     <div class="selected_entry_header" style="font-size:11px;">Choose a budget</div>
-                    <select class="list">
+                    <select class="list" name="budget_select" id="budget_select">
                         <option value="volvo">All budgets</option>
-                        <option value="volvo">Under 25</option>
-                        <option value="volvo">25 - 50</option>
-                        <option value="volvo">50 - 75</option>
-                        <option value="volvo">75 - 100</option>
-                        <option value="volvo">Over 100</option>
+                        <option value="25">Under 25</option>
+                        <option value="25-50">25 - 50</option>
+                        <option value="50-75">50 - 75</option>
+                        <option value="75-100">75 - 100</option>
+                        <option value="100">Over 100</option>
                     </select>
 
                 </div>
-                <div id="filter_bar_button_end"><input type="text"  class="searchfield" placeholder="Search"/></div>
+                <div id="filter_bar_button_end"><input type="text"  class="searchfield" name="search_text" id="search_text" placeholder="Search"/></div>
                 <div class="clearfloat"></div>
             </div>
         </div>

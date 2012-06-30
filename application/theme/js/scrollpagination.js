@@ -45,13 +45,15 @@ var ajaxreq;
      if(ajaxreq && ajaxreq.readyState != 4){
         return false;
      }
+
     		 ajaxreq = $.ajax({
     			  type: 'POST',
     			  url: opts.contentPage,
-    			  data: {'page':$('#currpage').val()},
+    			  data: {'page':$('#currpage').val(),'search_text':$('#selected_text').val(),'service_id':$('#selected_service').val(),'country':$('#selected_country').val(),'city':$('#selected_city').val(),'budget_select':$('#selected_budget').val()},
     			  success: function(data){
             if(data=="0") {
                 $('#ajax_content').stopScrollPagination();
+                $('#card_loader').fadeOut();
                 return false;
             }
     			  $('#currpage').val(parseInt($('#currpage').val())+1);
