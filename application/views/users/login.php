@@ -59,7 +59,7 @@
 
                 <form name="fromlogin" id="fromlogin" method="post" action="users/signin_a" >
                     <input  class="signup_input_login3" placeholder="Email" name="vEmail" id="vEmail" type="text">
-                    <input  class="signup_input_login4"  placeholder="Password" name="vPassword" id="vPassword" type="text">
+                    <input  class="signup_input_login4"  placeholder="Password" name="vPassword" id="vPassword" type="password">
                     <div class="btn" id="login_btn" title="Apply" style="width:65px; float:left; font-size:15px; height:28px; padding-top:2px; margin-top:15px; margin-left:0px;">Login</div>
                     <div style="float:left;">&nbsp;</div>
                     <div class="btn" id="reset_btn" title="Apply" style="width: 65px; float: left; font-size: 15px; height: 28px; padding-top: 2px; margin-top: 15px; margin-left: 0px; ;">Reset</div>

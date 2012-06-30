@@ -57,8 +57,7 @@
                         <? } ?>
                     </select>
                     <div>
-                        
-                          <div id="signup_form_text8">Locations</div>
+                         <div id="signup_form_text8">Locations</div>
                           <select name="iCompanyLocationId" name="iCompanyLocationId">
                               <?php foreach($location as $row) :?>
                                 <option value="<?php echo $row['iCompanyLocationId']?>">

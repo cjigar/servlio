@@ -93,7 +93,7 @@
         </div>
         <form name="frmsettings" id="frmsettings" action="users/settings_pro_a" method="post" enctype="multipart/form-data" > 
             <div id="inner_container" style="width:924px;">
-                <div id="breadcrumb"><a href="users/accounts">Account</a></div>
+                <div id="breadcrumb"><a href="users/account">Account</a></div>
                 <div id="breadcrumb">&rarr;</div> 
                 <div id="breadcrumb" style="color:#666">Settings</div> 
                 <div class="booking_btn_back" id="payb3">

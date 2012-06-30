@@ -32,6 +32,14 @@ class Users_model extends CI_Model {
         return $this->db->update('company_location', $options);
         
     }
+    function getTemplates($option) {
+        $this->db->select('*');
+        $this->db->where('iUserId',$option['iUserId']);
+        $this->db->where('iCompanyServiceId',$option['iCompanyServiceId']);
+        $res = $this->db->get('templates');
+        return $res->result_array();
+    }
+    
     
     function updateCardinfo($options) {
         $this->db->where('iUserId',$options['iUserId']);
@@ -218,7 +226,7 @@ class Users_model extends CI_Model {
         */
         $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.vCountry,cl.vCountryCode,cl.vState,cl.vStateCode,cl.vCity,cl.iCityId 
                     FROM company_services AS cs
-                    JOIN company_location AS cl ON cs.iCompanyServiceId = cl.iCompanyServiceId AND cl.iUserId = cs.iUserId
+                    JOIN company_location AS cl ON cs.iCompanyLocationId = cl.iCompanyLocationId AND cl.iUserId = cs.iUserId
                     JOIN users AS u ON cl.iUserId = u.iUserId
                     LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
                     LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
@@ -232,7 +240,7 @@ class Users_model extends CI_Model {
         //make query..  from user,services,location,etc..;
         $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.vCountry,cl.vCountryCode,cl.vState,cl.vStateCode,cl.vCity,cl.iCityId 
                     FROM company_services AS cs
-                    JOIN company_location AS cl ON cs.iCompanyServiceId = cl.iCompanyServiceId AND cl.iUserId = cs.iUserId
+                    JOIN company_location AS cl ON cs.iCompanyLocationId = cl.iCompanyLocationId AND cl.iUserId = cs.iUserId
                     JOIN users AS u ON cl.iUserId = u.iUserId
                     LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
                     LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
@@ -246,15 +254,13 @@ class Users_model extends CI_Model {
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         //make query..  from user,services,location,etc..;
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,c.vCountry,c.vCountryCode,st.vState,st.vStateCode,ci.vCity,ci.iCityId FROM users AS u 
-	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId AND cs.iCompanyServiceId = "'.$iCompanyServiceId .'"
-	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
-	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
-	LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
-	LEFT JOIN country AS c ON c.vCountryCode = cl.vCountryCode
-        LEFT JOIN state as st ON st.vStateCode = cl.vStateCode
-	LEFT JOIN city AS ci ON ci.iCityId = cl.iCityId AND ci.vCountryCode = cl.vCountryCode
-	WHERE u.iUserId =  ' . $iUserId .' AND cs.iCompanyServiceId = '.$iCompanyServiceId;
+        $sql_query = 'SELECT u.*,cs.iCompanyServiceId,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.vCountry,cl.vCountryCode,cl.vState,cl.vStateCode,cl.vCity,cl.iCityId 
+                    FROM company_services AS cs
+                    JOIN company_location AS cl ON cs.iCompanyLocationId = cl.iCompanyLocationId AND cl.iUserId = cs.iUserId
+                    JOIN users AS u ON cl.iUserId = u.iUserId
+                    LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
+                    LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
+                    WHERE u.iUserId =  ' . $iUserId .' AND cs.iCompanyServiceId = '.$iCompanyServiceId;
         $query = $this->db->query($sql_query);
         return $query->result_array();
     }
@@ -269,7 +275,7 @@ class Users_model extends CI_Model {
         $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
         return $this->db->update('company_location', $options);
     }
-
+    
     function updateService($options = array()) {
         $this->db->where('iUserId', $options['iUserId']);
         $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
@@ -283,6 +289,12 @@ class Users_model extends CI_Model {
 
     function insert_template($data) {
         $this->db->insert('templates', $data);
+        return $this->db->insert_id();
+    }
+    
+    function update_template($data) {
+        $this->db->where('iTemplateId',$data['iTemplateId']);
+        $this->db->update('templates', $data);
         return $this->db->insert_id();
     }
     
