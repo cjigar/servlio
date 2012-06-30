@@ -380,10 +380,10 @@ class Users extends CI_Controller {
         //update currency.
         $service = array(
             'iUserId' => $iUserId,
-            'iCurrencyId' => $this->input->post('iCurrencyId',TRUE)
+            'iCurrencyId' => $this->input->post('iCurrencyId', TRUE)
         );
         $this->users_model->update_service($service);
-        
+
         //update Cardinfo
 
         $detail = array(
@@ -438,7 +438,7 @@ class Users extends CI_Controller {
 
     function edit_service($iCompanyServiceId) {
         $iUserId = $this->session->userdata('iUserId');
-        
+
         $data['basic'] = $this->users_model->editService($iCompanyServiceId);
         $data['location'] = $this->users_model->getUserLocations($iUserId);
         $data['basic'] = $data['basic'][0];
@@ -463,71 +463,160 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE),
             'fPrice' => $this->input->post('fPrice', TRUE)
         );
-        
-        
+        print_r($_FILES);
         if (isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
             //Image croping;
             $image = $this->file_upload('large_image', $_FILES['vImage']);
-            $user['vImage'] = $image;
+            $service['vImage'] = $image;
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldImage', TRUE));
         }
         $update = $this->users_model->updateService($service);
-        
+        $iCompanyServiceId = $this->input->post('iCompanyServiceId', TRUE);
         
         //Update Images....
         if (isset($_FILES['vGalleryImage']['tmp_name']) && !empty($_FILES['vGalleryImage']['tmp_name'])) {
+
             $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage']);
-            $templates = array(
-                'iTemplateId'=> $this->input->post('iTemplateId',true),
-                'vImage' => $vGalleryImage
-            );
-            $iInsertId = $this->users_model->update_template($templates);
+
+            //Insert OR Update;;;
+            $iTemplateId = $this->input->post('iTemplateId', true);
+            if (isset($iTemplateId) && !empty($iTemplateId)) {
+                //Update ;
+                $templates = array(
+                    'iTemplateId' => $iTemplateId,
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->update_template($templates);
+            } else {
+                //Insert ;
+                $templates = array(
+                    'iCompanyServiceId' => $iCompanyServiceId,
+                    'iUserId' => $iUserId,
+                    'eStatus' => '1',
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->insert_template($templates);
+            }
+
+            //unlink old;
+            unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldGalleryImage', TRUE));
         }
         
+        
         if (isset($_FILES['vGalleryImage1']['tmp_name']) && !empty($_FILES['vGalleryImage1']['tmp_name'])) {
-            $vGalleryImage1 = $this->file_upload('large_image', $_FILES['vGalleryImage1']);
-            $templates = array(
-                'iTemplateId'=> $this->input->post('iTemplateId',true),
-                'vImage' => $vGalleryImage1
-            );
-            $iInsertId = $this->users_model->insert_template($templates);
-        }
 
+            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage1']);
+
+            //Insert OR Update;;;
+            $iTemplateId = $this->input->post('iTemplateId1', true);
+            if (isset($iTemplateId) && !empty($iTemplateId)) {
+                //Update ;
+                $templates = array(
+                    'iTemplateId' => $iTemplateId,
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->update_template($templates);
+            } else {
+                //Insert ;
+                $templates = array(
+                    'iCompanyServiceId' => $iCompanyServiceId,
+                    'iUserId' => $iUserId,
+                    'eStatus' => '1',
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->insert_template($templates);
+            }
+
+            //unlink old;
+            unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldGalleryImage1', TRUE));
+        }
+        
         if (isset($_FILES['vGalleryImage2']['tmp_name']) && !empty($_FILES['vGalleryImage2']['tmp_name'])) {
-            $vGalleryImage2 = $this->file_upload('large_image', $_FILES['vGalleryImage2']);
-            $templates = array(
-                'iCompanyServiceId' => $iCompanyServiceId,
-                'iUserId' => $iUserId,
-                'eStatus' => '1',
-                'vImage' => $vGalleryImage2
-            );
-            $iInsertId = $this->users_model->insert_template($templates);
+
+            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage2']);
+
+            //Insert OR Update;;;
+            $iTemplateId = $this->input->post('iTemplateId2', true);
+            if (isset($iTemplateId) && !empty($iTemplateId)) {
+                //Update ;
+                $templates = array(
+                    'iTemplateId' => $iTemplateId,
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->update_template($templates);
+            } else {
+                //Insert ;
+                $templates = array(
+                    'iCompanyServiceId' => $iCompanyServiceId,
+                    'iUserId' => $iUserId,
+                    'eStatus' => '1',
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->insert_template($templates);
+            }
+
+            //unlink old;
+            unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldGalleryImage2', TRUE));
         }
 
         if (isset($_FILES['vGalleryImage3']['tmp_name']) && !empty($_FILES['vGalleryImage3']['tmp_name'])) {
-            $vGalleryImage3 = $this->file_upload('large_image', $_FILES['vGalleryImage3']);
-            $templates = array(
-                'iCompanyServiceId' => $iCompanyServiceId,
-                'iUserId' => $iUserId,
-                'eStatus' => '1',
-                'vImage' => $vGalleryImage3
-            );
-            $iInsertId = $this->users_model->insert_template($templates);
+
+            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage3']);
+
+            //Insert OR Update;;;
+            $iTemplateId = $this->input->post('iTemplateId3', true);
+            if (isset($iTemplateId) && !empty($iTemplateId)) {
+                //Update ;
+                $templates = array(
+                    'iTemplateId' => $iTemplateId,
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->update_template($templates);
+            } else {
+                //Insert ;
+                $templates = array(
+                    'iCompanyServiceId' => $iCompanyServiceId,
+                    'iUserId' => $iUserId,
+                    'eStatus' => '1',
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->insert_template($templates);
+            }
+
+            //unlink old;
+            unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldGalleryImage3', TRUE));
         }
 
+        
         if (isset($_FILES['vGalleryImage4']['tmp_name']) && !empty($_FILES['vGalleryImage4']['tmp_name'])) {
-            $vGalleryImage4 = $this->file_upload('large_image', $_FILES['vGalleryImage4']);
-            $templates = array(
-                'iCompanyServiceId' => $iCompanyServiceId,
-                'iUserId' => $iUserId,
-                'eStatus' => '1',
-                'vImage' => $vGalleryImage4
-            );
-            $iInsertId = $this->users_model->update_template($templates);
+
+            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage4']);
+
+            //Insert OR Update;;;
+            $iTemplateId = $this->input->post('iTemplateId4', true);
+            if (isset($iTemplateId) && !empty($iTemplateId)) {
+                //Update ;
+                $templates = array(
+                    'iTemplateId' => $iTemplateId,
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->update_template($templates);
+            } else {
+                //Insert ;
+                $templates = array(
+                    'iCompanyServiceId' => $iCompanyServiceId,
+                    'iUserId' => $iUserId,
+                    'eStatus' => '1',
+                    'vImage' => $vGalleryImage
+                );
+                $iInsertId = $this->users_model->insert_template($templates);
+            }
+            //unlink old;
+            unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldGalleryImage4', TRUE));
         }
-        
-        
+
+
         $this->session->set_flashdata('signin', 'Service edited successfully !!');
         redirect('users/account');
         exit;
@@ -608,14 +697,14 @@ class Users extends CI_Controller {
 
     function new_service_a() {
         #echo "<pre>";print_r($_FILES);print_r($_POST);exit; 
-       
+
         $iUserId = $this->session->userdata('iUserId');
 
         $serviceimage = $this->file_upload('large_image', $_FILES['vImage']);
         $service_id = $this->input->post('iServiceId', TRUE);
         $services = array(
             'iUserId' => $iUserId,
-            'iServiceId' => ($service_id>0)?$service_id:'',
+            'iServiceId' => ($service_id > 0) ? $service_id : '',
             'iCompanyLocationId' => $this->input->post('iCompanyLocationId', TRUE),
             'vServiceName' => $this->input->post('vServiceName', TRUE),
             'iCategoryId' => $this->input->post('iCategoryId', TRUE),
