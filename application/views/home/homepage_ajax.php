@@ -86,9 +86,14 @@
                 <div id="listing_card_large_description">Personal Training is all about staying motivated, getting results and getting them on schedule. We recognise that every client is individual, and we know that every client requires a bespoke programme.</div>
                 <div id="listing_card_large_bottom_container">
                     <div id="listing_card_large_price">From</div>
-                    <div id="listing_card_large_price_num">£</div>
-                    <div id="listing_card_large_price_num">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
+                    <div id="listing_card_large_price_num"><?echo $listingdata[$i]['vCurrencySymbol']?></div>
+                    <div id="listing_card_large_price_num"><?echo $listingdata[$i]['fPrice']?></div>
+                    <?php
+                    if($listingdata[$i]['iUserFavoriteId']=="") {?>
+                        <div class="popup_finish_btn" id="addfav_<?echo $listingdata[$i]['iCompanyServiceId']?>" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
+                    <?php } else { ?>
+                        <div class="popup_finish_btn_fav" id="close" >Its your Favorite</div>
+                    <?php } ?>                    
                     <div class="clearfloat"></div>
                 </div>
             </div>
@@ -104,29 +109,38 @@
                 	persiststate: false, //Remember last content shown within browser session (true/false)?
                 	speed: 500, //Glide animation duration (in milliseconds)
                 	direction: "rightleft", //set direction of glide: "updown", "downup", "leftright", or "rightleft"
-                	autorotate: true, //Auto rotate contents (true/false)?
+                	autorotate: false, //Auto rotate contents (true/false)?
                 	autorotateconfig: [4000, 10] //if auto rotate enabled, set [milliseconds_btw_rotations, cycles_before_stopping]
                 });                  
             });
             </script>
-          <?php } else { ?>
+          <?php } else {
+              if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vImage'])) {
+                  $listingdata[$i]['vImage'] = $this->config->config['upload_url'].$listingdata[$i]['vImage'];
+              }           
+          ?>
             <div id="listing_card_small">
                 <div id="listing_card_small_details_container">
-                    <div id="listing_card_small_name"><a href="profile.html">Matt Roberts</a></div>
+                    <div id="listing_card_small_name"><a href="profile.html"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
                     <div class="clearfloat"></div>
-                    <div id="listing_card_small_location" >Soho</div>
+                    <div id="listing_card_small_location" ><?php echo $listingdata[$i]['vCity']?></div>
                     <div id="listing_card_small_location3" >,</div>
-                    <div id="listing_card_small_location2" >London</div>
+                    <div id="listing_card_small_location2" ><?php echo $listingdata[$i]['vCountry']?></div>
                     <div class="clearfloat"></div>
-                    <div id="listing_card_small_profession">Personal Training</div>
+                    <div id="listing_card_small_profession"><?php echo $listingdata[$i]['vService']?></div>
                 </div>
                 <div class="clearfloat"></div>
-                <div id="card_small_img"><a href="profile.html"><img src="images/mr1_small.jpg" width="209" height="163" /></a></div>
+                <div id="card_small_img"><a href="profile.html"><img src="<?php echo $listingdata[$i]['vImage']?>" width="209" height="163" /></a></div>
                 <div id="listing_card_small_price">
                     <div id="listing_card_large_price_small">From</div>
-                    <div id="listing_card_large_price_currency_small">£</div>
-                    <div id="listing_card_large_price_num_small">45</div>
-                    <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
+                    <div id="listing_card_large_price_currency_small"><?echo $listingdata[$i]['vCurrencySymbol']?></div>
+                    <div id="listing_card_large_price_num_small"><?echo $listingdata[$i]['fPrice']?></div>
+                    <?php
+                    if($listingdata[$i]['iUserFavoriteId']=="") {?>
+                        <div class="popup_finish_btn" id="close" title="Add to favourites"><img src="images/favourite.png" width="11" height="11" /></div>
+                    <?php } else { ?>
+                        <div class="popup_finish_btn_fav" id="close" >Its your Favorite</div>
+                    <?php } ?>
                     <div class="clearfloat"></div>
                 </div>
             </div>

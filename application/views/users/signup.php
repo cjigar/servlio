@@ -24,7 +24,7 @@
             var site_url =  '<?= base_url() ?>';
             var site_path =  '<?= APPPATH ?>';
         </script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>js/signup.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){

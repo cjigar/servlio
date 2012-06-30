@@ -295,14 +295,7 @@ class Users extends CI_Controller {
 
     function signout() {
         $this->load->library('session');
-        $signin = array(
-            'vFirstName' => '',
-            'vLastName' => '',
-            'vEmail' => '',
-            'vCompanyName' => '',
-            'vCompanyLogo' => '',
-            'eStatus' => 0
-        );
+        $signin = $this->session->all_userdata();
         $this->session->unset_userdata($signin);
         $this->session->set_flashdata('signout', 'You have been successfully signout !!');
         redirect('/');
@@ -444,11 +437,16 @@ class Users extends CI_Controller {
     }
 
     function edit_service($iCompanyServiceId) {
-        $this->load->model('users_model');
-        $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
+        
         $data['basic'] = $this->users_model->editService($iCompanyServiceId);
+        $data['location'] = $this->users_model->getUserLocations($iUserId);
         $data['basic'] = $data['basic'][0];
+        $template = array(
+            'iUserId' => $iUserId,
+            'iCompanyServiceId' => $iCompanyServiceId
+        );
+        $data['gallery'] = $this->users_model->getTemplates($template);
         $data['categories'] = $this->users_model->getCategories();
         $this->load->view('users/edit_service', $data);
     }
@@ -457,6 +455,7 @@ class Users extends CI_Controller {
 
         $service = array(
             'iUserId' => $this->session->userdata('iUserId'),
+            'iCompanyLocationId' => $this->input->post('iCompanyLocationId', TRUE),
             'iCompanyServiceId' => $this->input->post('iCompanyServiceId', TRUE),
             'iCategoryId' => $this->input->post('iCategoryId', TRUE),
             'iServiceId' => $this->input->post('iServiceId', TRUE),
@@ -464,6 +463,8 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE),
             'fPrice' => $this->input->post('fPrice', TRUE)
         );
+        
+        
         if (isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
             //Image croping;
             $image = $this->file_upload('large_image', $_FILES['vImage']);
@@ -472,6 +473,61 @@ class Users extends CI_Controller {
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldImage', TRUE));
         }
         $update = $this->users_model->updateService($service);
+        
+        
+        //Update Images....
+        if (isset($_FILES['vGalleryImage']['tmp_name']) && !empty($_FILES['vGalleryImage']['tmp_name'])) {
+            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage']);
+            $templates = array(
+                'iTemplateId'=> $this->input->post('iTemplateId',true),
+                'vImage' => $vGalleryImage
+            );
+            $iInsertId = $this->users_model->update_template($templates);
+        }
+        
+        if (isset($_FILES['vGalleryImage1']['tmp_name']) && !empty($_FILES['vGalleryImage1']['tmp_name'])) {
+            $vGalleryImage1 = $this->file_upload('large_image', $_FILES['vGalleryImage1']);
+            $templates = array(
+                'iTemplateId'=> $this->input->post('iTemplateId',true),
+                'vImage' => $vGalleryImage1
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+
+        if (isset($_FILES['vGalleryImage2']['tmp_name']) && !empty($_FILES['vGalleryImage2']['tmp_name'])) {
+            $vGalleryImage2 = $this->file_upload('large_image', $_FILES['vGalleryImage2']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage2
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+
+        if (isset($_FILES['vGalleryImage3']['tmp_name']) && !empty($_FILES['vGalleryImage3']['tmp_name'])) {
+            $vGalleryImage3 = $this->file_upload('large_image', $_FILES['vGalleryImage3']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage3
+            );
+            $iInsertId = $this->users_model->insert_template($templates);
+        }
+
+        if (isset($_FILES['vGalleryImage4']['tmp_name']) && !empty($_FILES['vGalleryImage4']['tmp_name'])) {
+            $vGalleryImage4 = $this->file_upload('large_image', $_FILES['vGalleryImage4']);
+            $templates = array(
+                'iCompanyServiceId' => $iCompanyServiceId,
+                'iUserId' => $iUserId,
+                'eStatus' => '1',
+                'vImage' => $vGalleryImage4
+            );
+            $iInsertId = $this->users_model->update_template($templates);
+        }
+        
+        
         $this->session->set_flashdata('signin', 'Service edited successfully !!');
         redirect('users/account');
         exit;
@@ -560,6 +616,7 @@ class Users extends CI_Controller {
         $services = array(
             'iUserId' => $iUserId,
             'iServiceId' => ($service_id>0)?$service_id:'',
+            'iCompanyLocationId' => $this->input->post('iCompanyLocationId', TRUE),
             'vServiceName' => $this->input->post('vServiceName', TRUE),
             'iCategoryId' => $this->input->post('iCategoryId', TRUE),
             'iCurrencyId' => $this->input->post('iCurrencyId', TRUE),

@@ -1171,7 +1171,7 @@ background-image: -webkit-gradient(
 	font-family:"Arial", Helvetica, sans-serif;
 	font-size:11px;
 	display:block;
-	height:223px;
+	/*height:223px;*/
 	-webkit-border-bottom-right-radius: 5px;
 -webkit-border-bottom-left-radius: 5px;
 -moz-border-radius-bottomright: 5px;
@@ -3931,4 +3931,42 @@ border-radius: 5px;
 	background-repeat:no-repeat;
 	background-position:209px 155px;
 	
+}
+.popup_finish_btn_fav{
+	font-family:"Arial", Helvetica, sans-serif;
+	font-size:11px;
+	float:right;
+	text-align:center;
+	display:block;
+	height:15px;
+	border-radius:4px;
+	-moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+ border-radius: 4px 4px 4px 4px;
+	color:green;	
+	text-decoration:none;
+	padding-top:4px;
+	cursor:pointer;
+	transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+	border:#c1c1c1 1px solid;
+	
+	margin-right:auto;
+	font-weight:bold;
+	background-image: linear-gradient(bottom, #f1f1f1 1%, #FFFFFF 52%);
+background-image: -o-linear-gradient(bottom, #f1f1f1 1%, #FFFFFF 52%);
+background-image: -moz-linear-gradient(bottom, #f1f1f1 1%, #FFFFFF 52%);
+background-image: -webkit-linear-gradient(bottom, #f1f1f1 1%, #FFFFFF 52%);
+background-image: -ms-linear-gradient(bottom, #f1f1f1 1%, #FFFFFF 52%);
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.01, #f1f1f1),
+	color-stop(0.52, #FFFFFF)
+);
+box-shadow: 0px 0px 0px #ddd; 
+	-moz-box-shadow: 0px 0px 0px #ddd; 
+	-webkit-box-shadow: 0px 0px 0px #ddd;  
 }
