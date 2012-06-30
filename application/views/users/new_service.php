@@ -26,16 +26,13 @@
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
-
-                <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
+                <div id="logo"><a href="<?php echo base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
-
-
             </div>  
         </div>
 
         <div id="inner_container" style="width:924px;">
-            <div id="breadcrumb"><a href="account_pro.html">Account</a></div>
+            <div id="breadcrumb"><a href="users/account">Account</a></div>
             <div id="breadcrumb">&rarr;</div> 
             <div id="breadcrumb" style="color:#666">New service</div> 
             <div class="booking_btn_back" id="payb3">
@@ -59,6 +56,19 @@
                             <option value="<?= $val['iCategoryId'] ?>"><?= $val['vCategory'] ?></option>
                         <? } ?>
                     </select>
+                    <div>
+                        
+                          <div id="signup_form_text8">Locations</div>
+                          <select name="iCompanyLocationId" name="iCompanyLocationId">
+                              <?php foreach($location as $row) :?>
+                                <option value="<?php echo $row['iCompanyLocationId']?>">
+                                    <?php echo (isset($row['vCity']) && !empty($row['vCity'])?$row['vCity']:'');?>
+                                    <?php echo (isset($row['vState']) && !empty($row['vState'])?(isset($row['vCity']) && !empty($row['vCity'])?','.$row['vState']:$row['vState']):'');?>
+                                    <?php echo (isset($row['vCountry']) && !empty($row['vCountry'])?(isset($row['vState']) && !empty($row['vState'])?','.$row['vCountry']:$row['vCountry']):'');?>
+                                </option>  
+                              <?php endforeach;?>
+                          </select>
+                    </div>    
                     <div style="display: none;" id="cat_services">
                         <div id="signup_form_text8">Service</div>
                         <div id="signup_form_subtext">If your service is not listed, choose “My service is not listed”.</div>
@@ -70,7 +80,7 @@
 
                         <div id="signup_form_text8">Enter service name</div>
                         <div id="signup_form_subtext">As you type we'll make recommendations — please select one if it's close.</div>
-                        <input onfocus="this.value=''" name="vServiceName" id="vServiceName" class="signup_input_login3" style="margin-top:10px;" placeholder="Service name" type="text">
+                        <input  name="vServiceName" id="vServiceName" class="signup_input_login3" style="margin-top:10px;" placeholder="Service name" type="text">
 
                         <div id="signup_subtitle" style="margin-top:10px;">e.g. 'Personal Training', 'Yoga', or 'Health Club'</div>
                     </div>
@@ -95,7 +105,7 @@
                     <input  type="file" onfocus="this.value=''" name="vGalleryImage4" id="vGalleryImage4" class="signup_file" value="" />
                     <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
                     <div id="signup_form_text8">Description</div>
-                    <textarea class="new_service_input_area" onfocus="this.value=''"  cols="45" rows="5" name="vDescription" id="vDescription" style="width:347px;" ></textarea>
+                    <textarea class="new_service_input_area"  cols="45" rows="5" name="vDescription" id="vDescription" style="width:347px;" ></textarea>
                     <div id="signup_subtitle"><span style="color:#333;">280</span></div>
                     <div id="signup_form_text8">Price</div>
                     <div id="signup_form_currency" style="margin-top:16px;">From:</div> 
