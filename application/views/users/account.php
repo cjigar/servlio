@@ -16,7 +16,7 @@
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
-                <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
+                <div id="logo"><a href=""<?= base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
                 <div id="login" style="margin-right:17px;"><a href="users/signout">Logout</a></div>
                 <div class="clearfloat"></div>
@@ -33,8 +33,9 @@
                     <?php endif; ?>
                 </div>
                 <div class="clearfloat"></div>
-
                 <div id="profile_sepline_left" style="margin-bottom:14px;"></div>
+                <?php  foreach($account as $basic) :?>
+                
                 <div id="listing_card_small_profile">
                     <div id="listing_card_small_details_container">
                         <div id="listing_card_small_name"><a href="users/publish_pro"><?php echo $basic['vCompanyName'] ?></a></div>
@@ -59,8 +60,14 @@
                         <div class="clearfloat"></div>
                     </div>
                 </div>
-                <a href="users/publish_pro" id="listing_card_small_profile_new"></a>
-                <a href="users/publish_pro" id="listing_card_small_profile_new"></a>
+                <?php  endforeach;  ?>
+                <?php $type = $this->session->userdata('eType');  ?>
+                <?php if(count($account)==1):?>
+                <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>
+                <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>
+                <?php elseif(count($account)==2):?>
+                <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>
+                <?php endif ?>
                 <div class="clearfloat"></div>          
             </div>
             <div id="signup_right" style="width:218px;">
