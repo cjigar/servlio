@@ -213,24 +213,23 @@ class Users_model extends CI_Model {
     function getUpgrade($iUserId) {
         
         //make query..  from user,services,location,etc..;
-        /*
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,c.vCountry,c.vCountryCode,st.vState,st.vStateCode,ci.vCity,ci.iCityId FROM users AS u 
+       
+        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.* FROM users AS u 
 	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
 	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
 	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
 	LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
-	LEFT JOIN country AS c ON c.vCountryCode = cl.vCountryCode
-        LEFT JOIN state as st ON st.vStateCode = cl.vStateCode
-	LEFT JOIN city AS ci ON ci.iCityId = cl.iCityId AND ci.vCountryCode = cl.vCountryCode
+	
 	WHERE u.iUserId =  ' . $iUserId;
-        */
+        
+        /*
         $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.vCountry,cl.vCountryCode,cl.vState,cl.vStateCode,cl.vCity,cl.iCityId 
                     FROM company_services AS cs
                     JOIN company_location AS cl ON cs.iCompanyLocationId = cl.iCompanyLocationId AND cl.iUserId = cs.iUserId
                     JOIN users AS u ON cl.iUserId = u.iUserId
                     LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
                     LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
-                    WHERE u.iUserId =  ' . $iUserId;
+                    WHERE u.iUserId =  ' . $iUserId;*/
         $query = $this->db->query($sql_query);
         return $query->result_array();
     }

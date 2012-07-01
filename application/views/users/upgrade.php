@@ -17,7 +17,7 @@
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
-                <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
+                <div id="logo"><a href="<?php echo base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
             </div>  
         </div>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
-                            <a href="profile.html">
+                            <a href="users/profile">
                                 <img src="uploads/<?php echo $basic['vImage']?>" width="209" height="163" />
                             </a>
                     </div>
@@ -94,7 +94,7 @@
                     <div id="account_upgrade_text1"><span style="font-weight:bold; color:#09F;">3</span> services</div>
                     <div id="account_upgrade_text1"><span style="font-weight:bold; color:#09F;">3</span> locations</div>
                     <div id="account_upgrade_text1">Image galleries</div>
-                    <a href="publish_pro.html" class="btn" title="Apply" style="width:166px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:10px;">Upgrade to Pro</a>
+                    <a href="users/publish_pro" class="btn" title="Apply" style="width:166px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:10px;">Upgrade to Pro</a>
                 </div>	     
 
                 <div id="listing_card_large" style="margin-top:20px;">
@@ -113,14 +113,14 @@
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_large_img">
-                        <a href="profile_pro.html">
+                        <a href="users/profile_pro">
                             <img src="uploads/<?php echo $basic['vImage']?>" width="444" height="347" />
                         </a>
                     </div>
                     <div id="card_large_dots_container">
 
                     </div>
-                    <div id="listing_card_large_description"><?php echo $basic['vDescription']?></div>
+                    <div id="listing_card_large_description"><?php echo substr(nl2br($basic['vDescription']),0,200)?></div>
                     <div id="listing_card_large_bottom_container">
                         <div id="listing_card_large_price">From</div>
                         <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol']?></div>
