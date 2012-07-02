@@ -123,7 +123,7 @@
                     <input onfocus="this.value=''" name="vCompanyName" id="vCompanyName" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" type="text" value="<?= (isset($vCompanyName) ? $vCompanyName : "") ?>">
                     <div id="signup_form_text8">Location of headquarters</div>
                     <div id="signup_subtitle">You can add more locations later.</div>
-
+                    <input type="hidden" name="vCountry" id="vCountry" />
                     <?php
                     echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ');
                     ?>

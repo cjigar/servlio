@@ -271,7 +271,7 @@ class Users_model extends CI_Model {
 
     function updateLocation($options = array()) {
         $this->db->where('iUserId', $options['iUserId']);
-        $this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
+        //$this->db->where('iCompanyServiceId', $options['iCompanyServiceId']);
         return $this->db->update('company_location', $options);
     }
     

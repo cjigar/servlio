@@ -156,11 +156,27 @@ class Users extends CI_Controller {
             'vPhone' => $this->input->post('vPhone', TRUE),
         );
         $iUserId = $this->users_model->signup($userdata);
-
+        // Inesrt Locatin
+        $location = array(
+            'iUserId' => $iUserId,
+            'vCountryCode' => $this->input->post('vCountryCode', TRUE),
+            'vCountry' => $this->input->post('vCountry',TRUE),
+            'vStateCode' => '',
+            'vState' => '',
+            'iCityId' => $this->input->post('iCityId', TRUE),
+            'vCity' => $this->input->post('vCity',TRUE),
+        );
+        
+        if ($this->input->post('vCountryCode', TRUE) == 'US') {
+            $location['vStateCode'] = $this->input->post('vStateCode', TRUE);
+            $location['vState'] = $this->input->post('vState', TRUE);
+        }
+        $iCompanyLocationId = $this->users_model->signup_location($location);
         //Insert into  company_services;
         $serviceimage = $this->file_upload('small_image', $_FILES['vImage']);
         $services = array(
             'iUserId' => $iUserId,
+            'iCompanyLocationId' => $iCompanyLocationId,
             'iServiceId' => $this->input->post('iServiceId', TRUE),
             'vServiceName' => $this->input->post('vServiceName', TRUE),
             'iCategoryId' => $this->input->post('iCategoryId', TRUE),
@@ -170,18 +186,7 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE)
         );
         $iCompanyServiceId = $this->users_model->signup_service($services);
-        $location = array(
-            'iUserId' => $iUserId,
-            'iCompanyServiceId' => $iCompanyServiceId,
-            'vCountryCode' => $this->input->post('vCountryCode', TRUE),
-            'vStateCode' => '',
-            'iCityId' => $this->input->post('iCityId', TRUE),
-        );
-        if ($this->input->post('vCountryCode', TRUE) == 'US') {
-            $location['vStateCode'] = $this->input->post('vStateCode', TRUE);
-        }
-
-        $iCompanyLocationId = $this->users_model->signup_location($location);
+        
 
         $signin = array(
             'iUserId' => $iUserId,
@@ -308,10 +313,9 @@ class Users extends CI_Controller {
 
     function settings() {
         $this->load->helper('country');
-        $this->load->model('users_model');
-        $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
         $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        
         $data['basic'] = $data['basic'][0];
         //get Locations
         $data['location'] = $this->users_model->getUserLocations($iUserId);
@@ -429,14 +433,17 @@ class Users extends CI_Controller {
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldCompanyLogo', TRUE));
         }
 
-
         $this->users_model->updateUser($user);
         $location = array(
-            'vCountryCode' => $this->input->post['vCountryCode'],
-            'vStateCode' => $this->input->post['vStateCode'],
-            'iCityId' => $this->input->post['iCityId'],
+            'iCompanyLocationId' => $this->input->post('iCompanyLocationId',true),
+            'vCountryCode' => $this->input->post('vCountryCode',true),
+            'vCountry' =>$this->input->post('vCountry',true), 
+            'vStateCode' => $this->input->post('vStateCode',true),
+            'vState' => $this->input->post('vState',true),
+            'iCityId' => $this->input->post('iCityId',true),
+            'vCity' => $this->input->post('vCity',true),
         );
-        $this->users_model->updateLocation($location);
+        $this->users_model->update_location($location);
         $this->session->set_flashdata('signin', 'Settings updated successfully !!');
         redirect('users/account');
     }

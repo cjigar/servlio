@@ -225,7 +225,7 @@ $(function() {
     });
     
     $("#vCountryCode").change(function(){
-        
+        $("#vCountry").val($("#vCountryCode :selected").text());
         if($(this).val()=='US') {
             $("#vState").fadeIn('fast');
         } else {
