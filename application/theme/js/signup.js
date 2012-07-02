@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    
     $("#frmadd").validate({
         rules:{
             vCompanyName:{
@@ -11,9 +11,9 @@ $(document).ready(function() {
             vState:{
                 required:true
             },
-            /*iCityId:{
-              required:true
-            },*/
+            iCityId:{
+                required:true
+            },
             vCompanyLogo:{
                 required:true
             },
@@ -25,101 +25,70 @@ $(document).ready(function() {
             },
             vImage:{
                 required:true
-            }/*,
+            },
             vDescription:{
                 required:true
-            }*/,
-            iCurrencyId:{
+            },
+            /*iCurrencyId:{
                 required:true
-            },                                
+            },*/                                
             fPrice:{
                 required:true
-            },                                         
+            },
             vEmail:{
                 required:true,
                 email:true
-            },
-            fPrice:{
-                required:true
             }
-        /*,
-            vWebSite:{
-                required:true
-            },
-            vTwitter:{
-                required:true
-            },
-            vPhone:{
-                required:true
-            }*/
+        
         },
-        messages:{
-            vCompanyName:{
-                required:"Please enter company name"
-            },
-            vCountryCode:{
-                required:"Please select country"
-            },
-            vState:{
-                required:"Please select state"
-            },
-            /*iCityId:{
-                required:"Please select city"
-            },*/
-            vCompanyLogo:{
-                required:"Please upload company logo"
-            },
-            iCategoryId:{
-                required:"Please select category"
-            },
-            iServiceId:{
-                required:"Please select service"
-            },
-            vImage:{
-                required:"Please select service image"
-            },
-            vDescription:{
-                required:"Please enter description"
-            },
-            iCurrencyId:{
-                required:"Please select currency"
-            },                                
-            fPrice:{
-                required:"Please enter price"
-            },                                         
-            vEmail:{
-                required:"Please enter email",
-                email:"Please enter proper email"
-            },
-            vWebSite:{
-                required:"Please enter website"
-            },
-            vTwitter:{
-                required:"Please enter your twitter url"
-            },
-            vPhone:{
-                required:"Please enter your phone"
+        
+        showErrors: function(errorMap, errorList) {
+            //console.log(errorList);console.log(errorMap);
+            if (errorList.length < 1) {
+                // clear the error if validation succeeded
+                $('label.err').remove();
+                return;
             }
+            
+            $.each(errorList, function(index, error) {
+                $(error.element).addClass('err');
+                $(error.element).next('label.err').remove();
+            });
         },
-        errorPlacement:function(error, element){
+       
+        errorPlacement:function(error, element) {
             if(element.attr("name") == "vCountry") {
                 $('#country_err').show();
-                error.appendTo("#country_err");
+            //error.appendTo("#country_err");
             }
             if(element.attr("name") == "vState") {
                 $('#state_err').show();
-                error.appendTo("#state_err");
+            //error.appendTo("#state_err");
             }
             if(element.attr("name") == "vCity") {
                 $('#city_err').show();
-                error.appendTo("#city_err");
-                error.css("padding-left","10px");
-            }                                                                
+            //error.appendTo("#city_err");
+            //error.css("padding-left","10px");
+            }                                                            
         }
     });
     $('#sbmtButton').click(function(){
         $("#frmadd").submit();
-    })
+    });
+    
+    $("#vDescription").bind('keyup', function() {
+        var characterLimit = 280;
+        var charactersUsed = $(this).val().length;
+        if(charactersUsed > characterLimit){
+            charactersUsed = characterLimit;
+            $(this).val($(this).val().substr(0,characterLimit));
+            $(this).scrollTop($(this)[0].scrollHeight);
+        }
+        var charactersRemaining = characterLimit - charactersUsed;
+        $("#signup_subtitle > span").html(charactersRemaining);
+    }); 
+    
+    
 });
 
 $(function() {
@@ -199,7 +168,7 @@ $(function() {
     $("#iCategoryId").change(function() {					  
         $.post('users/getService',{
             iCategoryId:$(this).val()
-            },function(res){
+        },function(res){
           
             $("#iServiceId").html(res);
             $('#iServiceId option:first').attr('selected', 'selected');
@@ -216,7 +185,7 @@ $(function() {
     
     
     //Side Template Filling
-    $("#vCompanyName").focusout(function(){
+    $("#vCompanyName").keypress(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_small_name').html('Company name');
         } else {
@@ -225,7 +194,7 @@ $(function() {
     });
     
     $("#vCountryCode").change(function(){
-        
+        $("#vCountry").val($("#vCountryCode :selected").text());
         if($(this).val()=='US') {
             $("#vState").fadeIn('fast');
         } else {
@@ -250,7 +219,7 @@ $(function() {
         }
     });
     
-    $("#vServiceName").focusout(function(){
+    $("#vServiceName").keypress(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_small_profession').html('Services');
         } else {
@@ -267,7 +236,7 @@ $(function() {
         }
     });
     
-    $("#fPrice").focusout(function(){
+    $("#fPrice").keypress(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_large_price_num_small').html('0');
         } else {
@@ -275,7 +244,7 @@ $(function() {
         }
     });
     
-    /*
+/*
     $('#vImage').uploadify({
         'swf':site_url+"js/uploadify/uploadify.swf",
         'uploader':site_url+"/users/uploadfile",

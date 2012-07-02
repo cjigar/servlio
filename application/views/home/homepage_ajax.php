@@ -48,9 +48,7 @@
                         $image_slide = $listingdata[$i]['image_data']; 
                         for($j=0;$j<count($image_slide);$j++) {
                         ?>
-                          <div class="glidecontent glidecontent<?echo $i?>">
-                            <img  src="https://encrypted-tbn0.google.com/images?q=tbn:ANd9GcQeGQYrG8U5NwsoOOr_ztCcAqTy37AJyi4BMf_dJp9_su4xsUIg"/>
-                          </div>
+                          
                           <div class="glidecontent glidecontent<?echo $i?>">
                             <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
                           </div>
@@ -66,9 +64,6 @@
                           <div class="glidecontent glidecontent<?echo $i?>">
                             <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
                           </div>
-                          <div class="glidecontent glidecontent<?echo $i?>">
-                            <img  src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
-                          </div>                                                                                                        
                           
                         <?php } ?>
                   </div>                
