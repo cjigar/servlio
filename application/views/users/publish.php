@@ -74,8 +74,8 @@
                     <div id="signup_form_text6">Create your Basic account</div>
                     <div id="signup_form_subtext" style="font-size:14px; color:#444;">Before publishing your listing, you'll need to create an account. Once created, you can update your listing and manage account settings at any time.</div>
                     <div id="signup_form_text6"></div>
-                    <input  type="text"  onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Password" />
-                    <input  type="text" onmfocus="this.value=''" name="vConfPassword" id="vConfPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
+                    <input  type="password"  onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Password" />
+                    <input  type="password" onmfocus="this.value=''" name="vConfPassword" id="vConfPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
                     <div id="signup_subtitle" style="margin-top:20px;">When you click Create account &amp; Publish you'll be agreeing to our <a href="#">User Agreement</a>.</div>
                     <a href="javascript:;" class="btn" id="login_btn" title="Apply" style="width:199px;font-size:15px; height:28px; padding-top:2px; margin-top:0px; margin-left:0px;">Create account & Publish</a>
                     <div class="clearfloat"></div>

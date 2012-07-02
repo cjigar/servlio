@@ -32,7 +32,7 @@
 
         <div id="inner_container" style="width:924px;">
             <div id="inner_container" style="width:924px;">
-                <div id="breadcrumb"><a href="uesrs/account">Account</a></div>
+                <div id="breadcrumb"><a href="users/account">Account</a></div>
                 <div id="breadcrumb">&rarr;</div> 
                 <div id="breadcrumb" style="color:#666">Settings</div> 
                 <div class="booking_btn_back" id="payb3">
@@ -44,9 +44,10 @@
                         <input  type="text" value="<?php echo $basic['vCompanyName'] ?>" name="vCompanyName" id="vCompanyName"  class="signup_input_login3"  placeholder="Company name" style="width:450px; margin-top:15px;" />
                         <div id="signup_form_text8">Location of headquarters</div>
                         <div id="signup_subtitle">You can add more locations later.</div>
-                        <?php
-                        echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
-                        ?>
+                        
+                        <input type="hidden" name="iCompanyLocationId" id="iCompanyLocationId" value="<?php echo $basic['iCompanyLocationId'] ?>" />
+                        <input type="hidden" name="vCountry" id="vCountry" value="<?php echo $basic['vCountry'] ?>" />
+                        <?php echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);?>
                         <input  type="text"  name="vState" id="vState" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none;' : '' ?>" placeholder="State" />
                         <input type ="hidden" name="vStateCode" id="vStateCode" value="<?php echo $basic['vStateCode'] ?>" />
                         <input  type="text"  name="vCity" id="vCity" value="<?php echo $basic['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
@@ -76,9 +77,9 @@
                         <div id="signup_form_text6" style="margin-top:40px;">Account details</div>
                         <input  type="text" name="vEmail" readonly id="vEmail" value="<?php echo $basic['vEmail'] ?>" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Email" />
                         <div class="clearfloat"></div>
-                        <input  type="text" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
+                        <input  type="password" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
                         <div class="clearfloat"></div>
-                        <input  type="text" onfocus="this.value=''" name="vRetPassword" id="vRetPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
+                        <input  type="password" onfocus="this.value=''" name="vRetPassword" id="vRetPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
                         <div class="clearfloat"></div>
                         <div id="signup_form_text6" style="margin-top:40px;">Contact details</div>
                         <input  type="text"  name="vWebSite" id="vWebSite" value="<?php echo $basic['vWebSite'] ?>" class="signup_input_login3" style="width:450px; margin-top:10px;" placeholder="Website URL" />

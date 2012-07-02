@@ -16,8 +16,12 @@
         <script src="<?php echo base_url(); ?>js/uploadify/jquery.uploadify-3.1.min.js"></script>
         <link href="<?php echo base_url(); ?>js/uploadify/uploadify.css" rel="stylesheet" />
         <style>
-            .err{
-                color: #FF0000;
+            .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                box-shadow: 0 0 5px white, inset 0px 1px 2px #666;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
         <script>
@@ -123,9 +127,9 @@
                     <input onfocus="this.value=''" name="vCompanyName" id="vCompanyName" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" type="text" value="<?= (isset($vCompanyName) ? $vCompanyName : "") ?>">
                     <div id="signup_form_text8">Location of headquarters</div>
                     <div id="signup_subtitle">You can add more locations later.</div>
-
+                    <input type="hidden" name="vCountry" id="vCountry" />
                     <?php
-                    echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ');
+                    echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ');
                     ?>
                     <div id="state_id" style="diplay:none;">
                         <input onfocus="this.value=''" name="vState" id="vState" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="State" type="text">
@@ -253,21 +257,16 @@
                             <div id="listing_card_small_profession">Service</div>
                         </div>
                         <div class="clearfloat"></div>
-                        <div id="card_small_img"><img src="images/default_image.jpg" height="163" width="209"></div>
+                        <div id="service_card_image_loader"></div>
                         <div id="listing_card_small_price">
                             <div id="listing_card_large_price_small">From</div>
                             <div id="listing_card_large_price_currency_small">£</div>
                             <div id="listing_card_large_price_num_small">0</div>
-
                             <div class="clearfloat"></div>
                         </div>
-
-
                         <div class="clearfloat"></div>		
                     </div>
                     <div class="clearfloat"></div>
-
-
                 </div>
             </div>
         </div>

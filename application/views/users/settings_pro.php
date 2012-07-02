@@ -246,9 +246,9 @@
 
                     <input  type="text" name="vEmail" id="vEmail" value="<?php echo $basic['vEmail'] ?>" class="signup_input_login3" style="width:450px; margin-top:30px;" placeholder="Email" />
                     <div class="clearfloat"></div>
-                    <input  type="text" onfocus="this.value=''" name="vPassword" id="vPasswrod" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
+                    <input  type="password" onfocus="this.value=''" name="vPassword" id="vPasswrod" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
                     <div class="clearfloat"></div>
-                    <input  type="text" onfocus="this.value=''" name="vRetPassword" id="vRetPassword"  class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
+                    <input  type="password" onfocus="this.value=''" name="vRetPassword" id="vRetPassword"  class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
                     <div class="clearfloat"></div>
 
                     <div id="signup_form_text6" style="margin-top:40px;">Contact details</div>
