@@ -6,6 +6,16 @@ class Users extends CI_Controller {
         parent::__construct();
         $this->load->model('users_model');
         $this->load->library('session');
+        $iUserId = $this->session->userdata('iUserId');
+        $fun = $this->uri->segment(2);
+        /*
+        $except = array('index', 'login', 'forget');
+        if (!in_array($fun, $except)) {
+            if (!$iUserId) {
+                redirect('/');
+                exit;
+            }
+        }*/
     }
 
     public function index() {
@@ -52,7 +62,7 @@ class Users extends CI_Controller {
         $users = $this->users_model->isValiduser($check);
         //print_R($users);exit;
         //Add UserId in Session;       
-        $this->load->library('session');
+
         if (count($users) > 0) {
             $signin = array(
                 'iUserId' => $users[0]['iUserId'],
@@ -160,13 +170,13 @@ class Users extends CI_Controller {
         $location = array(
             'iUserId' => $iUserId,
             'vCountryCode' => $this->input->post('vCountryCode', TRUE),
-            'vCountry' => $this->input->post('vCountry',TRUE),
+            'vCountry' => $this->input->post('vCountry', TRUE),
             'vStateCode' => '',
             'vState' => '',
             'iCityId' => $this->input->post('iCityId', TRUE),
-            'vCity' => $this->input->post('vCity',TRUE),
+            'vCity' => $this->input->post('vCity', TRUE),
         );
-        
+
         if ($this->input->post('vCountryCode', TRUE) == 'US') {
             $location['vStateCode'] = $this->input->post('vStateCode', TRUE);
             $location['vState'] = $this->input->post('vState', TRUE);
@@ -186,7 +196,7 @@ class Users extends CI_Controller {
             'vDescription' => $this->input->post('vDescription', TRUE)
         );
         $iCompanyServiceId = $this->users_model->signup_service($services);
-        
+
 
         $signin = array(
             'iUserId' => $iUserId,
@@ -315,7 +325,7 @@ class Users extends CI_Controller {
         $this->load->helper('country');
         $iUserId = $this->session->userdata('iUserId');
         $data['basic'] = $this->users_model->getUpgrade($iUserId);
-        
+
         $data['basic'] = $data['basic'][0];
         //get Locations
         $data['location'] = $this->users_model->getUserLocations($iUserId);
@@ -435,13 +445,13 @@ class Users extends CI_Controller {
 
         $this->users_model->updateUser($user);
         $location = array(
-            'iCompanyLocationId' => $this->input->post('iCompanyLocationId',true),
-            'vCountryCode' => $this->input->post('vCountryCode',true),
-            'vCountry' =>$this->input->post('vCountry',true), 
-            'vStateCode' => $this->input->post('vStateCode',true),
-            'vState' => $this->input->post('vState',true),
-            'iCityId' => $this->input->post('iCityId',true),
-            'vCity' => $this->input->post('vCity',true),
+            'iCompanyLocationId' => $this->input->post('iCompanyLocationId', true),
+            'vCountryCode' => $this->input->post('vCountryCode', true),
+            'vCountry' => $this->input->post('vCountry', true),
+            'vStateCode' => $this->input->post('vStateCode', true),
+            'vState' => $this->input->post('vState', true),
+            'iCityId' => $this->input->post('iCityId', true),
+            'vCity' => $this->input->post('vCity', true),
         );
         $this->users_model->update_location($location);
         $this->session->set_flashdata('signin', 'Settings updated successfully !!');

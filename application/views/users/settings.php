@@ -77,9 +77,9 @@
                         <div id="signup_form_text6" style="margin-top:40px;">Account details</div>
                         <input  type="text" name="vEmail" readonly id="vEmail" value="<?php echo $basic['vEmail'] ?>" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Email" />
                         <div class="clearfloat"></div>
-                        <input  type="text" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
+                        <input  type="password" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
                         <div class="clearfloat"></div>
-                        <input  type="text" onfocus="this.value=''" name="vRetPassword" id="vRetPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
+                        <input  type="password" onfocus="this.value=''" name="vRetPassword" id="vRetPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
                         <div class="clearfloat"></div>
                         <div id="signup_form_text6" style="margin-top:40px;">Contact details</div>
                         <input  type="text"  name="vWebSite" id="vWebSite" value="<?php echo $basic['vWebSite'] ?>" class="signup_input_login3" style="width:450px; margin-top:10px;" placeholder="Website URL" />

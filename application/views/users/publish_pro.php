@@ -52,8 +52,8 @@
 
                     <div id="signup_form_subtext" style="font-size:14px; color:#444;">Before publishing your listing, you'll need to create an account. Once created, you can update your listing and manage account settings at any time.</div>
                     <div id="signup_form_text6"></div>
-                    <input  type="text" onfocus="this.value=''" name="vPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Password" />
-                    <input  type="text" onfocus="this.value=''" name="vRetPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Retype password" />
+                    <input  type="password" onfocus="this.value=''" name="vPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Password" />
+                    <input  type="password" onfocus="this.value=''" name="vRetPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Retype password" />
                     <div id="signup_form_text6" style="margin-top:40px;">Enter payment details</div>
                     <div id="card_bg">
                         <input  type="text" value="4242424242424242" name="cardnumber" id="cardnumber" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Card number" />
