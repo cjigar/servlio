@@ -689,6 +689,32 @@ class Users extends CI_Controller {
 
                 $this->session->set_userdata('eType', 'Pro');
                 //Mail to member...
+                
+                $this->load->library('email');
+                $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
+                $this->email->to('root.nodes@gmail.com');
+                $this->email->subject('Welcome to Servlio!');
+                $data['vCompanyName'] = $this->session->userdata('vCompanyName');
+                $msg = $this->load->view('email/email_pro_signup', $data, TRUE);
+                $this->email->message($msg);
+                $this->email->send();
+                
+                
+                $userinfo = $this->users_model->getUsersInfo($this->session->userdata('iUserId'));
+                
+                $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
+                $this->email->to('root.nodes@gmail.com');
+                $this->email->subject('Servlio monthly invoice');
+                $data['vCompanyName'] = $this->session->userdata('vCompanyName');
+                $data['userinfo'] = $userinfo;
+                $data['billingdate'] = date('M j, Y');
+                $newdate = strtotime(date("Y-m-d", strtotime($todayDate)) . "+1 month");
+                $data['aftermonth'] = date('M j, Y',$newdate);
+                $data['userinfo'] = $userinfo[0];
+                $msg = $this->load->view('email/email_pro_signup', $data, TRUE);
+                $this->email->message($msg);
+                $this->email->send();
+                
 
                 $this->session->set_flashdata('signin', 'Your payment have been done successfuly !!');
                 redirect('users/account');

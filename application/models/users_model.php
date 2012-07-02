@@ -320,4 +320,10 @@ class Users_model extends CI_Model {
         $res = $this->db->get('payment');
         return $res->result_array();
     }
+    
+    function getUsersInfo($iUserId = ''){
+        $sql_query = 'SELECT u.*,cl.vCountry,cl.vState,cl.vCity FROM users AS u LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId where u.iUserId = "'.$iUserId.'" GROUP BY cl.iUserId';
+        $query = $this->db->query($sql_query);
+        return $query->result_array();
+    }
 }
