@@ -118,6 +118,7 @@ class Users_model extends CI_Model {
         $this->db->where('vCountryCode', $options['vCountryCode'], 'after');
         $this->db->group_by('vCity');
         $query = $this->db->get('city');
+        //$this->db->last_query();
         $items = array();
         foreach ($query->result_array() as $row) {
             $items[$row['iCityId']] = $row['vCity'];
@@ -375,5 +376,11 @@ class Users_model extends CI_Model {
         $this->db->limit(10);
         $res = $this->db->get('payment');
         return $res->result_array();
+    }
+    
+    function getUsersInfo($iUserId = ''){
+        $sql_query = 'SELECT u.*,cl.vCountry,cl.vState,cl.vCity FROM users AS u LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId where u.iUserId = "'.$iUserId.'" GROUP BY cl.iUserId';
+        $query = $this->db->query($sql_query);
+        return $query->result_array();
     }
 }

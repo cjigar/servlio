@@ -27,7 +27,7 @@
                                 <tr>
                                 		
                                         <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; vertical-align:top;padding-top:20px; line-height:22px;">
-                                      Hi Area 20, <br><br>
+                                      Hi <?php echo $data['vCompanyName']?>, <br><br>
                                       Welcome to Servlio and thanks for choosing a Pro account! You can sign into your account using the link below:
                                         </td>
                                 </tr>

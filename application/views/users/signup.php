@@ -19,7 +19,6 @@
             .err {
                 border: 1px red solid  !important;
                 background-color: #FFD3D5;
-                box-shadow: 0 0 5px white, inset 0px 1px 2px #666;
                 -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
                 -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
@@ -148,7 +147,7 @@
 
                     <div id="signup_sepline2"></div>
 
-                    <div id="signup_form_text8" style="margin-top:20px;">Company logo</div>
+                    <div id="signup_form_text8" style="margin-top:20px;" class="vCompanyLogo">Company logo</div>
                     <input onfocus="this.value=''" name="vCompanyLogo" id="vCompanyLogo" class="signup_file" value="" type="file">
                     <div id="signup_subtitle">Gif, jpg, or png. We’ll resize what you have.</div>
 
@@ -186,7 +185,7 @@
                             <div id="signup_subtitle" style="margin-top:10px;">e.g. 'Personal Training', 'Yoga', or 'Health Club'</div>
                         </div>
 
-                        <div id="signup_form_text8">Image</div>
+                        <div id="signup_form_text8" class="image">Image</div>
                         <div id="signup_form_subtext">Upload an image that best represents this service. You can always change it after your listing has been created.</div>
                         <input onfocus="this.value=''" name="vImage" id="vImage" class="signup_file" value="" type="file"  />
                         <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>

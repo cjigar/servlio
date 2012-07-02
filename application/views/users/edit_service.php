@@ -15,8 +15,11 @@
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/edit_service.js"></script>
         <style>
-            .err{
-                color: #FF0000;
+            .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
 
@@ -49,18 +52,7 @@
                                 <option value="<?= $val['iCategoryId'] ?>" <?php echo ($val['iCategoryId'] == $basic['iCategoryId']) ? 'selected' : '' ?>><?= $val['vCategory'] ?></option>
                             <? } ?>
                         </select>
-                        <div>
-                            <div id="signup_form_text8">Locations</div>
-                            <select name="iCompanyLocationId" name="iCompanyLocationId">
-                                <?php foreach ($location as $row) : ?>
-                                    <option <?php echo ($row['iCompanyLocationId'] == $basic['iCompanyLocationId']) ? 'selected="selected"' : '' ?> value="<?php echo $row['iCompanyLocationId'] ?>">
-                                        <?php echo (isset($row['vCity']) && !empty($row['vCity']) ? $row['vCity'] : ''); ?>
-                                        <?php echo (isset($row['vState']) && !empty($row['vState']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vState'] : $row['vState']) : ''); ?>
-                                        <?php echo (isset($row['vCountry']) && !empty($row['vCountry']) ? (isset($row['vState']) && !empty($row['vState']) ? ',' . $row['vCountry'] : $row['vCountry']) : ''); ?>
-                                    </option>  
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                        
                         <div id="cat_services">
                             <div id="signup_form_text8">Service</div>
                             <div id="signup_form_subtext">If your service is not listed, choose “My service is not listed”.</div>
@@ -68,8 +60,16 @@
 
                             </select>
                         </div>
+                        <div style="margin-top:30px;" id="signup_form_text8">Location</div>
+                        <select name="iCompanyLocationId" name="iCompanyLocationId" class="list" style="margin-left:0px; margin-top:10px; width:250px;">
+                                <?php foreach ($location as $row) : ?>
+                                    <option <?php echo ($row['iCompanyLocationId'] == $basic['iCompanyLocationId']) ? 'selected="selected"' : '' ?> value="<?php echo $row['iCompanyLocationId'] ?>">
+                                        <?php echo (isset($row['vCity']) && !empty($row['vCity']) ? $row['vCity'] : ''); ?><?php echo (isset($row['vState']) && !empty($row['vState']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vState'] : $row['vState']) : ''); ?><?php echo (isset($row['vCountry']) && !empty($row['vCountry']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vCountry'] : $row['vCountry']) : ''); ?>
+                                    </option>  
+                                <?php endforeach; ?>
+                            </select>
+                        
                         <div id="not_listed" style="<?php echo ($basic['iServiceId'] > 0) ? 'display:none' : '' ?>">
-
                             <div id="signup_form_text8">Enter service name</div>
                             <div id="signup_form_subtext">As you type we'll make recommendations — please select one if it's close.</div>
                             <input  type="text"  name="vServiceName" id="vServiceName" value="<?php echo $basic['vServiceName'] ?>" class="signup_input_login3" style="margin-top:10px;" placeholder="Service name" />
@@ -82,7 +82,7 @@
                         <div id="update_images"><img src="uploads/<?php echo $basic['vImage'] ?>" style="width:120px;height:93px;"/></div>
                         <div class="clearfloat"></div>
                         <input  type="file" onfocus="this.value=''" name="vImage" class="signup_file" value="" />
-                        <input type="hidden" name="vOldImage" value="<?php echo $basic['vImage'] ?>" />
+                        <input type="hidden" name="vOldImage" id="vOldImage"  value="<?php echo $basic['vImage'] ?>" />
                         <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
 
                         
@@ -95,28 +95,30 @@
                             
                             <input type="hidden" name="iTemplateId" value="<?php echo $gallery[0]['iTemplateId']?>" />
                             <input type="hidden" name="vOldGalleryImage" value="<?php echo $gallery[0]['vImage']?>" />
-                            <?php if(file_exists(APPPATH.'theme/uploads/'.$gallery[0]['vImage'])) :?>
+                            <?php 
+                            
+                            if(is_file(APPPATH.'theme/uploads/'.$gallery[0]['vImage'])) :?>
                             <div id="update_images"><img src="uploads/<?php echo $gallery[0]['vImage'] ?>" style="width:120px;height:93px;"/></div>
                             <?php endif;?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage" id="vGalleryImage" class="signup_file" value="" />
                             
                             <input type="hidden" name="iTemplateId1" value="<?php echo $gallery[1]['iTemplateId']?>" />
                             <input type="hidden" name="vOldGalleryImage1" value="<?php echo $gallery[1]['vImage']?>" />
-                            <?php if(file_exists(APPPATH.'theme/uploads/'.$gallery[1]['vImage'])) :?>
+                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[1]['vImage'])) :?>
                             <div id="update_images"><img src="uploads/<?php echo $gallery[1]['vImage'] ?>" style="width:120px;height:93px;"/></div>
                             <?php endif;?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage1" id="vGalleryImage1" class="signup_file" value="" />
 
                             <input type="hidden" name="iTemplateId2" value="<?php echo $gallery[2]['iTemplateId']?>" />
                             <input type="hidden" name="vOldGalleryImage2" value="<?php echo $gallery[2]['vImage']?>" />
-                            <?php if(file_exists(APPPATH.'theme/uploads/'.$gallery[2]['vImage'])) :?>
+                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[2]['vImage'])) :?>
                             <div id="update_images"><img src="uploads/<?php echo $gallery[2]['vImage'] ?>" style="width:120px;height:93px;"/></div>
                             <?php endif;?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage2" id="vGalleryImage2" class="signup_file" value="" />
 
                             <input type="hidden" name="iTemplateId3" value="<?php echo $gallery[3]['iTemplateId']?>" />
                             <input type="hidden" name="vOldGalleryImage3" value="<?php echo $gallery[3]['vImage']?>" />
-                            <?php if(file_exists(APPPATH.'theme/uploads/'.$gallery[3]['vImage'])) :?>
+                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[3]['vImage'])) :?>
                             <div id="update_images"><img src="uploads/<?php echo $gallery[3]['vImage'] ?>" style="width:120px;height:93px;"/></div>
                             <?php endif;?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage3" id="vGalleryImage3" class="signup_file" value="" />
@@ -124,7 +126,7 @@
                             <input type="hidden" name="iTemplateId4" value="<?php echo $gallery[4]['iTemplateId']?>" />
                             <input type="hidden" name="vOldGalleryImage4" value="<?php echo $gallery[4]['vImage']?>" />
                             
-                            <?php if(file_exists(APPPATH.'theme/uploads/'.$gallery[4]['vImage'])) :?>
+                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[4]['vImage'])) :?>
                             <div id="update_images"><img src="uploads/<?php echo $gallery[4]['vImage'] ?>" style="width:120px;height:93px;"/></div>
                             <?php endif;?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage4" id="vGalleryImage4" class="signup_file" value="" />
@@ -181,9 +183,7 @@
             <?php else : ?>
                 <div id="signup_right" style="width:450px;">
                     <div id="large_list_bg" style="margin-top:38px;">
-
                         <div id="upgrade_header2">Your listing card</div>
-
                         <div id="listing_card_large" style="margin-top:0px; margin-bottom:0px;">
                             <div id="listing_card_large_details_container">
                                 <div id="listing_card_large_name"><?php echo $basic['vCompanyName'] ?></div>
@@ -203,7 +203,7 @@
                             <div id="listing_card_large_description"></div>
                             <div id="listing_card_large_bottom_container">
                                 <div id="listing_card_large_price">From</div>
-                                <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol'] ?></div>
+                                <div id="listing_card_large_price_currency"><?php echo $basic['vCurrencySymbol'] ?></div>
                                 <div id="listing_card_large_price_num"><?php echo $basic['fPrice'] ?></div>
                                 <div class="clearfloat"></div>
                             </div>
