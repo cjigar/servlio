@@ -266,7 +266,7 @@
 
                     <a href="javascript:;" class="btn" id="sbmtButton" title="Apply" style="width:75px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:0px;">Update</a>
                     <div class="clearfloat"></div>
-                    <div id="cancel_account"><a href="index.html">Cancel your Fitlister account</a> &#8212; No undo. All account info will be permanently deleted.</div>
+                    <div id="cancel_account"><a href="users/cancelaccount">Cancel your Fitlister account</a> &#8212; No undo. All account info will be permanently deleted.</div>
                     <div id="logo_icon_text">© 2012 Area 20 Technology Ltd. All screenshots are owned by their respective owners.</div>
                 </div>
                 <div class="clearfloat"></div>

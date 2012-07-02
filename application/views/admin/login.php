@@ -46,7 +46,7 @@
     </head>
 
     <body>
-        <div id="login_logo" style="margin-top:40px;"><a href="index.html"><img src="images/login_logo.png"></a></div>
+        <div id="login_logo" style="margin-top:40px;"><a href="<?php echo base_url()?>"><img src="images/login_logo.png"></a></div>
         <div id="invite_top_header">Admin Login</div>
         <div id="left_side_interface_login">
 

@@ -51,8 +51,8 @@ class Home_model extends CI_Model {
        
         } else {
           $this->db->start_cache();
-
-            if($this->uri->segments[2]=="") {
+#print_r($this->uri->segments);exit;
+            if($this->uri->segments[3]=="") {
               if($iUserId=="") {
                   $ip = $_SERVER["REMOTE_ADDR"];
                   $this->db->select('uf.iUserFavoriteId');
@@ -66,7 +66,7 @@ class Home_model extends CI_Model {
             } else {
                   $this->db->select('uf.iUserFavoriteId');
                   $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.iUserId = "'.$this->uri->segments[2].'"', 'left');
-                  $this->db->where('uf.iUserId',$this->uri->segments[2]);            
+                  $this->db->where('uf.iUserId',$this->uri->segments[3]);            
             }
                       
           if($_REQUEST['search_text']!="") {  
@@ -101,7 +101,7 @@ class Home_model extends CI_Model {
                 
         $this->db->select('count(u.iUserId) as tot');
         $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
-        $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
+        $this->db->join('company_location as cl', 'cl.iCompanyLocationId = cs.iCompanyLocationId', 'left');
         $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
         $this->db->join('templates as tem', 'tem.iCompanyServiceId = cs.iCompanyServiceId AND cs.iUserId = u.iUserId', 'left');
         $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');        
@@ -129,7 +129,7 @@ class Home_model extends CI_Model {
         //make query..  from user,services,location,etc..;
         $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
         cs.*,
-        cl.vCountry,cl.vState,cl.vCity,
+        cl.*,
         GROUP_CONCAT(tem.vImage) as image_group');
         $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
         $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');

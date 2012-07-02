@@ -84,21 +84,21 @@ class Users extends CI_Controller {
     function profile() {
         //Add UserId in Session;       
 
-        $iUserId = $this->session->userdata('iUserId');
+        $iCompanyServiceId = $this->uri->segments[3];
 
         $this->load->model('users_model');
-        $data = $this->users_model->getUpgrade($iUserId);
-        $data['udetail'] = $data[0];
+        $data = $this->users_model->getUpgrade($iCompanyServiceId);
+        
         $this->load->view('users/profile', $data);
     }
 
     function profile_pro() {
 
-        $iUserId = $this->session->userdata('iUserId');
+        $iCompanyServiceId = $this->uri->segments[3];
 
         $this->load->model('users_model');
-        $data = $this->users_model->getUpgrade($iUserId);
-        $data['udetail'] = $data[0];
+        $data = $this->users_model->getUpgrade($iCompanyServiceId,"Pro");
+        #print_r($data);
         $this->load->view('users/profile_pro', $data);
     }
 
@@ -794,6 +794,9 @@ class Users extends CI_Controller {
         $this->session->set_flashdata('signin', 'Your Service Added Successfully !!');
         redirect('users/account');
         exit;
+    }
+    function cancelaccount() {
+        echo "Under construction";exit;
     }
 
 }

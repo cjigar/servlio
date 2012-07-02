@@ -18,7 +18,14 @@
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
                 <div id="logo"><a href=""<?= base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
-                <div id="login" style="margin-right:17px;"><a href="users/signout">Logout</a></div>
+                <?php $login = $this->session->userdata('iUserId');?>
+                <?php if(empty($login)) :?>
+                <a href="users/signup" class="btn" title="Apply" style="width:95px; float:right; font-size:15px; height:28px; padding-top:2px; margin-top:2px; margin-left:0px;">Get Listed</a>
+                <div id="login" style="margin-right:17px;"><a href="users/login">Login</a></div>
+                <?php else :?>
+                <div style="margin-right:17px;float:right;" id="login"><a href="users/signout">Logout</a></div>                
+                <div style="margin-right:17px;" id="login"><a href="users/account">My account</a></div>
+                <?php endif; ?>
                 <div class="clearfloat"></div>
             </div>  
         </div>

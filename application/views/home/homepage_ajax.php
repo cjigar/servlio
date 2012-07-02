@@ -27,40 +27,27 @@
           ?>
             <div id="listing_card_large">
                 <div id="listing_card_large_details_container">
-                    <div id="listing_card_large_name"><a href="profile_pro.html"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
+                    <div id="listing_card_large_name"><a href="users/profile_pro/<?=$listingdata[$i]['iCompanyServiceId']?>"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
                     <div class="clearfloat"></div>
                     <div id="listing_card_large_location" >
-                    <?php echo $listingdata[$i]['vCity']?>
+                    <a href="<?=base_url()?>?city=<?echo $listingdata[$i]['iCityId']?>"><?php echo $listingdata[$i]['vCity']?></a>
                     </div>
                     <div id="listing_card_large_location3">,</div>
-                    <div id="listing_card_large_location2"><?php echo $listingdata[$i]['vCountry']?></div>
+                    <div id="listing_card_large_location2"><a href="<?=base_url()?>?country=<?echo $listingdata[$i]['vCountryCode']?>"><?php echo $listingdata[$i]['vCountry']?></a></div>
                     <div class="clearfloat"></div>
                     <div id="listing_card_large_profession" ><?php echo $listingdata[$i]['vService']?></div>
                     <div class="clearfloat"></div>
                 </div>
-                <div id="listing_card_large_logo" ><a href="profile_pro.html">
+                <div id="listing_card_large_logo" ><a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>">
                     <img src="<?php echo $listingdata[$i]['vCompanyLogo']?>" />
                 </a></div>
                 <div class="clearfloat"></div>
-                <div id="card_large_img"><a href="profile_pro.html">
+                <div id="card_large_img"><a href="users/profile_pro/<?=$listingdata[$i]['iCompanyServiceId']?>">
                   <div id="slider-<?echo $i?>" class="glidecontentwrapper module" >
                         <?php
                         $image_slide = $listingdata[$i]['image_data']; 
                         for($j=0;$j<count($image_slide);$j++) {
                         ?>
-                          
-                          <div class="glidecontent glidecontent<?echo $i?>">
-                            <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
-                          </div>
-                          <div class="glidecontent glidecontent<?echo $i?>">
-                            <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
-                          </div>                                                    
-                          <div class="glidecontent glidecontent<?echo $i?>">
-                            <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
-                          </div>
-                          <div class="glidecontent glidecontent<?echo $i?>">
-                            <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
-                          </div>
                           <div class="glidecontent glidecontent<?echo $i?>">
                             <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
                           </div>
@@ -116,7 +103,7 @@
           ?>
             <div id="listing_card_small">
                 <div id="listing_card_small_details_container">
-                    <div id="listing_card_small_name"><a href="profile.html"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
+                    <div id="listing_card_small_name"><a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
                     <div class="clearfloat"></div>
                     <div id="listing_card_small_location" ><?php echo $listingdata[$i]['vCity']?></div>
                     <div id="listing_card_small_location3" >,</div>
@@ -125,7 +112,7 @@
                     <div id="listing_card_small_profession"><?php echo $listingdata[$i]['vService']?></div>
                 </div>
                 <div class="clearfloat"></div>
-                <div id="card_small_img"><a href="profile.html"><img src="<?php echo $listingdata[$i]['vImage']?>" width="209" height="163" /></a></div>
+                <div id="card_small_img"><a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>"><img src="<?php echo $listingdata[$i]['vImage']?>" width="209" height="163" /></a></div>
                 <div id="listing_card_small_price">
                     <div id="listing_card_large_price_small">From</div>
                     <div id="listing_card_large_price_currency_small"><?echo $listingdata[$i]['vCurrencySymbol']?></div>

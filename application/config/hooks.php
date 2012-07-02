@@ -14,3 +14,10 @@
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
+
+$hook['post_controller_constructor'] = array(
+                                'class'    => 'commonclass',
+                                'function' => 'index',
+                                'filename' => 'before.php',
+                                'filepath' => 'hooks'
+                                );

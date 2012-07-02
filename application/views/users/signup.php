@@ -103,7 +103,7 @@
 
         <div style="height:79px;" id="inner_container">
             <div style="margin-top:-7px; position:fixed;" class="create_account_pop">
-                <div id="logo"><a href="index.html"><img src="images/logo.png" alt="Servlio"></a></div>
+                <div id="logo"><a href="<?php echo base_url()?>"><img src="images/logo.png" alt="Servlio"></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
             </div>  
         </div>

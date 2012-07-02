@@ -23,7 +23,7 @@ class Home extends CI_Controller {
 
         
         if($this->uri->segments[2]=="" && $this->session->userdata('iUserId')=="") {
-            header("location:".base_url());
+          header("location:".base_url());
         } 
         $this->load->model('home_model');
          
@@ -58,7 +58,7 @@ class Home extends CI_Controller {
     }
     function homepage_ajax() {
         $this->load->model('home_model');
-        $data = $this->home_model->homepagelisting("favorite");
+        $data = $this->home_model->homepagelisting();
         if($data['total_rows']==0) {
             echo "0";exit;
         }

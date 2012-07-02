@@ -210,28 +210,84 @@ class Users_model extends CI_Model {
         return $query->num_rows;
     }
 
-    function getUpgrade($iUserId) {
+    function getUpgrade($iCompanyServiceId,$type="") {
         
         //make query..  from user,services,location,etc..;
        
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.* FROM users AS u 
+        /*$sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.* FROM users AS u 
 	LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
 	LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
 	LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
 	LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
 	
-	WHERE u.iUserId =  ' . $iUserId;
+	WHERE u.iUserId =  ' . $iUserId;*/
         
-        /*
-        $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.vCountry,cl.vCountryCode,cl.vState,cl.vStateCode,cl.vCity,cl.iCityId 
-                    FROM company_services AS cs
-                    JOIN company_location AS cl ON cs.iCompanyLocationId = cl.iCompanyLocationId AND cl.iUserId = cs.iUserId
-                    JOIN users AS u ON cl.iUserId = u.iUserId
-                    LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
-                    LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
-                    WHERE u.iUserId =  ' . $iUserId;*/
-        $query = $this->db->query($sql_query);
-        return $query->result_array();
+        #echo $this->db->last_query();
+
+        $this->db->start_cache();        
+        $iUserId = $this->session->userdata('iUserId');
+        
+          if($iUserId=="") {
+              $ip = $_SERVER["REMOTE_ADDR"];
+              $this->db->select('uf.iUserFavoriteId');
+              $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.vIP = "'.$ip.'"', 'left');
+              $this->db->where('uf.vIP',$ip);
+              $return['IP']=$ip;                
+          } else {
+              $this->db->select('uf.iUserFavoriteId');
+              $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.iUserId = "'.$iUserId.'"', 'left');
+              $this->db->where('uf.iUserId',$iUserId);
+              $return['iUserId']=$iUserId;
+          }            
+
+        $this->db->stop_cache();
+                
+        if($type=="Pro") {
+            $this->db->where('cs.iCompanyServiceId',$iCompanyServiceId);
+            $query = $this->db->get('company_services as cs');
+            $db_user = $query->result_array();
+            #print_r($this->db->last_query());
+            if($db_user[0]['iUserId']!="") {
+                $iUserId = $db_user[0]['iUserId'];
+                $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
+                cs.*,
+                cl.*,
+                GROUP_CONCAT(tem.vImage) as image_group');
+                $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
+                $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
+                $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
+                $this->db->join('templates as tem', 'tem.iCompanyServiceId = cs.iCompanyServiceId AND cs.iUserId = u.iUserId', 'left');
+                $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');        
+                $this->db->where('u.eStatus =  "1"');
+                $this->db->where('cs.iCompanyServiceId !=',$iCompanyServiceId);
+                $this->db->where('cs.iUserId',$iUserId);
+                $this->db->group_by('cs.iCompanyServiceId');
+                $query = $this->db->get('company_services as cs');
+                
+                $db_other_service = $query->result_array();                
+            }
+        }
+        $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
+        cs.*,
+        cl.*,
+        GROUP_CONCAT(tem.vImage) as image_group');
+        $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
+        $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
+        $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
+        $this->db->join('templates as tem', 'tem.iCompanyServiceId = cs.iCompanyServiceId AND cs.iUserId = u.iUserId', 'left');
+        $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');        
+        $this->db->where('u.eStatus =  "1"');
+        $this->db->where('cs.iCompanyServiceId',$iCompanyServiceId);
+        $this->db->group_by('cs.iCompanyServiceId');
+        $query = $this->db->get('company_services as cs');
+        
+        $db_service = $query->result_array();
+        #print_r($db_service);        
+        $return['udetail'] = $db_service;
+        $return['db_other_service'] = $db_other_service;
+        
+        return $return;
+        
     }
     
     
