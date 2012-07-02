@@ -14,8 +14,11 @@
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <style>
-            .err{
-                color: #FF0000;
+            .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
         <script>
@@ -30,21 +33,16 @@
                             equalTo: "#vPassword"
                         }
                     },
-                    messages:{
-                        vPassword : {
-                            required:"Please enter password"
-                        },
-                        vConfPassword : {
-                           required:"Please enter confirm password",
-                           equalTo: "Please enter the same password as above"
-                        }
+                    errorPlacement:function(error, element) {
+                        error.appendTo(element);
+            
                     }
                     
                 });
             });
         </script>    
     </head>
-    
+
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
@@ -68,8 +66,8 @@
                 <div class="clearfloat"></div>
             </div>
             <form name="formpublish" id="formpublish" action="users/publish_a"  method="post">
-                <input type="hidden" name="vEmail" value="<?php echo $basic['vEmail']?>" /> 
-                <input type="hidden" name="iUserId" value="<?php echo $basic['iUserId']?>" /> 
+                <input type="hidden" name="vEmail" value="<?php echo $basic['vEmail'] ?>" /> 
+                <input type="hidden" name="iUserId" value="<?php echo $basic['iUserId'] ?>" /> 
                 <div id="signup_left2" style="width:450px;">
                     <div id="signup_form_text6">Create your Basic account</div>
                     <div id="signup_form_subtext" style="font-size:14px; color:#444;">Before publishing your listing, you'll need to create an account. Once created, you can update your listing and manage account settings at any time.</div>
@@ -94,7 +92,7 @@
                             <div id="listing_card_small_location3" >,</div>
                             <div id="listing_card_small_location2" ><?php echo $basic['vCountry'] ?></div>
                             <div class="clearfloat"></div>
-                            <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService']))?$basic['vService']:$basic['vServiceName']?></div>
+                            <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService'])) ? $basic['vService'] : $basic['vServiceName'] ?></div>
                         </div>
                         <div class="clearfloat"></div>
                         <div id="card_small_img">

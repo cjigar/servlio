@@ -11,7 +11,7 @@ $(document).ready(function() {
             vState:{
                 required:true
             },
-            iCityId:{
+            vCity:{
                 required:true
             },
             vCompanyLogo:{
@@ -41,7 +41,7 @@ $(document).ready(function() {
             }
         
         },
-        
+        /*
         showErrors: function(errorMap, errorList) {
             //console.log(errorList);console.log(errorMap);
             if (errorList.length < 1) {
@@ -50,26 +50,42 @@ $(document).ready(function() {
                 return;
             }
             
+            console.log(errorList);
+            
             $.each(errorList, function(index, error) {
-                $(error.element).addClass('err');
+                if($(error.element).attr("name") == "vImage") {
+                    $('.image').css({color:'#F00'});
+                } else if($(error.element).attr("name") == "vCompanyLogo") {
+                    $('.vCompanyLogo').css({color:'#F00'});    
+                } else {
+                    $(error.element).addClass('err');
+                }
                 $(error.element).next('label.err').remove();
             });
         },
-       
+        */
         errorPlacement:function(error, element) {
-            if(element.attr("name") == "vCountry") {
+            /*if(element.attr("name") == "vCountry") {
                 $('#country_err').show();
-            //error.appendTo("#country_err");
             }
             if(element.attr("name") == "vState") {
                 $('#state_err').show();
-            //error.appendTo("#state_err");
             }
             if(element.attr("name") == "vCity") {
                 $('#city_err').show();
-            //error.appendTo("#city_err");
-            //error.css("padding-left","10px");
-            }                                                            
+            } 
+            */
+            if($(element).attr("name") == "vImage") {
+                 $('.image').css({color:'#F00'});
+            }
+            if($(element).attr("name") == "vCompanyLogo") {
+                    $('.vCompanyLogo').css({color:'#F00'});    
+            }
+            error.appendTo(element);
+            //$('div.err').hide();
+            //error.appendTo( element.parent("td").next("td") );
+            //$(element).next('div.err').first().hide();
+            
         }
     });
     $('#sbmtButton').click(function(){
@@ -185,7 +201,7 @@ $(function() {
     
     
     //Side Template Filling
-    $("#vCompanyName").keypress(function(){
+    $("#vCompanyName").keydown(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_small_name').html('Company name');
         } else {
@@ -219,7 +235,7 @@ $(function() {
         }
     });
     
-    $("#vServiceName").keypress(function(){
+    $("#vServiceName").keydown(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_small_profession').html('Services');
         } else {
@@ -236,7 +252,7 @@ $(function() {
         }
     });
     
-    $("#fPrice").keypress(function(){
+    $("#fPrice").keydown(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_large_price_num_small').html('0');
         } else {

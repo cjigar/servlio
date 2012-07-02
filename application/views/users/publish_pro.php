@@ -15,9 +15,13 @@
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <!-- <script src="<?php echo base_url(); ?>js/stripe.js"></script> -->
         <script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+        <script src="<?php echo base_url(); ?>js/publish_pro.js"></script>
         <style>
-            .err{
-                color: #FF0000;
+            .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
 
@@ -27,7 +31,7 @@
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
 
-                <div id="logo"><a href="index.html"><img alt="Servlio" src="images/logo.png" /></a></div>
+                <div id="logo"><a href="<?php echo base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
 
 
@@ -61,7 +65,7 @@
                         <div class="clearfloat"></div>
                         <div id="signup_form_text8" style="margin-top:20px;">Expires on</div>
                         <div style="margin-top:5px;">
-                            <select name="card-expiry-month" id="card-expiry-month" type="text"  />
+                            <select name="cardexpirymonth" id="cardexpirymonth" type="text"  />
                             <option value="01">1 - January</option>
                             <option value="02">2 - February</option>
                             <option value="03">3 - March</option>
@@ -75,7 +79,7 @@
                             <option value="11">11 - November</option>
                             <option value="12" selected="selected">12 - December</option>
                             </select> 
-                            <select name="card-expiry-year" id="card-expiry-year"  type="text" onfocus="this.value=''" />
+                            <select name="cardexpiryyear" id="cardexpiryyear"  type="text" onfocus="this.value=''" />
                             <?php $n = date('Y');
                             for ($i = $n; $i < $n + 16; $i++) {
                                 ?>
@@ -85,7 +89,7 @@
                             <div class="clearfloat"></div>
                         </div>
                         <div id="signup_form_text8" style="margin-top:20px;">Safety code <span style="color:#999; font-size:11px; font-weight:normal;">&#8212; Last 3 digits on back of your card.</span></div>
-                        <input  type="text" value="132" size="4" name="card-cvc" id="card-cvc" class="signup_input_login3" style="width:50px; margin-top:10px;" />
+                        <input  type="text" value="132" size="4" name="cardcvc" id="cardcvc" class="signup_input_login3" style="width:50px; margin-top:10px;" />
                         <div id="signup_subtitle" style="margin-top:20px;">When you click Create account &amp; Publish you'll be charged £49.00. You are also agreeing to our <a href="#">User Agreement</a>. Thanks for signing up! </div>
                     </div>
                     <a href="javascript::" id="submit-button" name="submit-button" class="btn" title="Apply" style="width:199px;font-size:15px; height:28px; padding-top:2px; margin-top:0px; margin-left:0px;">Create account & Publish</a>
@@ -117,7 +121,7 @@
                         <div id="card_large_dots_container">
 
                         </div>
-                        <div id="listing_card_large_description"><?php echo $basic['vDescription'] ?></div>
+                        <div id="listing_card_large_description"><?php echo substr(nl2br($basic['vDescription']), 0,200); ?></div>
                         <div id="listing_card_large_bottom_container">
                             <div id="listing_card_large_price">From</div>
                             <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol'] ?></div>
@@ -167,9 +171,9 @@
             // createToken returns immediately - the supplied callback submits the form if there are no errors
             Stripe.createToken({
                 number: $('#cardnumber').val(),
-                cvc: $('#card-cvc').val(),
-                exp_month: $('#card-expiry-month').val(),
-                exp_year: $('#card-expiry-year').val()
+                cvc: $('#cardcvc').val(),
+                exp_month: $('#cardexpirymonth').val(),
+                exp_year: $('#cardexpiryyear').val()
             }, stripeResponseHandler);
             return false; // submit from callback
         });

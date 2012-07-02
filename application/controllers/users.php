@@ -237,8 +237,7 @@ class Users extends CI_Controller {
         $term = $this->input->get('term', TRUE);
         $vStateCode = $this->input->get('vStateCode', TRUE);
         $vCountryCode = $this->input->get('vCountryCode', TRUE);
-
-        if (strlen($term) < 2)
+        if (strlen($term) < 1)
             break;
 
         $keywords = $this->users_model->GetAutocompleteCity(array('keyword' => $term, 'vStateCode' => $vStateCode, 'vCountryCode' => $vCountryCode));
@@ -637,9 +636,7 @@ class Users extends CI_Controller {
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldGalleryImage4', TRUE));
         }
-
-
-        $this->session->set_flashdata('signin', 'Service edited successfully !!');
+        //$this->session->set_flashdata('signin', 'Service edited successfully !!');
         redirect('users/account');
         exit;
     }
@@ -681,24 +678,24 @@ class Users extends CI_Controller {
                 $detail = array(
                     'iUserId' => $this->session->userdata('iUserId'),
                     'vCardNumber' => $this->input->post('cardnumber', TRUE),
-                    'vExpireMonth' => $this->input->post('card-expiry-month', TRUE),
-                    'vExpireYear' => $this->input->post('card-expiry-year', TRUE),
-                    'vCvv' => $this->input->post('card-cvc', TRUE),
+                    'vExpireMonth' => $this->input->post('cardexpirymonth', TRUE),
+                    'vExpireYear' => $this->input->post('cardexpiryyear', TRUE),
+                    'vCvv' => $this->input->post('cardcvc', TRUE),
                 );
                 $info = $this->users_model->insertCardinfo($detail);
 
                 $this->session->set_userdata('eType', 'Pro');
                 //Mail to member...
 
-                $this->session->set_flashdata('signin', 'Your payment have been done successfuly !!');
+                //$this->session->set_flashdata('signin', 'Your payment have been done successfuly !!');
                 redirect('users/account');
             } else {
                 //throw new Exception("The Stripe Token was not generated correctly");
-                $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time. ');
+                //$this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time. ');
                 redirect('users/account');
             }
         } catch (Exception $e) {
-            $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time.');
+           // $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time.');
             redirect('users/account');
             //echo $error = $e->getMessage();
         }
@@ -791,7 +788,7 @@ class Users extends CI_Controller {
             );
             $iInsertId = $this->users_model->insert_template($templates);
         }
-        $this->session->set_flashdata('signin', 'Your Service Added Successfully !!');
+        //$this->session->set_flashdata('signin', 'Your Service Added Successfully !!');
         redirect('users/account');
         exit;
     }

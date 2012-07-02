@@ -118,6 +118,7 @@ class Users_model extends CI_Model {
         $this->db->where('vCountryCode', $options['vCountryCode'], 'after');
         $this->db->group_by('vCity');
         $query = $this->db->get('city');
+        //$this->db->last_query();
         $items = array();
         foreach ($query->result_array() as $row) {
             $items[$row['iCityId']] = $row['vCity'];
