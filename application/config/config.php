@@ -607,7 +607,7 @@ $config['logo_image']['image_library'] = 'gd2';
 $config['logo_image']['source_image'] = time().'.jpg';
 $config['logo_image']['maintain_ratio'] = TRUE;
 $config['logo_image']['width'] = 99;
-$config['logo_image']['height'] = 77;
+$config['logo_image']['height'] = 70;
 
 $config['large_image']['image_library'] = 'gd2';
 $config['large_image']['source_image'] = time().'.jpg';
