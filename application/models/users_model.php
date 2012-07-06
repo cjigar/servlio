@@ -243,6 +243,22 @@ class Users_model extends CI_Model {
 
         $this->db->stop_cache();
                 
+        $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
+        cs.*,
+        cl.*,
+        GROUP_CONCAT(tem.vImage) as image_group');
+        $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
+        $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
+        $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
+        $this->db->join('templates as tem', 'tem.iCompanyServiceId = cs.iCompanyServiceId AND cs.iUserId = u.iUserId', 'left');
+        $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');        
+        $this->db->where('u.eStatus =  "1"');
+        $this->db->where('cs.iCompanyServiceId',$iCompanyServiceId);
+        $this->db->group_by('cs.iCompanyServiceId');
+        $query = $this->db->get('company_services as cs');
+        
+        $db_service = $query->result_array();
+        $this->db->flush_cache();
         if($type=="Pro") {
             $this->db->where('cs.iCompanyServiceId',$iCompanyServiceId);
             $query = $this->db->get('company_services as cs');
@@ -268,21 +284,7 @@ class Users_model extends CI_Model {
                 $db_other_service = $query->result_array();                
             }
         }
-        $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
-        cs.*,
-        cl.*,
-        GROUP_CONCAT(tem.vImage) as image_group');
-        $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
-        $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
-        $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
-        $this->db->join('templates as tem', 'tem.iCompanyServiceId = cs.iCompanyServiceId AND cs.iUserId = u.iUserId', 'left');
-        $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');        
-        $this->db->where('u.eStatus =  "1"');
-        $this->db->where('cs.iCompanyServiceId',$iCompanyServiceId);
-        $this->db->group_by('cs.iCompanyServiceId');
-        $query = $this->db->get('company_services as cs');
         
-        $db_service = $query->result_array();
         #print_r($db_service);        
         $return['udetail'] = $db_service;
         $return['db_other_service'] = $db_other_service;

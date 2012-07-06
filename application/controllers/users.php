@@ -323,9 +323,9 @@ class Users extends CI_Controller {
     function settings() {
         $this->load->helper('country');
         $iUserId = $this->session->userdata('iUserId');
-        $data['basic'] = $this->users_model->getUpgrade($iUserId);
-
-        $data['basic'] = $data['basic'][0];
+        $data = $this->users_model->userAccountinfo($iUserId);
+print_R($data);
+        $data['basic'] = $data['udetail'][0];
         //get Locations
         $data['location'] = $this->users_model->getUserLocations($iUserId);
 
