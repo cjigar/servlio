@@ -14,7 +14,7 @@ body {
     font-weight: normal;
     line-height: 20px;
     font-family:Verdana, Geneva, sans-serif;
-    
+
 }
 
 html, body {
@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 p, ul, ol, dl {
     font-family: "Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
- 
+
 p {
     font-size: 13px;
     font-weight: normal;
@@ -191,7 +191,7 @@ footer input.span4, textarea.span4, select.span4 {
     display: inline-block;
     float: none;
     margin-left: 0;
-   
+
 }
 
 footer .row {
@@ -216,23 +216,23 @@ footer .row {
 * Sliding Banner *
 ************************************************/
 #fW_Content {
-	DISPLAY: inline; FLOAT: left; MARGIN: 0px 0px; OVERFLOW: hidden; WIDTH:960px; HEIGHT: 320px;
+    DISPLAY: inline; FLOAT: left; MARGIN: 0px 0px; OVERFLOW: hidden; WIDTH:960px; HEIGHT: 320px;
 }
 #fW_Controls {
-	MARGIN: 0px 0px 0px 0px;
-	position:absolute;
-	left: 274px;
-	top: 410px;
-	z-index:1000;
+    MARGIN: 0px 0px 0px 0px;
+    position:absolute;
+    left: 274px;
+    top: 410px;
+    z-index:1000;
 }
 #fW_Controls A {
-	 FLOAT: left; display:block; WIDTH:12px; HEIGHT:12px; margin-left:8px; background:url(images/num.png) no-repeat; text-indent:-10000px;
+    FLOAT: left; display:block; WIDTH:12px; HEIGHT:12px; margin-left:8px; background:url(images/num.png) no-repeat; text-indent:-10000px;
 }
 #fW_Controls A.activeSlide {
-	background:url(images/num-act.png) no-repeat;
+    background:url(images/num-act.png) no-repeat;
 }
 #fW_Controls A:hover {
-	background:url(images/num-act.png) no-repeat;
+    background:url(images/num-act.png) no-repeat;
 }
 
 #main-content .row .span4 {
@@ -245,7 +245,7 @@ footer .row {
 }
 .about-us h1 {
     margin-bottom: 20px;
-    
+
 }    
 
 .container .brand {
@@ -263,4 +263,10 @@ footer .row {
     margin: 0 0 0 0;
     position: relative;
     top: 51px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl { 
+    border-top-left-radius : 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
 }

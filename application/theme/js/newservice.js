@@ -5,29 +5,38 @@ $(document).ready(function() {
             iCategoryId:{
                 required:true
             },
-            iServiceId:{
+            iServiceId : {
+                required: function(){
+                    if($("#iServiceId").val()!='')
+                        return 1;
+                        
+                    if($("#vServiceName").val()!='')
+                        return 1;
+                }
+            },
+            vServiceName : {
+                required: function(){
+                    if($("#iServiceId").val()!='')
+                        return 1;
+                        
+                    if($("#vServiceName").val()!='')
+                        return 1;
+                }
+            }, 
+            iCompanyLocationId : {
                 required:true
             },
-            vImage:{
+                                                    
+            vDescription:{
                 required:true
-            },                                
-            fPrice:{
+            },
+            fPrice : {
                 required:true
             }
+            
         },
-        messages:{
-            iCategoryId:{
-                required:"Please select category"
-            },
-            iServiceId:{
-                required:"Please select service"
-            },
-            vImage:{
-                required:"Please select service image"
-            },                                
-            fPrice:{
-                required:"Please enter price"
-            }                                         
+        errorPlacement:function(error, element){
+            error.appendTo(element);                                                               
         }
     });
     $('#sbmtButton').click(function(){
@@ -54,7 +63,16 @@ $(function() {
         });
     });
     
-    $("#iServiceId").change(function(){
+   
+    
+    
+    $("#iServiceId").change(function() {
+        if($.trim($('#iServiceId option:selected').text())=='') {
+            $('#listing_card_large_profession').html('Services');
+        } else {
+            $('#listing_card_large_profession').html($('#iServiceId option:selected').text());
+        }
+        
         if($(this).val()=='-1') {
             $("#not_listed").fadeIn('fast');
         } else {
@@ -62,38 +80,29 @@ $(function() {
         }
     });
     
-    
-    //Side Template Filling
-    $("#vCompanyName").focusout(function(){
+    $("#vServiceName").keydown(function(){
         if($.trim($(this).val())=='') {
-            $('#listing_card_small_name').html('Company name');
+            $('#listing_card_large_profession').html('Services');
         } else {
-            $('#listing_card_small_name').html($(this).val());
-        }
-    });
-    
-    $("#vServiceName").focusout(function(){
-        if($.trim($(this).val())=='') {
-            $('#listing_card_small_profession').html('Services');
-        } else {
-            $('#listing_card_small_profession').html($(this).val());
+            $('#listing_card_large_profession').html($(this).val());
         }
     });
     
     $("#iCurrencyId").change(function(){
         //alert($('#iCurrencyId option:selected').length)
         if($.trim($('#iCurrencyId option:selected').text())=='') {
-            $('#listing_card_large_price_currency_small').html('£');
+            $('#listing_card_large_price_currency').html('£');
         } else {
-            $('#listing_card_large_price_currency_small').html($('#iCurrencyId option:selected').attr('data-symbol'));
+            $('#listing_card_large_price_currency').html($('#iCurrencyId option:selected').attr('data-symbol'));
         }
     });
     
-    $("#fPrice").focusout(function(){
+    $("#fPrice").keydown(function(){
         if($.trim($(this).val())=='') {
-            $('#listing_card_large_price_num_small').html('0');
+            $('#listing_card_large_price_num').html('0.00');
         } else {
-            $('#listing_card_large_price_num_small').html($(this).val());
+            
+            $('#listing_card_large_price_num').html($(this).val());
         }
     });
     

@@ -53,8 +53,8 @@
 
                     <div id="signup_form_subtext" style="font-size:14px; color:#444;">Before publishing your listing, you'll need to create an account. Once created, you can update your listing and manage account settings at any time.</div>
                     <div id="signup_form_text6"></div>
-                    <input  type="password" onfocus="this.value=''" name="vPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Password" />
-                    <input  type="password" onfocus="this.value=''" name="vRetPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Retype password" />
+                    <input  type="password" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Password" />
+                    <input  type="password" onfocus="this.value=''" name="vRetPassword" id="vRetPassword" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Retype password" />
                     <div id="signup_form_text6" style="margin-top:40px;">Enter payment details</div>
                     <div id="card_bg">
                         <input  type="text" value="4242424242424242" name="cardnumber" id="cardnumber" class="signup_input_login3" style="width:350px; margin-top:15px;" placeholder="Card number" />
@@ -112,9 +112,18 @@
                             <div id="listing_card_large_profession" ><?php echo (isset($basic['vService']) && !empty($basic['vService'])) ? $basic['vService'] : $basic['vServiceName'] ?></div>
                             <div class="clearfloat"></div>
                         </div>
-                        <div id="listing_card_large_logo"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></div>
+                        <div id="listing_card_large_logo">
+                            <?php if (is_file(APPPATH."theme/uploads/" . $basic['vCompanyLogo'])) { ?>
+                                <img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/>
+                            <?php } ?>
+                        </div>
+                        
                         <div class="clearfloat"></div>
-                        <div id="card_large_img"><img src="uploads/<?php echo $basic['vImage'] ?>" width="444" height="347" /></div>
+                        <div id="card_large_img">
+                            <?php if (is_file(APPPATH."theme/uploads/3_" . $basic['vImage'])) { ?>
+                                <img src="uploads/3_<?php echo $basic['vImage'] ?>" width="444" height="347" />
+                            <?php } ?>
+                        </div>
                         <div id="card_large_dots_container">
 
                         </div>

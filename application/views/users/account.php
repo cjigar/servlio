@@ -36,7 +36,7 @@
                 <div id="profile_header4" style="margin-top:40px;">Services</div>
                 <div id="profile_header5" style="margin-top:42px; font-size:13px;"> 
                     <?php if ($this->session->userdata('eType') == 'Basic') : ?>
-                        &#8211; <a href="publish_pro.html">Upgrade to Pro</a> to add more services.
+                        &#8211; <a href="users/publish_pro">Upgrade to Pro</a> to add more services.
                     <?php endif; ?>
                 </div>
                 <div class="clearfloat"></div>
@@ -55,9 +55,11 @@
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
-                        <a href="users/profile">
-                            <img src="uploads/<?php echo $basic['vImage'] ?>" width="209" height="163" />
+                        <?php if (is_file(APPPATH."theme/uploads/2_" . $basic['vImage'])) { ?>
+                        <a href="users/profile/<?php echo $basic['iCompanyServiceId']?>">
+                            <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" />
                         </a>
+                        <?php } ?>
                     </div>
                     <div id="listing_card_small_price">
                         <div id="listing_card_large_price_small">From</div>
@@ -68,7 +70,7 @@
                     </div>
                 </div>
                 <?php  endforeach;  ?>
-                <?php $type = $this->session->userdata('eType');  ?>
+                <?php    $type = $this->session->userdata('eType');  ?>
                 <?php if(count($account)==1):?>
                 <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>
                 <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>

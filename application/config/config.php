@@ -596,24 +596,39 @@ $config['country_list'] = array(
 
 
 
-$config['small_image']['image_library'] = 'gd2';
-$config['small_image']['source_image'] = time().'.jpg';
-$config['small_image']['maintain_ratio'] = TRUE;
-$config['small_image']['width'] = 209;
-$config['small_image']['height'] = 163;
-
 
 $config['logo_image']['image_library'] = 'gd2';
-$config['logo_image']['source_image'] = time().'.jpg';
+$config['logo_image']['source_image'] = '1_';
 $config['logo_image']['maintain_ratio'] = TRUE;
 $config['logo_image']['width'] = 99;
 $config['logo_image']['height'] = 70;
 
+
+$config['small_image']['image_library'] = 'gd2';
+$config['small_image']['source_image'] = '2_';
+$config['small_image']['maintain_ratio'] = TRUE;
+$config['small_image']['width'] = 209;
+$config['small_image']['height'] = 163;
+
 $config['large_image']['image_library'] = 'gd2';
-$config['large_image']['source_image'] = time().'.jpg';
+$config['large_image']['source_image'] = '3_';
 $config['large_image']['maintain_ratio'] = TRUE;
 $config['large_image']['width'] = 444;
 $config['large_image']['height'] = 347;
+
+
+$config['extra_large_image']['image_library'] = 'gd2';
+$config['extra_large_image']['source_image'] = '4_';
+$config['extra_large_image']['maintain_ratio'] = TRUE;
+$config['extra_large_image']['width'] = 655;
+$config['extra_large_image']['height'] = 471;
+
+
+
+$config['images']['1_'] = '99x77';
+$config['images']['2_'] = '209x163';
+$config['images']['3_'] = '444x347';
+$config['images']['4_'] = '655x471';
 
 
 $config['Stripe']['ApiKey'] = 'Q7LzQNsbmZdsueZzVVHXVJLdTpGeXyjS';

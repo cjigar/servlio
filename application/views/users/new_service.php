@@ -12,12 +12,15 @@
         <link href="<?= base_url() ?>css/style.css" rel="stylesheet">
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
+<!--        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>-->
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>js/newservice.js"></script>
         <style>
-            .err{
-                color: #FF0000;
+            .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
 
@@ -48,8 +51,7 @@
 
                     <div id="signup_form_text8" style="margin-top:0px;">Category</div>
                     <select class="list" id="iCategoryId" name="iCategoryId" style="margin-left:0px; margin-top:10px;">
-                        <option value="volvo">Choose a category</option>
-                        <option value="volvo">All categories</option>
+                        <option value="">All categories</option>
                         <?php
                         foreach ($categories as $key => $val) {
                             ?>                            
@@ -130,19 +132,19 @@
                             <div id="listing_card_large_location3">,</div>
                             <div id="listing_card_large_location2"><?php echo $basic['vCountry']?></div>
                             <div class="clearfloat"></div>
-                            <div id="listing_card_large_profession" ><?php echo $basic['vService']?></div>
+                            <div id="listing_card_large_profession" ></div>
                             <div class="clearfloat"></div>
                         </div>
                         <div id="listing_card_large_logo"><img src="uploads/<?php echo $basic['vCompanyLogo']?>"/></div>
                         <div class="clearfloat"></div>
-                        <div id="service_card_image_loader2"><img style="height:347px;width:444px;" src="uploads/<?php echo $basic['vImage']?>"/></div>
+                        <div id="service_card_image_loader2"><img style="height:347px;width:444px;" src=""/></div>
                         <div id="card_large_dots_container">
                         </div>
                         <div id="listing_card_large_description"></div>
                         <div id="listing_card_large_bottom_container">
                             <div id="listing_card_large_price">From</div>
                             <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol']?></div>
-                            <div id="listing_card_large_price_num"><?php echo $basic['fPrice']?></div>
+                            <div id="listing_card_large_price_num">0.00</div>
                             <div class="clearfloat"></div>
                         </div>
                     </div>

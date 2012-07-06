@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    $("#frmadd").validate({
+    $("#frmsettings").validate({
         rules:{
             vCompanyName:{
                 required:true
@@ -11,9 +11,10 @@ $(document).ready(function() {
             vState:{
                 required:true
             },
-            vCompanyLogo:{
+            iCity : {
                 required:true
             },
+            
             iCurrencyId:{
                 required:true
             },                                         
@@ -26,46 +27,12 @@ $(document).ready(function() {
             }
             
         },
-        messages:{
-            vCompanyName:{
-                required:"Please enter company name"
-            },
-            vCountryCode:{
-                required:"Please select country"
-            },
-            vState:{
-                required:"Please select state"
-            },
-            vCompanyLogo:{
-                required:"Please upload company logo"
-            },
-            iCurrencyId:{
-                required:"Please select currency"
-            },                                         
-            vEmail:{
-                required:"Please enter email",
-                email:"Please enter proper email"
-            },
-            vRetPassword : {
-                equalTo: "Please enter the same password as above"
-            }
-        },
         errorPlacement:function(error, element){
-            if(element.attr("name") == "vCountry") {
-                $('#country_err').show();
-                error.appendTo("#country_err");
-            }
-            if(element.attr("name") == "vState") {
-                $('#state_err').show();
-                error.appendTo("#state_err");
-            }
-            if(element.attr("name") == "vCity") {
-                $('#city_err').show();
-                error.appendTo("#city_err");
-                error.css("padding-left","10px");
-            }                                                                
+            error.appendTo(element);
         }
     });
+    
+    
     $('#sbmtButton').click(function(){
         $("#frmsettings").submit();
     });
@@ -79,6 +46,20 @@ $(document).ready(function() {
         }
        
     });
+    
+    $("#vAbout").bind('keyup', function() {
+        var characterLimit = 280;
+        var charactersUsed = $(this).val().length;
+        if(charactersUsed > characterLimit){
+            charactersUsed = characterLimit;
+            $(this).val($(this).val().substr(0,characterLimit));
+            $(this).scrollTop($(this)[0].scrollHeight);
+        }
+        var charactersRemaining = characterLimit - charactersUsed;
+        $("#signup_subtitle > span").html(charactersRemaining);
+    }); 
+    
+    
 });
 
 $(function() {
