@@ -121,7 +121,7 @@
                         <div class="clearfloat"></div>
                         <div id="card_large_img">
                             <?php if (is_file(APPPATH."theme/uploads/3_" . $basic['vImage'])) { ?>
-                            <img src="uploads/3_<?php echo $basic['vImage'] ?>" width="444" height="347" />
+                                <img src="uploads/3_<?php echo $basic['vImage'] ?>" width="444" height="347" />
                             <?php } ?>
                         </div>
                         <div id="card_large_dots_container">

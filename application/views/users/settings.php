@@ -13,11 +13,11 @@
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/settings.js"></script>
         <style>
-             .err {
+            .err {
                 border: 1px red solid  !important;
                 background-color: #FFD3D5;
                 -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
@@ -47,17 +47,17 @@
                     <div id="signup_left">
                         <div id="signup_form_text6" style="margin-top:10px;">Company details</div>
                         <input  type="text" value="<?php echo $basic['vCompanyName'] ?>" name="vCompanyName" id="vCompanyName"  class="signup_input_login3"  placeholder="Company name" style="width:450px; margin-top:15px;" />
-                        
+
                         <div id="signup_form_text8">About your company</div>
-                        <textarea class="new_service_input_area" id="vAbout" name="vAbout" style="width:441px;"><?php echo $basic['vAbout']?></textarea>
+                        <textarea class="new_service_input_area" id="vAbout" name="vAbout" style="width:441px;"><?php echo $basic['vAbout'] ?></textarea>
                         <div id="signup_subtitle"><span style="color:#333;">280</span></div>
-                        
+
                         <div id="signup_form_text8">Location of headquarterCompanys</div>
                         <div id="signup_subtitle">You can add more locations later.</div>
-                        
+
                         <input type="hidden" name="iCompanyLocationId" id="iCompanyLocationId" value="<?php echo $basic['iCompanyLocationId'] ?>" />
                         <input type="hidden" name="vCountry" id="vCountry" value="<?php echo $basic['vCountry'] ?>" />
-                        <?php echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);?>
+                        <?php echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']); ?>
                         <input  type="text"  name="vState" id="vState" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none;' : '' ?>" placeholder="State" />
                         <input type ="hidden" name="vStateCode" id="vStateCode" value="<?php echo $basic['vStateCode'] ?>" />
                         <input  type="text"  name="vCity" id="vCity" value="<?php echo $basic['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
@@ -69,7 +69,9 @@
                         <input  type="text" name="vAddress" id="vAddress" class="signup_input_login3" placeholder="Address" style="width:450px; margin-top:15px;" value="<?php echo $basic['vAddress'] ?>" />
                         <div id="signup_sepline2"></div>
                         <div id="signup_form_text8" class="vCompanyLogo" style="margin-top:20px;" >Company logo</div>
-                        <div id="update_images"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></div>
+                        <?php if (is_file(APPPATH . 'theme/uploads' . $basic['vCompanyLogo'])) : ?>
+                            <div id="update_images"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></div>
+                        <?php endif; ?>
                         <div class="clearfloat"></div>
                         <input type="hidden" name="vOldCompanyLogo" id="vOldCompanyLogo" value="<?php echo $basic['vCompanyLogo'] ?>" />
                         <input  type="file" name="vCompanyLogo" id="vCompanyLogo" onfocus="this.value=''"  class="signup_file" value="" />
