@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    
+    jQuery.validator.messages.required = "";
     $("#frmadd").validate({
         rules:{
             vCompanyName:{
@@ -14,9 +14,6 @@ $(document).ready(function() {
             vCity:{
                 required:true
             },
-            vCompanyLogo:{
-                required:true
-            },
             iCategoryId:{
                 required:true
             },
@@ -29,68 +26,49 @@ $(document).ready(function() {
             vDescription:{
                 required:true
             },
-            /*iCurrencyId:{
-                required:true
-            },*/                                
             fPrice:{
-                required:true
+                required:true,
+                number:true
             },
             vEmail:{
                 required:true,
-                email:true
+                email:true,
+                isexist : true
             }
         
         },
-        /*
-        showErrors: function(errorMap, errorList) {
-            //console.log(errorList);console.log(errorMap);
-            if (errorList.length < 1) {
-                // clear the error if validation succeeded
-                $('label.err').remove();
-                return;
-            }
-            
-            console.log(errorList);
-            
-            $.each(errorList, function(index, error) {
-                if($(error.element).attr("name") == "vImage") {
-                    $('.image').css({color:'#F00'});
-                } else if($(error.element).attr("name") == "vCompanyLogo") {
-                    $('.vCompanyLogo').css({color:'#F00'});    
-                } else {
-                    $(error.element).addClass('err');
-                }
-                $(error.element).next('label.err').remove();
-            });
-        },
-        */
         errorPlacement:function(error, element) {
-            /*if(element.attr("name") == "vCountry") {
-                $('#country_err').show();
-            }
-            if(element.attr("name") == "vState") {
-                $('#state_err').show();
-            }
-            if(element.attr("name") == "vCity") {
-                $('#city_err').show();
-            } 
-            */
-            if($(element).attr("name") == "vImage") {
-                 $('.image').css({color:'#F00'});
-            }
-            if($(element).attr("name") == "vCompanyLogo") {
-                    $('.vCompanyLogo').css({color:'#F00'});    
-            }
-            error.appendTo(element);
-            //$('div.err').hide();
-            //error.appendTo( element.parent("td").next("td") );
-            //$(element).next('div.err').first().hide();
             
+            if($(element).attr("name") == "vImage") {
+                $('.image').css({
+                    color:'#F00'
+                });
+                $("#vImage").next().remove();
+                $("#vImage").removeClass('err');
+            } else   {
+                error.appendTo(element);
+            }
         }
     });
     $('#sbmtButton').click(function(){
         $("#frmadd").submit();
     });
+    jQuery.validator.addMethod("isexist", function(value, element) { 
+        var isSuccess = false;
+        $.ajax({
+            url:'users/userExist',
+            data:{
+                email:value
+            },
+            async: false, 
+            success : function(res){
+                //console.log((res=="1"));
+                isSuccess = (res=="1")?1:0;
+            }
+        });
+        //console.log(isSuccess)
+        return isSuccess;
+    }, "Email already exists !!");
     
     $("#vDescription").bind('keyup', function() {
         var characterLimit = 280;
@@ -144,6 +122,7 @@ $(function() {
         select: function( event, ui ) {
             this.value = ui.item.value;
             $('#vStateCode').val(ui.item.id);
+           
             return false;
         }
     });
@@ -167,7 +146,7 @@ $(function() {
         search: function() {
             // custom minLength
             var term = extractLast( this.value );
-            if ( term.length < 2 ) {
+            if ( term.length < 1) {
                 return false;
             }
         },
@@ -178,6 +157,7 @@ $(function() {
         select: function( event, ui ) {
             this.value = ui.item.value;
             $('#iCityId').val(ui.item.id);
+            $('#listing_card_small_location').html($('#vCity').val()+",&nbsp;"+$('#vCountryCode option:selected').text());
             return false;
         }
     });
@@ -201,7 +181,7 @@ $(function() {
     
     
     //Side Template Filling
-    $("#vCompanyName").keydown(function(){
+    $("#vCompanyName").keyup(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_small_name').html('Company name');
         } else {
@@ -225,8 +205,8 @@ $(function() {
         }
     });
     $("#vCity").change(function(){
-        $('#listing_card_small_location').html($('#vCity').val()+","+$('#vCountryCode option:selected').text());
-    });
+        // $('#listing_card_small_location').html($('#vCity').val()+","+$('#vCountryCode option:selected').text());
+        });
     $("#iServiceId").change(function() {
         if($.trim($('#iServiceId option:selected').text())=='') {
             $('#listing_card_small_profession').html('Services');
@@ -235,7 +215,7 @@ $(function() {
         }
     });
     
-    $("#vServiceName").keydown(function(){
+    $("#vServiceName").keyup(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_small_profession').html('Services');
         } else {
@@ -252,26 +232,18 @@ $(function() {
         }
     });
     
-    $("#fPrice").keydown(function(){
+    $("#fPrice").keyup(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_large_price_num_small').html('0');
         } else {
-            $('#listing_card_large_price_num_small').html($(this).val());
+            var intRegex = /^\d+$/;
+            var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
+            var str = $(this).val();
+            if(intRegex.test(str) || floatRegex.test(str)) {
+                $('#listing_card_large_price_num_small').html(str);
+            }     
         }
     });
-    
-/*
-    $('#vImage').uploadify({
-        'swf':site_url+"js/uploadify/uploadify.swf",
-        'uploader':site_url+"/users/uploadfile",
-        'folder':'uploads/tmp',
-        'multi': false,
-        'auto': true,
-        'fileExt': '*.jpg;*.jpeg;*.png;*.gif',
-        'buttonText': 'Browse...',
-        'cancelImg': '/svn/handinhand/assets/js/uploadify/cancel.png'
-    });
-    */
     
 });
                 

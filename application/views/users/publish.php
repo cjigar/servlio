@@ -81,9 +81,7 @@
             </form>
             <div id="signup_right" style="margin-left:213px;">
                 <div id="upgrade_top3">
-
                     <div id="upgrade_header2">Your listing card</div>
-
                     <div id="listing_card_small3">
                         <div id="listing_card_small_details_container">
                             <div id="listing_card_small_name"><?php echo $basic['vCompanyName'] ?></div>
@@ -96,7 +94,9 @@
                         </div>
                         <div class="clearfloat"></div>
                         <div id="card_small_img">
-                            <img src="uploads/<?php echo $basic['vImage'] ?>" width="209" height="163" />
+                            <?php if (is_file(APPPATH."theme/uploads/2_" . $basic['vImage'])) { ?>
+                                <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" />
+                            <?php } ?>
                         </div>
                         <div id="listing_card_small_price">
                             <div id="listing_card_large_price_small">From</div>

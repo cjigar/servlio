@@ -9,13 +9,13 @@ class Users extends CI_Controller {
         $iUserId = $this->session->userdata('iUserId');
         $fun = $this->uri->segment(2);
         /*
-        $except = array('index', 'login', 'forget');
-        if (!in_array($fun, $except)) {
-            if (!$iUserId) {
-                redirect('/');
-                exit;
-            }
-        }*/
+          $except = array('index', 'login', 'forget');
+          if (!in_array($fun, $except)) {
+          if (!$iUserId) {
+          redirect('/');
+          exit;
+          }
+          } */
     }
 
     public function index() {
@@ -52,6 +52,14 @@ class Users extends CI_Controller {
         // send mail template to user.
     }
 
+    function userExist() {
+        $check = array(
+            'vEmail' => $this->input->get('email', true)
+        );
+        echo ($this->users_model->checkEmail($check)) ? false : true;
+        exit;
+    }
+
     function signin_a() {
         $this->load->model('users_model');
         //echo $this->input->post('vEmail', TRUE);
@@ -83,21 +91,18 @@ class Users extends CI_Controller {
 
     function profile() {
         //Add UserId in Session;       
-
         $iCompanyServiceId = $this->uri->segments[3];
-
         $this->load->model('users_model');
-        $data = $this->users_model->getUpgrade($iCompanyServiceId);
-        
+        $data['udetail'] = $this->users_model->getUpgrade($iCompanyServiceId);
+        $data['udetail'][0] = $data['udetail']['db_other_service'][0];
         $this->load->view('users/profile', $data);
     }
 
     function profile_pro() {
 
         $iCompanyServiceId = $this->uri->segments[3];
-
         $this->load->model('users_model');
-        $data = $this->users_model->getUpgrade($iCompanyServiceId,"Pro");
+        $data = $this->users_model->getUpgrade($iCompanyServiceId, "Pro");
         #print_r($data);
         $this->load->view('users/profile_pro', $data);
     }
@@ -123,20 +128,108 @@ class Users extends CI_Controller {
         $this->load->view('users/signup', $data);
     }
 
-    function file_upload($type, $file) {
+    function file_upload($type, $file, $addpath) {
+
         $filename = time() . $file["name"];
-        $path = APPPATH . "theme/uploads/" . $filename;
+        if (isset($addpath) && !empty($addpath)) {
+            $path = APPPATH . "theme/uploads/" . $addpath . $filename;
+        } else {
+            $path = APPPATH . "theme/uploads/" . $filename;
+        }
+
         if (move_uploaded_file($file["tmp_name"], $path)) {
-            $this->config->config[$type]['source_image'] = $path;
-            $name = $this->load->library('image_lib', $this->config->config[$type]);
-            if (!$this->image_lib->resize()) {
-                echo $this->image_lib->display_errors();
+            $this->load->library('resize');
+
+            $images = $this->config->config['images'];
+
+            // *** 1) Initialise / load image
+            $resizeObj = new resize($path);
+
+            if ($type == 'Image') {
+                foreach ($images as $key => $val) {
+                    list($width, $height) = explode("x", $val);
+                    // *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
+                    $resizeObj->resizeImage($width, $height, 'crop');
+
+                    // *** 3) Save image
+                    if (isset($addpath) && !empty($addpath)) {
+                        $path = APPPATH . "theme/uploads/" . $addpath . $key . $filename;
+                    } else {
+                        $path = APPPATH . "theme/uploads/" . $key . $filename;
+                    }
+                    $resizeObj->saveImage($path, 100);
+                }
+            } else {
+
+                $width = $this->config->config['logo_image']['width'];
+                $height = $this->config->config['logo_image']['height'];
+                $resizeObj->resizeImage($width, $height, 'auto');
+                //$key = '1_';
+                
+                if (isset($addpath) && !empty($addpath)) {
+                    $path = APPPATH . "theme/uploads/" . $addpath . $key . $filename;
+                } else {
+                    $path = APPPATH . "theme/uploads/" . $key . $filename;
+                }
+                $resizeObj->saveImage($path, 100);
             }
         } else {
             echo "File Not Uploded";
         }
         return $filename;
     }
+
+    /*
+      function file_upload($type, $file,$addpath) {
+
+      $filename = time() . $file["name"];
+      if(isset($addpath) && !empty($addpath))
+      $path = APPPATH . "theme/uploads/".$addpath . $filename;
+      else
+      $path = APPPATH . "theme/uploads/" . $filename;
+      $crop_path = APPPATH . "theme/uploads/crop_" . $filename;
+      if (move_uploaded_file($file["tmp_name"], $path)) {
+      list($owidth, $oheight, $type11, $attr) = getimagesize($path);
+      $ori_height = $this->config->config[$type]['height'];
+      $ori_width = $this->config->config[$type]['width'];
+      #print_R($this->config->config['small_image']['height']);exit;
+      #echo $owidth.'<'.$this->config->config[$type]['height'];
+      if($this->config->config[$type]['width']>$this->config->config[$type]['height']) {
+      $newheight = ($oheight*$this->config->config[$type]['width'])/$owidth;
+      $this->config->config[$type]['height'] = $newheight;
+      } else {
+      $newwidth = ($owidth*$this->config->config[$type]['height'])/$oheight;
+      $this->config->config[$type]['width'] = $newwidth;
+      }
+      #print_R($this->config->config[$type]);
+      $this->config->config[$type]['source_image'] = $path;
+
+      if($this->config->config[$type])
+      $name = $this->load->library('image_lib', $this->config->config[$type]);
+      if (!$this->image_lib->resize()) {
+      echo $this->image_lib->display_errors();
+      }
+      $this->config->config[$type]['width'] = $ori_width;
+      $this->config->config[$type]['height'] = $ori_height;
+      $this->config->config[$type]['x_axis'] = 0;
+      $this->config->config[$type]['y_axis'] = 0;
+      #unset($this->config->config[$type]['width']);
+      #unset($this->config->config[$type]['height']);
+      #print_R($this->config->config[$type]);
+      #$this->config->config[$type]['x_axis']=
+      //print_r($this->config->config[$type]);
+      // $this->config->config[$type]['new_image'] = "crop_.jpg";
+      $this->config->config[$type]['maintain_ratio'] = TRUE;
+      $this->load->library('image_lib', $this->config->config[$type]);
+      $name = $this->image_lib->initialize($this->config->config[$type]);
+      $this->image_lib->crop();
+
+      } else {
+      echo "File Not Uploded";
+      }
+      return $filename;
+      }
+     */
 
     public function signup_a() {
 
@@ -154,8 +247,14 @@ class Users extends CI_Controller {
             redirect('users/signup');
             exit;
         }
+
         //Image croping;
-        $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
+        if (isset($_FILES['vCompanyLogo']['tmp_name']) && !empty($_FILES['vCompanyLogo']['tmp_name'])) {
+            $logoimage = $this->file_upload('LogoImage', $_FILES['vCompanyLogo']);
+        } else {
+            $logoimage = '';
+        }
+
         //insert into users;
         $userdata = array(
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
@@ -183,7 +282,15 @@ class Users extends CI_Controller {
         }
         $iCompanyLocationId = $this->users_model->signup_location($location);
         //Insert into  company_services;
-        $serviceimage = $this->file_upload('small_image', $_FILES['vImage']);
+        if (isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
+
+            $serviceimage = $this->file_upload('Image', $_FILES['vImage']);
+        } else {
+            $serviceimage = '';
+        }
+
+        $vTmpImage = $this->input->post('vTmpImage', TRUE);
+        unlink(APPPATH . 'theme/uploads/tmp/' . $vTmpImage);
         $services = array(
             'iUserId' => $iUserId,
             'iCompanyLocationId' => $iCompanyLocationId,
@@ -213,7 +320,7 @@ class Users extends CI_Controller {
 
     function upgrade() {
         $iUserId = $this->session->userdata('iUserId');
-        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $this->users_model->userAccountinfo($iUserId);
         $data['basic'] = $data['basic'][0];
 
         $this->load->view('users/upgrade', $data);
@@ -261,16 +368,14 @@ class Users extends CI_Controller {
         //Add UserId in Session;
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
-
         $this->load->model('users_model');
-        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $this->users_model->userAccountinfo($iUserId);
         $data['basic'] = $data['basic'][0];
         //print_R($data['basic']);
         $this->load->view('users/publish', $data);
     }
 
     function publish_a() {
-        $this->load->model('users_model');
         //echo $this->input->post('vEmail', TRUE);
         $update = array(
             'iUserId' => $this->input->post('iUserId', TRUE),
@@ -321,24 +426,35 @@ class Users extends CI_Controller {
     }
 
     function settings() {
+
         $this->load->helper('country');
         $iUserId = $this->session->userdata('iUserId');
-        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        if (empty($iUserId)) {
+            redirect('/');
+            exit;
+        }
+
+        $eType = $this->session->userdata('eType');
+
+        if ($eType == 'Pro')
+            $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        else
+            $data['basic'] = $this->users_model->userAccountinfo($iUserId);
 
         $data['basic'] = $data['basic'][0];
-        //get Locations
+        //get Locations 
         $data['location'] = $this->users_model->getUserLocations($iUserId);
 
         #print_R($data);exit;
 
         $data['currency'] = $this->users_model->getCurrency();
+
         $type = $this->session->userdata('eType');
         // Card info...
         $cardinfo = $this->users_model->getCardDetail($iUserId);
         $data['cardinfo'] = $cardinfo[0];
         //get All Transaction info
         #print_r($data);exit;
-
 
         $transinfo = $this->users_model->getTransaction($iUserId);
         $data['transinfo'] = $transinfo;
@@ -369,7 +485,7 @@ class Users extends CI_Controller {
         //Image Upload & Checking;
         if (isset($_FILES['vCompanyLogo']['tmp_name']) && !empty($_FILES['vCompanyLogo']['tmp_name'])) {
             //Image croping;
-            $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
+            $logoimage = $this->file_upload('LogoImage', $_FILES['vCompanyLogo']);
             $user['vCompanyLogo'] = $logoimage;
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldCompanyLogo', TRUE));
@@ -420,8 +536,10 @@ class Users extends CI_Controller {
     function settings_a() {
 
         $iUserId = $this->session->userdata('iUserId');
+        #print_r($_POST);exit;
         $user = array(
             'iUserId' => $iUserId,
+            'vAbout' => $this->input->post('vAbout', TRUE),
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
             'vAddress' => $this->input->post('vAddress', TRUE),
             'vWebSite' => $this->input->post('vWebSite', TRUE),
@@ -436,7 +554,7 @@ class Users extends CI_Controller {
         //Image Upload & Checking;
         if (isset($_FILES['vCompanyLogo']['tmp_name']) && !empty($_FILES['vCompanyLogo']['tmp_name'])) {
             //Image croping;
-            $logoimage = $this->file_upload('logo_image', $_FILES['vCompanyLogo']);
+            $logoimage = $this->file_upload('LogoImage', $_FILES['vCompanyLogo']);
             $user['vCompanyLogo'] = $logoimage;
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldCompanyLogo', TRUE));
@@ -487,7 +605,7 @@ class Users extends CI_Controller {
 
         if (isset($_FILES['vImage']['tmp_name']) && !empty($_FILES['vImage']['tmp_name'])) {
             //Image croping;
-            $image = $this->file_upload('large_image', $_FILES['vImage']);
+            $image = $this->file_upload('Image', $_FILES['vImage']);
             $service['vImage'] = $image;
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldImage', TRUE));
@@ -498,7 +616,7 @@ class Users extends CI_Controller {
         //Update Images....
         if (isset($_FILES['vGalleryImage']['tmp_name']) && !empty($_FILES['vGalleryImage']['tmp_name'])) {
 
-            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage']);
+            $vGalleryImage = $this->file_upload('Image', $_FILES['vGalleryImage']);
 
             //Insert OR Update;;;
             $iTemplateId = $this->input->post('iTemplateId', true);
@@ -527,7 +645,7 @@ class Users extends CI_Controller {
 
         if (isset($_FILES['vGalleryImage1']['tmp_name']) && !empty($_FILES['vGalleryImage1']['tmp_name'])) {
 
-            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage1']);
+            $vGalleryImage = $this->file_upload('Image', $_FILES['vGalleryImage1']);
 
             //Insert OR Update;;;
             $iTemplateId = $this->input->post('iTemplateId1', true);
@@ -555,7 +673,7 @@ class Users extends CI_Controller {
 
         if (isset($_FILES['vGalleryImage2']['tmp_name']) && !empty($_FILES['vGalleryImage2']['tmp_name'])) {
 
-            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage2']);
+            $vGalleryImage = $this->file_upload('Image', $_FILES['vGalleryImage2']);
 
             //Insert OR Update;;;
             $iTemplateId = $this->input->post('iTemplateId2', true);
@@ -583,7 +701,7 @@ class Users extends CI_Controller {
 
         if (isset($_FILES['vGalleryImage3']['tmp_name']) && !empty($_FILES['vGalleryImage3']['tmp_name'])) {
 
-            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage3']);
+            $vGalleryImage = $this->file_upload('Image', $_FILES['vGalleryImage3']);
 
             //Insert OR Update;;;
             $iTemplateId = $this->input->post('iTemplateId3', true);
@@ -612,7 +730,7 @@ class Users extends CI_Controller {
 
         if (isset($_FILES['vGalleryImage4']['tmp_name']) && !empty($_FILES['vGalleryImage4']['tmp_name'])) {
 
-            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage4']);
+            $vGalleryImage = $this->file_upload('Image', $_FILES['vGalleryImage4']);
 
             //Insert OR Update;;;
             $iTemplateId = $this->input->post('iTemplateId4', true);
@@ -642,8 +760,9 @@ class Users extends CI_Controller {
     }
 
     function publish_pro() {
+
         $iUserId = $this->session->userdata('iUserId');
-        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $data['basic'] = $this->users_model->userAccountinfo($iUserId);
         $data['basic'] = $data['basic'][0];
         $this->load->view('users/publish_pro', $data);
     }
@@ -651,7 +770,6 @@ class Users extends CI_Controller {
     function publish_pro_a() {
         $this->load->library('Stripe');
         $stripeToken = $this->input->post('stripeToken', TRUE);
-
         try {
             if (isset($stripeToken) && !empty($stripeToken)) {
                 Stripe::setApiKey($this->config->config['Stripe']['ApiKey']);
@@ -669,7 +787,7 @@ class Users extends CI_Controller {
                     'eType' => 'Pro'
                 );
                 $vPassword = $this->input->post('vPassword', TRUE);
-                if (isset($vPassword) && !empty($vPasswords)) {
+                if (isset($vPassword) && !empty($vPassword)) {
                     $users['vPassword'] = $this->input->post('vPassword', TRUE);
                 }
                 $this->users_model->updateUser($users);
@@ -686,7 +804,7 @@ class Users extends CI_Controller {
 
                 $this->session->set_userdata('eType', 'Pro');
                 //Mail to member...
-                
+
                 $this->load->library('email');
                 $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
                 $this->email->to('root.nodes@gmail.com');
@@ -695,10 +813,10 @@ class Users extends CI_Controller {
                 $msg = $this->load->view('email/email_pro_signup', $data, TRUE);
                 $this->email->message($msg);
                 $this->email->send();
-                
-                
+
+
                 $userinfo = $this->users_model->getUsersInfo($this->session->userdata('iUserId'));
-                
+
                 $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
                 $this->email->to('root.nodes@gmail.com');
                 $this->email->subject('Servlio monthly invoice');
@@ -706,12 +824,12 @@ class Users extends CI_Controller {
                 $data['userinfo'] = $userinfo;
                 $data['billingdate'] = date('M j, Y');
                 $newdate = strtotime(date("Y-m-d", strtotime($todayDate)) . "+1 month");
-                $data['aftermonth'] = date('M j, Y',$newdate);
+                $data['aftermonth'] = date('M j, Y', $newdate);
                 $data['userinfo'] = $userinfo[0];
                 $msg = $this->load->view('email/email_pro_signup', $data, TRUE);
                 $this->email->message($msg);
                 $this->email->send();
-                
+
 
                 //$this->session->set_flashdata('signin', 'Your payment have been done successfuly !!');
                 redirect('users/account');
@@ -721,7 +839,7 @@ class Users extends CI_Controller {
                 redirect('users/account');
             }
         } catch (Exception $e) {
-           // $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time.');
+            // $this->session->set_flashdata('signin', 'Your payment have problem ! Please try after some time.');
             redirect('users/account');
             //echo $error = $e->getMessage();
         }
@@ -733,7 +851,9 @@ class Users extends CI_Controller {
         $this->load->model('users_model');
         $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
-        $data['basic'] = $this->users_model->getUpgrade($iUserId);
+        $type = $this->session->userdata('eType');
+        $data['basic'] = $this->users_model->userAccountinfo($iUserId);
+
         $data['categories'] = $this->users_model->getCategories();
         $data['location'] = $this->users_model->getUserLocations($iUserId);
         $data['basic'] = $data['basic'][0];
@@ -745,7 +865,7 @@ class Users extends CI_Controller {
 
         $iUserId = $this->session->userdata('iUserId');
 
-        $serviceimage = $this->file_upload('large_image', $_FILES['vImage']);
+        $serviceimage = $this->file_upload('Image', $_FILES['vImage']);
         $service_id = $this->input->post('iServiceId', TRUE);
         $services = array(
             'iUserId' => $iUserId,
@@ -761,7 +881,7 @@ class Users extends CI_Controller {
         $iCompanyServiceId = $this->users_model->signup_service($services);
 
         if (isset($_FILES['vGalleryImage']['tmp_name']) && !empty($_FILES['vGalleryImage']['tmp_name'])) {
-            $vGalleryImage = $this->file_upload('large_image', $_FILES['vGalleryImage']);
+            $vGalleryImage = $this->file_upload('Image', $_FILES['vGalleryImage']);
             $templates = array(
                 'iCompanyServiceId' => $iCompanyServiceId,
                 'iUserId' => $iUserId,
@@ -772,7 +892,7 @@ class Users extends CI_Controller {
         }
 
         if (isset($_FILES['vGalleryImage1']['tmp_name']) && !empty($_FILES['vGalleryImage1']['tmp_name'])) {
-            $vGalleryImage1 = $this->file_upload('large_image', $_FILES['vGalleryImage1']);
+            $vGalleryImage1 = $this->file_upload('Image', $_FILES['vGalleryImage1']);
             $templates = array(
                 'iCompanyServiceId' => $iCompanyServiceId,
                 'iUserId' => $iUserId,
@@ -783,7 +903,7 @@ class Users extends CI_Controller {
         }
 
         if (isset($_FILES['vGalleryImage2']['tmp_name']) && !empty($_FILES['vGalleryImage2']['tmp_name'])) {
-            $vGalleryImage2 = $this->file_upload('large_image', $_FILES['vGalleryImage2']);
+            $vGalleryImage2 = $this->file_upload('Image', $_FILES['vGalleryImage2']);
             $templates = array(
                 'iCompanyServiceId' => $iCompanyServiceId,
                 'iUserId' => $iUserId,
@@ -794,7 +914,7 @@ class Users extends CI_Controller {
         }
 
         if (isset($_FILES['vGalleryImage3']['tmp_name']) && !empty($_FILES['vGalleryImage3']['tmp_name'])) {
-            $vGalleryImage3 = $this->file_upload('large_image', $_FILES['vGalleryImage3']);
+            $vGalleryImage3 = $this->file_upload('Image', $_FILES['vGalleryImage3']);
             $templates = array(
                 'iCompanyServiceId' => $iCompanyServiceId,
                 'iUserId' => $iUserId,
@@ -805,7 +925,7 @@ class Users extends CI_Controller {
         }
 
         if (isset($_FILES['vGalleryImage4']['tmp_name']) && !empty($_FILES['vGalleryImage4']['tmp_name'])) {
-            $vGalleryImage4 = $this->file_upload('large_image', $_FILES['vGalleryImage4']);
+            $vGalleryImage4 = $this->file_upload('Image', $_FILES['vGalleryImage4']);
             $templates = array(
                 'iCompanyServiceId' => $iCompanyServiceId,
                 'iUserId' => $iUserId,
@@ -818,8 +938,21 @@ class Users extends CI_Controller {
         redirect('users/account');
         exit;
     }
+
     function cancelaccount() {
-        echo "Under construction";exit;
+        echo "Under construction";
+        exit;
+    }
+
+    function upload() {
+        #print_r($_FILES);exit;
+        foreach ($_FILES['vImage'] as $key => $val) {
+            $_FILES['vImage'][$key] = $val[0];
+        }
+        #print_r($_FILES['vImage']);exit;
+        $serviceimage = $this->file_upload('Image', $_FILES['vImage'], $addpath = 'tmp/');
+        echo $serviceimage;
+        exit;
     }
 
 }

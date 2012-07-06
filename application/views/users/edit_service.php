@@ -41,9 +41,9 @@
             <div class="clearfloat"></div>
             <form name="frmeditservice" id="frmeditservice" action="users/edit_service_a" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="iCompanyServiceId" value="<?php echo $basic['iCompanyServiceId']; ?>" />
-                <div id="signup_left" style="<?php echo ($type=='Basic')?'':'width:443px;'?>">
+                <div id="signup_left" style="<?php echo ($type == 'Basic') ? '' : 'width:443px;' ?>">
                     <div id="signup_form_text6" style="margin-top:10px;">Edit this service</div>
-                    <div id="signup_service_bg" style="<?php echo ($type=='Basic')?'':'width:370px;'?>">
+                    <div id="signup_service_bg" style="<?php echo ($type == 'Basic') ? '' : 'width:370px;' ?>">
                         <div id="signup_form_text8" style="margin-top:0px;">Category</div>
 
                         <select class="list" id="iCategoryId" name="iCategoryId" style="margin-left:0px; margin-top:10px;">
@@ -52,7 +52,7 @@
                                 <option value="<?= $val['iCategoryId'] ?>" <?php echo ($val['iCategoryId'] == $basic['iCategoryId']) ? 'selected' : '' ?>><?= $val['vCategory'] ?></option>
                             <? } ?>
                         </select>
-                        
+
                         <div id="cat_services">
                             <div id="signup_form_text8">Service</div>
                             <div id="signup_form_subtext">If your service is not listed, choose “My service is not listed”.</div>
@@ -62,13 +62,14 @@
                         </div>
                         <div style="margin-top:30px;" id="signup_form_text8">Location</div>
                         <select name="iCompanyLocationId" name="iCompanyLocationId" class="list" style="margin-left:0px; margin-top:10px; width:250px;">
-                                <?php foreach ($location as $row) : ?>
-                                    <option <?php echo ($row['iCompanyLocationId'] == $basic['iCompanyLocationId']) ? 'selected="selected"' : '' ?> value="<?php echo $row['iCompanyLocationId'] ?>">
-                                        <?php echo (isset($row['vCity']) && !empty($row['vCity']) ? $row['vCity'] : ''); ?><?php echo (isset($row['vState']) && !empty($row['vState']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vState'] : $row['vState']) : ''); ?><?php echo (isset($row['vCountry']) && !empty($row['vCountry']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vCountry'] : $row['vCountry']) : ''); ?>
-                                    </option>  
-                                <?php endforeach; ?>
-                            </select>
-                        
+                            <?php foreach ($location as $row) : ?>
+                                <option <?php echo ($row['iCompanyLocationId'] == $basic['iCompanyLocationId']) ? 'selected="selected"' : '' ?> value="<?php echo $row['iCompanyLocationId'] ?>">
+                                    <?php echo (isset($row['vCity']) && !empty($row['vCity']) ? $row['vCity'] : ''); ?><?php echo (isset($row['vCountry']) && !empty($row['vCountry']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vCountry'] : $row['vCountry']) : ''); ?>
+                                    <?php //(isset($row['vState']) && !empty($row['vState']) ? (isset($row['vCity']) && !empty($row['vCity']) ? ',' . $row['vState'] : $row['vState']) : ''); ?>
+                                </option>  
+                            <?php endforeach; ?>
+                        </select>
+
                         <div id="not_listed" style="<?php echo ($basic['iServiceId'] > 0) ? 'display:none' : '' ?>">
                             <div id="signup_form_text8">Enter service name</div>
                             <div id="signup_form_subtext">As you type we'll make recommendations — please select one if it's close.</div>
@@ -79,56 +80,58 @@
 
                         <div id="signup_form_text8">Main image</div>
                         <div id="signup_form_subtext">Upload an image that best represents this service. You can always change it after your listing has been created.</div>
-                        <div id="update_images"><img src="uploads/<?php echo $basic['vImage'] ?>" style="width:120px;height:93px;"/></div>
+
+                        <div id="update_images">
+                            <img src="uploads/2_<?php echo $basic['vImage'] ?>" style="width:120px;height:93px;"/>
+                        </div>
                         <div class="clearfloat"></div>
                         <input  type="file" onfocus="this.value=''" name="vImage" class="signup_file" value="" />
                         <input type="hidden" name="vOldImage" id="vOldImage"  value="<?php echo $basic['vImage'] ?>" />
                         <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
 
-                        
+
                         <?php if ($type == 'Basic') : ?>
                             <div id="signup_form_text8">Gallery</div>
                             <div id="signup_form_subtext"><a href="users/publish_pro">Upgrade to Pro</a> to add up to 5 extra images of this service.</div>
                         <?php else: ?>
                             <div id="signup_form_text8">Gallery</div>
                             <div id="signup_form_subtext">Add up to 5 images of this service.</div>
-                            
-                            <input type="hidden" name="iTemplateId" value="<?php echo $gallery[0]['iTemplateId']?>" />
-                            <input type="hidden" name="vOldGalleryImage" value="<?php echo $gallery[0]['vImage']?>" />
-                            <?php 
-                            
-                            if(is_file(APPPATH.'theme/uploads/'.$gallery[0]['vImage'])) :?>
-                            <div id="update_images"><img src="uploads/<?php echo $gallery[0]['vImage'] ?>" style="width:120px;height:93px;"/></div>
-                            <?php endif;?>
+
+                            <input type="hidden" name="iTemplateId" value="<?php echo $gallery[0]['iTemplateId'] ?>" />
+                            <input type="hidden" name="vOldGalleryImage" value="<?php echo $gallery[0]['vImage'] ?>" />
+                            <?php if (is_file(APPPATH . 'theme/uploads/2_' . $gallery[0]['vImage'])) : ?>
+                                <div id="update_images">
+                                    <img src="uploads/2_<?php echo $gallery[0]['vImage'] ?>" style="width:120px;height:93px;"/></div>
+                            <?php endif; ?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage" id="vGalleryImage" class="signup_file" value="" />
-                            
-                            <input type="hidden" name="iTemplateId1" value="<?php echo $gallery[1]['iTemplateId']?>" />
-                            <input type="hidden" name="vOldGalleryImage1" value="<?php echo $gallery[1]['vImage']?>" />
-                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[1]['vImage'])) :?>
-                            <div id="update_images"><img src="uploads/<?php echo $gallery[1]['vImage'] ?>" style="width:120px;height:93px;"/></div>
-                            <?php endif;?>
+
+                            <input type="hidden" name="iTemplateId1" value="<?php echo $gallery[1]['iTemplateId'] ?>" />
+                            <input type="hidden" name="vOldGalleryImage1" value="<?php echo $gallery[1]['vImage'] ?>" />
+                            <?php if (is_file(APPPATH . 'theme/uploads/2_' . $gallery[1]['vImage'])) : ?>
+                                <div id="update_images"><img src="uploads/2_<?php echo $gallery[1]['vImage'] ?>" style="width:120px;height:93px;"/></div>
+                            <?php endif; ?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage1" id="vGalleryImage1" class="signup_file" value="" />
 
-                            <input type="hidden" name="iTemplateId2" value="<?php echo $gallery[2]['iTemplateId']?>" />
-                            <input type="hidden" name="vOldGalleryImage2" value="<?php echo $gallery[2]['vImage']?>" />
-                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[2]['vImage'])) :?>
-                            <div id="update_images"><img src="uploads/<?php echo $gallery[2]['vImage'] ?>" style="width:120px;height:93px;"/></div>
-                            <?php endif;?>
+                            <input type="hidden" name="iTemplateId2" value="<?php echo $gallery[2]['iTemplateId'] ?>" />
+                            <input type="hidden" name="vOldGalleryImage2" value="<?php echo $gallery[2]['vImage'] ?>" />
+                            <?php if (is_file(APPPATH . 'theme/uploads/2_' . $gallery[2]['vImage'])) : ?>
+                                <div id="update_images"><img src="uploads/2_<?php echo $gallery[2]['vImage'] ?>" style="width:120px;height:93px;"/></div>
+                            <?php endif; ?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage2" id="vGalleryImage2" class="signup_file" value="" />
 
-                            <input type="hidden" name="iTemplateId3" value="<?php echo $gallery[3]['iTemplateId']?>" />
-                            <input type="hidden" name="vOldGalleryImage3" value="<?php echo $gallery[3]['vImage']?>" />
-                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[3]['vImage'])) :?>
-                            <div id="update_images"><img src="uploads/<?php echo $gallery[3]['vImage'] ?>" style="width:120px;height:93px;"/></div>
-                            <?php endif;?>
+                            <input type="hidden" name="iTemplateId3" value="<?php echo $gallery[3]['iTemplateId'] ?>" />
+                            <input type="hidden" name="vOldGalleryImage3" value="<?php echo $gallery[3]['vImage'] ?>" />
+                            <?php if (is_file(APPPATH . 'theme/uploads/2_' . $gallery[3]['vImage'])) : ?>
+                                <div id="update_images"><img src="uploads/2_<?php echo $gallery[3]['vImage'] ?>" style="width:120px;height:93px;"/></div>
+                            <?php endif; ?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage3" id="vGalleryImage3" class="signup_file" value="" />
-                            
-                            <input type="hidden" name="iTemplateId4" value="<?php echo $gallery[4]['iTemplateId']?>" />
-                            <input type="hidden" name="vOldGalleryImage4" value="<?php echo $gallery[4]['vImage']?>" />
-                            
-                            <?php if(is_file(APPPATH.'theme/uploads/'.$gallery[4]['vImage'])) :?>
-                            <div id="update_images"><img src="uploads/<?php echo $gallery[4]['vImage'] ?>" style="width:120px;height:93px;"/></div>
-                            <?php endif;?>
+
+                            <input type="hidden" name="iTemplateId4" value="<?php echo $gallery[4]['iTemplateId'] ?>" />
+                            <input type="hidden" name="vOldGalleryImage4" value="<?php echo $gallery[4]['vImage'] ?>" />
+
+                            <?php if (is_file(APPPATH . 'theme/uploads/2_' . $gallery[4]['vImage'])) : ?>
+                                <div id="update_images"><img src="uploads/2_<?php echo $gallery[4]['vImage'] ?>" style="width:120px;height:93px;"/></div>
+                            <?php endif; ?>
                             <input  type="file" onfocus="this.value=''" name="vGalleryImage4" id="vGalleryImage4" class="signup_file" value="" />
                             <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
                         <? endif; ?>
@@ -167,7 +170,13 @@
                                 <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService'])) ? $basic['vService'] : $basic['vServiceName'] ?></div>
                             </div>
                             <div class="clearfloat"></div>
-                            <div id="card_small_img"><img src="uploads/<?php echo $basic['vImage'] ?>" width="209" height="163" /></div>
+                            <div id="card_small_img">
+                                <?php if (is_file(APPPATH . 'theme/uploads/2_' . $basic['vImage'])) : ?>
+                                    <a href="users/profile/<?php echo $basic['iCompanyServiceId'] ?>">
+                                       <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" />
+                                    </a>    
+                                <?php endif; ?>
+                            </div>
                             <div id="listing_card_small_price">
                                 <div id="listing_card_large_price_small">From</div>
                                 <div id="listing_card_large_price_currency_small"><?php echo $basic['vCurrencySymbol'] ?></div>
@@ -177,7 +186,7 @@
                             <div class="clearfloat"></div>		
                         </div>
                         <div class="clearfloat"></div>
-                        <div id="upgrade_point2" style="margin-top:8px;">Want a large listing card? <a href="javascript:;" id="frmeditservice">Upgrade</a>.</div>
+                        <div id="upgrade_point2" style="margin-top:8px;">Want a large listing card? <a href="users/publish_pro" id="">Upgrade</a>.</div>
                     </div>
                 </div>
             <?php else : ?>

@@ -13,12 +13,15 @@
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/settings_pro.js"></script>
         <style>
-            .err{
-                color: #FF0000;
+            .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
         <script>
@@ -89,7 +92,7 @@
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
                 <div id="logo"><a href=""<?= base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
-           </div>  
+            </div>  
         </div>
         <form name="frmsettings" id="frmsettings" action="users/settings_pro_a" method="post" enctype="multipart/form-data" > 
             <div id="inner_container" style="width:924px;">
@@ -103,6 +106,10 @@
                 <div id="signup_left" style="width:824px;">
                     <div id="signup_form_text6" style="margin-top:10px;">Company details</div>
                     <input  type="text"  name="vCompanyName" name="vCompanyName" value="<?php echo $basic['vCompanyName'] ?>" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" />
+                    <div id="signup_form_text8">About your company</div>
+                    <textarea class="new_service_input_area" style="width:441px;"></textarea>
+                    <div id="signup_subtitle"><span style="color:#333;">280</span></div>
+                    
                     <div id="signup_form_text8">Locations</div>
                     <div id="signup_subtitle">You can add up to 3 locations.</div>
                     <!--
@@ -110,7 +117,7 @@
                     
                     <input type ="hidden" name="iCompanyLocationId[]" id="iCompanyLocationId3" value="<?php echo $basic['iCompanyLocationId'] ?>" />
                     <?php
-                     country_dropdown('vCountryCode[]', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
+                    country_dropdown('vCountryCode[]', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
                     ?>
                     <input type ="hidden" name="vCountry[]" id="vCountry" value="<?php echo $basic['vCountry'] ?>" />
                     
@@ -121,27 +128,27 @@
                     <input type ="hidden" name="iCityId[]" id="iCityId" value="<?php echo $basic['iCityId'] ?>" />
                     <div class="clearfloat"></div>
                     -->
-                    <?php  for($f=0;$f<3;$f++):  ?>
-                    <div style="margin-top:10px;" class="locationpro" id="location_<?php echo $f?>" >
-                        <input type ="hidden" name="Location[<?php echo $f?>][iCompanyLocationId]" id="iCompanyLocationId_<?php echo $f?>" value="<?php echo $location[$f]['iCompanyLocationId'] ?>" />
-                        <input type ="hidden" name="Location[<?php echo $f?>][iCompanyServiceId]" id="iCompanyServiceId_<?php echo $f?>" value="<?php echo $location[$f]['iCompanyServiceId'] ?>" />
-                        <?php echo country_dropdown('Location['. $f .'][vCountryCode]', 'vCountryCode_'.$f, array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $location[$f]['vCountryCode']); ?>
-                        <input type ="hidden" name="Location[<?php echo $f?>][vCountry]" id="vCountry_<?php echo $f?>" value="<?php echo $location[$f]['vCountry'] ?>" />
-                        <input  type="text"  name="Location[<?php echo $f?>][vState]" id="vState_<?php echo $f?>" value="<?php echo $location[$f]['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo (empty($location[$f]['vState'])) ? 'display:none;' : '' ?>" placeholder="State" />
-                        <input type ="hidden" name="Location[<?php echo $f?>][vStateCode]" id="vStateCode_<?php echo $f?>" value="<?php echo $location[$f]['vStateCode'] ?>" />
-                        <input  type="text"  name="Location[<?php echo $f?>][vCity]" id="vCity_<?php echo $f?>" value="<?php echo $location[$f]['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
-                        <input type ="hidden" name="Location[<?php echo $f?>][iCityId]" id="iCityId_<?php echo $f?>" value="<?php echo $location[$f]['iCityId'] ?>" />
-                        <?php if($f!=0): ?>
-                            <div id="signup_delete_link" class="location_delete_link" data-location="<?php echo $f?>">Remove</div>
-                        <?php endif;?>
-                        <div class="clearfloat"></div>
-                    </div>
+                    <?php for ($f = 0; $f < 3; $f++): ?>
+                        <div style="margin-top:10px;" class="locationpro" id="location_<?php echo $f ?>" >
+                            <input type ="hidden" name="Location[<?php echo $f ?>][iCompanyLocationId]" id="iCompanyLocationId_<?php echo $f ?>" value="<?php echo $location[$f]['iCompanyLocationId'] ?>" />
+                            <input type ="hidden" name="Location[<?php echo $f ?>][iCompanyServiceId]" id="iCompanyServiceId_<?php echo $f ?>" value="<?php echo $location[$f]['iCompanyServiceId'] ?>" />
+                            <?php echo country_dropdown('Location[' . $f . '][vCountryCode]', 'vCountryCode_' . $f, array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $location[$f]['vCountryCode']); ?>
+                            <input type ="hidden" name="Location[<?php echo $f ?>][vCountry]" id="vCountry_<?php echo $f ?>" value="<?php echo $location[$f]['vCountry'] ?>" />
+                            <input  type="text"  name="Location[<?php echo $f ?>][vState]" id="vState_<?php echo $f ?>" value="<?php echo $location[$f]['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo (empty($location[$f]['vState'])) ? 'display:none;' : '' ?>" placeholder="State" />
+                            <input type ="hidden" name="Location[<?php echo $f ?>][vStateCode]" id="vStateCode_<?php echo $f ?>" value="<?php echo $location[$f]['vStateCode'] ?>" />
+                            <input  type="text"  name="Location[<?php echo $f ?>][vCity]" id="vCity_<?php echo $f ?>" value="<?php echo $location[$f]['vCity'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px;" placeholder="City" />
+                            <input type ="hidden" name="Location[<?php echo $f ?>][iCityId]" id="iCityId_<?php echo $f ?>" value="<?php echo $location[$f]['iCityId'] ?>" />
+                            <?php if ($f != 0): ?>
+                                <div id="signup_delete_link" class="location_delete_link" data-location="<?php echo $f ?>">Remove</div>
+                            <?php endif; ?>
+                            <div class="clearfloat"></div>
+                        </div>
                     <?php endfor; ?>
                     <!--
                     <div style="margin-top:10px;" id="location_3">
-                        <?php
-                        echo country_dropdown('vCountryCode[]', 'vCountryCode3', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
-                        ?>
+                    <?php
+                    echo country_dropdown('vCountryCode[]', 'vCountryCode3', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="signup_input_loc2" ', $basic['vCountryCode']);
+                    ?>
                         <input type ="hidden" name="vCountry[]" id="vCountry3" value="<?php echo $basic['vCountry'] ?>" />
                         <input  type="text"  name="vState[]" id="vState3" value="<?php echo $basic['vState'] ?>" class="signup_input_login3" style="width:139px; float:left; font-size:13px; margin-top:0px; padding-left:5px; height:21px; margin-left:10px; <?php echo ($basic['vCountryCode'] != 'US') ? 'display:none;' : '' ?>" placeholder="State" />
                         <input type ="hidden" name="vStateCode[]" id="vStateCode3" value="<?php echo $basic['vStateCode'] ?>" />
@@ -169,14 +176,14 @@
                     <div id="radio_btn_cont3" style="margin-left:0px;">
                         <select class="currency" style="margin-left:0px;" name="iCurrencyId" id="iCurrencyId">
                             <?php foreach ($currency as $row): ?>       
-                                <option class="<?php echo $row['vCurrencyVal'] ?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol'] ?>" value="<?php echo $row['iCurrencyId'] ?>" <?php echo ($row['iCurrencyId']==$basic['iCurrencyId'])? 'selected="selected"':"" ?> ><?php echo $row['vCurrency'] ?></option>
+                                <option class="<?php echo $row['vCurrencyVal'] ?>" data-format="%u%n" data-symbol="<?php echo $row['vCurrencySymbol'] ?>" value="<?php echo $row['iCurrencyId'] ?>" <?php echo ($row['iCurrencyId'] == $basic['iCurrencyId']) ? 'selected="selected"' : "" ?> ><?php echo $row['vCurrency'] ?></option>
                             <?php endforeach; ?>   
                         </select>
                     </div>			
                     <div class="clearfloat"></div> 
 
                     <div id="signup_form_text6" style="margin-top:40px;">Billing</div>
-                    <div id="signup_form_subtext" style="color:#333; margin-top:20px;">Next Charge: <?php echo date('F, jS Y',strtotime('+1 Month',strtotime($transinfo[0]['dtAddeddate'])))?></div>
+                    <div id="signup_form_subtext" style="color:#333; margin-top:20px;">Next Charge: <?php echo date('F, jS Y', strtotime('+1 Month', strtotime($transinfo[0]['dtAddeddate']))) ?></div>
                     <div class="settings_link" style=" margin-top:10px;">Downgrade?</div>
                     <div class="clearfloat"></div> 
                     <div id="signup_sepline2"></div>
@@ -185,25 +192,25 @@
                     <div class="clearfloat"></div>
                     <div id="change_card">
                         <div id="card_bg">
-                            <input  type="text" name="vCardNumber" id="vCardNumber" value="<?php echo $cardinfo['vCardNumber']?>" class="signup_input_login3" style="width:350px; margin-top:25px;" placeholder="Card number" />
+                            <input  type="text" name="vCardNumber" id="vCardNumber" value="<?php echo $cardinfo['vCardNumber'] ?>" class="signup_input_login3" style="width:350px; margin-top:25px;" placeholder="Card number" />
                             <div id="payments_cards" style="margin-top:15px; margin-bottom:20px;"></div>
 
                             <div id="signup_form_text8" style="margin-top:20px;">Expires on</div>
                             <div style="margin-top:5px;">
-                                <?php $month = array('01'=>'January','02'=>'February','03'=>'March','04'=>'April','05'=>'May','06'=>'June','07'=>'July','08'=>'August','09'=>'September','10'=>'October','11'=>'November','12'=>'December')?>
-                                
+                                <?php $month = array('01' => 'January', '02' => 'February', '03' => 'March', '04' => 'April', '05' => 'May', '06' => 'June', '07' => 'July', '08' => 'August', '09' => 'September', '10' => 'October', '11' => 'November', '12' => 'December') ?>
+
                                 <select  type="text"  name="vExpireMonth" id="vExpireMonth" />
-                                    <?php foreach($month as $key => $val) :?>
-                                        <option value="<?php echo $key?>" <?php echo ($key==$cardinfo['vExpireMonth'])?'selected="selected"':''?> ><?php echo $key?> - <?php echo $val?></option>
-                                    <?php endforeach;?>
+                                <?php foreach ($month as $key => $val) : ?>
+                                    <option value="<?php echo $key ?>" <?php echo ($key == $cardinfo['vExpireMonth']) ? 'selected="selected"' : '' ?> ><?php echo $key ?> - <?php echo $val ?></option>
+                                <?php endforeach; ?>
                                 </select>
-                                
+
                                 <select  type="text" name="vExpireYear" />
                                 <?php
                                 $n = date('Y');
                                 for ($i = $n; $i < $n + 16; $i++) {
                                     ?>
-                                    <option value="<?php echo $i ?>" <?php echo ($i==$cardinfo['vExpireYear'])?'selected="selected"':''?> > <?php echo $i ?> </option>
+                                    <option value="<?php echo $i ?>" <?php echo ($i == $cardinfo['vExpireYear']) ? 'selected="selected"' : '' ?> > <?php echo $i ?> </option>
                                 <?php } ?>
 
 
@@ -211,7 +218,7 @@
                                 <div class="clearfloat"></div>
                             </div>
                             <div id="signup_form_text8" style="margin-top:20px;">Safety code <span style="color:#999; font-size:11px; font-weight:normal;">&#8212; Last 3 digits on back of your card.</span></div>
-                            <input  type="text" name="vCvv" id="vCvv" value="<?php echo $cardinfo['vCvv'];?>" class="signup_input_login3" style="width:50px; margin-top:10px;" />
+                            <input  type="text" name="vCvv" id="vCvv" value="<?php echo $cardinfo['vCvv']; ?>" class="signup_input_login3" style="width:50px; margin-top:10px;" />
                         </div>
                         <a href="javascript:;" id="savecardinfo"  class="btn" title="Apply" style="width:60px;font-size:15px; height:28px; padding-top:2px; margin-top:20px; margin-left:0px;">Save</a>
                         <div class="clearfloat"></div>
@@ -225,20 +232,20 @@
                     <div id="signup_sepline2"></div>
                     <div id="signup_form_text8" style="margin-top:22px;">Last invoice</div>
                     <div class="account_invoices">
-                    <a href="http://area20.com/servlio/email_paid_invoice.html">$<?php echo $this->config->config['Stripe']['Amount']/100?> for Pro on <?php echo date('F, d Y',strtotime($transinfo[0]['dtAddeddate']))?></a></div>
+                        <a href="http://area20.com/servlio/email_paid_invoice.html">$<?php echo $this->config->config['Stripe']['Amount'] / 100 ?> for Pro on <?php echo date('F, d Y', strtotime($transinfo[0]['dtAddeddate'])) ?></a></div>
                     <div id="past_invoices">
-                        <?php unset($transinfo[0]);?>
-                        <?php foreach($transinfo as $row) : ?>
-                        <div class="account_invoices">
+                        <?php unset($transinfo[0]); ?>
+                        <?php foreach ($transinfo as $row) : ?>
+                            <div class="account_invoices">
                                 <a href="http://area20.com/servlio/email_paid_invoice.html">
-                                    $<?php echo $this->config->config['Stripe']['Amount']/100?> for Pro on <?php echo date('F, d Y',strtotime($row['dtAddeddate']))?>
+                                    $<?php echo $this->config->config['Stripe']['Amount'] / 100 ?> for Pro on <?php echo date('F, d Y', strtotime($row['dtAddeddate'])) ?>
                                 </a>
-                        </div>
+                            </div>
                         <?php endforeach; ?>
                         <div class="settings_link" id="past_close" style=" margin-top:10px;">Close</div>
                         <div class="clearfloat"></div>
                     </div>
-                    
+
                     <div class="settings_link" id="past" style=" margin-top:10px;">See all past invoices</div>
                     <div class="clearfloat"></div>
 
@@ -273,5 +280,5 @@
             </div>
         </form>
     </body>
-      
+
 </html>

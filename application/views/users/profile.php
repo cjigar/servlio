@@ -38,7 +38,7 @@
         </div>
 <?php
               if(file_exists($this->config->config['upload_path'].$udetail[0]['vImage'])) {
-                  $udetail[0]['vImage'] = $this->config->config['upload_url'].$udetail[0]['vImage'];
+                  $udetail[0]['vImage'] = $this->config->config['upload_url'].'4_'.$udetail[0]['vImage'];
               }
               if(file_exists($this->config->config['upload_path'].$udetail[0]['vCompanyLogo'])) {
                   $udetail[0]['vCompanyLogo'] = $this->config->config['upload_url'].$udetail[0]['vCompanyLogo'];
@@ -106,12 +106,12 @@
 
                     <div id="profile_container_left">
                         <div id="profile_header4" style="margin-top:10px;">About</div>
-                        <div id="profile_header5" style="margin-top:10px;"><?php echo (isset($udetail[0]['vService']) && !empty($udetail[0]['vService']))? $udetail[0]['vService'] : '--'; ?></div>
+                        <div id="profile_header5" style="margin-top:10px;"><?php echo (isset($udetail[0]['vService']) && !empty($udetail[0]['vService']))? $udetail[0]['vService'] : (!empty($udetail[0]['vServiceName'])?$udetail[0]['vServiceName']: '--'); ?></div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline_left"></div>
-                        <div id="large_profile_container_image"><img src="<?php echo $udetail[0]['vImage']?>" height="655" width="471" /> </div>
-
-
+                        <div id="large_profile_container_image">
+                            
+                            <img src="<?php echo $udetail[0]['vImage']?>" width="655" height="471" /> </div>
                         <div id="profile_text3">
                             <?php echo nl2br($udetail[0]['vDescription'])?>
                         </div>
@@ -122,7 +122,7 @@
                         <div id="profile_header4" style="margin-top:10px;">About</div>
                         <div id="profile_header5" style="margin-top:10px;"><?php echo $udetail[0]['vCompanyName']?></div>
                         <div class="clearfloat"></div>
-                        <div id="profile_sepline"><?php echo nl2br($udetail[0]['vDescription'])?></div>
+                        <div id="profile_sepline"><?php echo nl2br($udetail[0]['vAbout'])?></div>
                         <div id="profile_text"></div>
                         <div id="profile_header4">Address</div>
                         <div class="clearfloat"></div>
@@ -137,8 +137,8 @@
                         <div id="profile_sepline"></div>
                         <div id="profile_text">
                             <div id="listing_card_large_price_small">From</div> 
-                            <div id="listing_card_large_price_currency_small"><?echo $listingdata[$i]['vCurrencySymbol']?></div>
-                            <div id="listing_card_large_price_num_small"><?echo $listingdata[$i]['fPrice']?></div>                        
+                            <div id="listing_card_large_price_currency_small"><?echo $udetail[0]['vCurrencySymbol']?></div>
+                            <div id="listing_card_large_price_num_small"><?echo $udetail[0]['fPrice']?></div>                        
                         </div>                        
                     </div>
                 </div>

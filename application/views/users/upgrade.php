@@ -43,24 +43,26 @@
             <div id="upgrade_top">
                 <div id="listing_card_small" style="margin-right:20px;">
                     <div id="listing_card_small_details_container">
-                        <div id="listing_card_small_name"><a href="javascript://"><?php echo $basic['vCompanyName']?></a></div>
+                        <div id="listing_card_small_name"><a href="javascript://"><?php echo $basic['vCompanyName'] ?></a></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_small_location" ><?php echo $basic['vCity']?></div>
+                        <div id="listing_card_small_location" ><?php echo $basic['vCity'] ?></div>
                         <div id="listing_card_small_location3" >,</div>
-                        <div id="listing_card_small_location2" ><?php echo $basic['vCountry']?></div>
+                        <div id="listing_card_small_location2" ><?php echo $basic['vCountry'] ?></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService']))?$basic['vService']:$basic['vServiceName']?></div>
+                        <div id="listing_card_small_profession"><?php echo (isset($basic['vService']) && !empty($basic['vService'])) ? $basic['vService'] : $basic['vServiceName'] ?></div>
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
-                            <a href="users/profile">
-                                <img src="uploads/<?php echo $basic['vImage']?>" width="209" height="163" />
-                            </a>
+                        <?php if (is_file(APPPATH."theme/uploads/2_" . $basic['vImage'])) { ?>
+                        <a href="users/profile">
+                            <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" />
+                        </a>
+                        <?php } ?>
                     </div>
                     <div id="listing_card_small_price">
                         <div id="listing_card_large_price_small">From</div>
-                        <div id="listing_card_large_price_currency_small"><?php echo $basic['vCurrencySymbol']?></div>
-                        <div id="listing_card_large_price_num_small"><?php echo $basic['fPrice']?></div>
+                        <div id="listing_card_large_price_currency_small"><?php echo $basic['vCurrencySymbol'] ?></div>
+                        <div id="listing_card_large_price_num_small"><?php echo $basic['fPrice'] ?></div>
 
                         <div class="clearfloat"></div>
                     </div>
@@ -99,32 +101,36 @@
 
                 <div id="listing_card_large" style="margin-top:20px;">
                     <div id="listing_card_large_details_container">
-                        <div id="listing_card_large_name"><a href="javascript:;"><?php echo $basic['vCompanyName']?></a></div>
+                        <div id="listing_card_large_name"><a href="javascript:;"><?php echo $basic['vCompanyName'] ?></a></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_large_location" ><?php echo $basic['vCity']?></div>
+                        <div id="listing_card_large_location" ><?php echo $basic['vCity'] ?></div>
                         <div id="listing_card_large_location3">,</div>
-                        <div id="listing_card_large_location2"><?php echo $basic['vCountry']?></div>
+                        <div id="listing_card_large_location2"><?php echo $basic['vCountry'] ?></div>
                         <div class="clearfloat"></div>
-                        <div id="listing_card_large_profession" ><?php echo (isset($basic['vService']) && !empty($basic['vService']))?$basic['vService']:$basic['vServiceName']?></div>
+                        <div id="listing_card_large_profession" ><?php echo (isset($basic['vService']) && !empty($basic['vService'])) ? $basic['vService'] : $basic['vServiceName'] ?></div>
                         <div class="clearfloat"></div>
                     </div>
                     <div id="listing_card_large_logo">
-                        <a href="javascript:;"><img src="uploads/<?php echo $basic['vCompanyLogo']?>"/></a>
+                        <?php if (is_file(APPPATH."theme/uploads/" . $basic['vCompanyLogo'])) { ?>
+                            <a href="javascript:;"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></a>
+                        <?php } ?>
                     </div>
                     <div class="clearfloat"></div>
                     <div id="card_large_img">
-                        <a href="users/profile_pro">
-                            <img src="uploads/<?php echo $basic['vImage']?>" width="444" height="347" />
-                        </a>
+                        <?php if (is_file(APPPATH."theme/uploads/3_" . $basic['vImage'])) { ?>
+                            <a href="users/profile_pro">
+                                <img src="uploads/3_<?php echo $basic['vImage'] ?>" width="444" height="347" />
+                            </a>
+                        <?php } ?>
                     </div>
                     <div id="card_large_dots_container">
 
                     </div>
-                    <div id="listing_card_large_description"><?php echo substr(nl2br($basic['vDescription']),0,200)?></div>
+                    <div id="listing_card_large_description"><?php echo substr(nl2br($basic['vDescription']), 0, 200) ?></div>
                     <div id="listing_card_large_bottom_container">
                         <div id="listing_card_large_price">From</div>
-                        <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol']?></div>
-                        <div id="listing_card_large_price_num"><?php echo $basic['fPrice']?></div>
+                        <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol'] ?></div>
+                        <div id="listing_card_large_price_num"><?php echo $basic['fPrice'] ?></div>
                         <div class="clearfloat"></div>
                     </div>
                 </div>

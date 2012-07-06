@@ -12,14 +12,16 @@ function  country_dropdown ( $name="country", $id="country", $top_countries=arra
     $html = "<select name='{$name}' id='{$id}' $attr>";
     $html .= "<option value=''>All Countries</option>";
     $selected = NULL;
-    if(in_array($selection,$top_countries))  {
+    /*if(in_array($selection,$top_countries))  {
         $top_selection = $selection;
         $all_selection = NULL;
-        }
+        } 
     else  {
         $top_selection = NULL;
         $all_selection = $selection;
-        }
+        } */
+        $top_selection = NULL;
+        $all_selection = $selection;
         /*
     if(!empty($top_countries))  {
         foreach($top_countries as $value)  {
@@ -45,6 +47,7 @@ function  country_dropdown ( $name="country", $id="country", $top_countries=arra
         }
 
     $html .= "</select>";
+    
     return $html;
     }  
     

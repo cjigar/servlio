@@ -17,8 +17,11 @@
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/settings.js"></script>
         <style>
-            .err{
-                color: #FF0000;
+             .err {
+                border: 1px red solid  !important;
+                background-color: #FFD3D5;
+                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
+                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
             }
         </style>
     </head>
@@ -27,6 +30,8 @@
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
                 <div id="logo"><a href="<?php echo base_url(); ?>"><img alt="Servlio" src="images/logo.png" /></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
+                <div style="margin-right:17px;float:right;" id="login"><a href="users/signout">Logout</a></div>                
+                <div style="margin-right:17px;" id="login"><a href="users/account">My account</a></div>
             </div>  
         </div>
 
@@ -42,7 +47,12 @@
                     <div id="signup_left">
                         <div id="signup_form_text6" style="margin-top:10px;">Company details</div>
                         <input  type="text" value="<?php echo $basic['vCompanyName'] ?>" name="vCompanyName" id="vCompanyName"  class="signup_input_login3"  placeholder="Company name" style="width:450px; margin-top:15px;" />
-                        <div id="signup_form_text8">Location of headquarters</div>
+                        
+                        <div id="signup_form_text8">About your company</div>
+                        <textarea class="new_service_input_area" id="vAbout" name="vAbout" style="width:441px;"><?php echo $basic['vAbout']?></textarea>
+                        <div id="signup_subtitle"><span style="color:#333;">280</span></div>
+                        
+                        <div id="signup_form_text8">Location of headquarterCompanys</div>
                         <div id="signup_subtitle">You can add more locations later.</div>
                         
                         <input type="hidden" name="iCompanyLocationId" id="iCompanyLocationId" value="<?php echo $basic['iCompanyLocationId'] ?>" />
@@ -58,10 +68,10 @@
                         <div id="signup_form_text8">Address</div>
                         <input  type="text" name="vAddress" id="vAddress" class="signup_input_login3" placeholder="Address" style="width:450px; margin-top:15px;" value="<?php echo $basic['vAddress'] ?>" />
                         <div id="signup_sepline2"></div>
-                        <div id="signup_form_text8" style="margin-top:20px;">Company logo</div>
+                        <div id="signup_form_text8" class="vCompanyLogo" style="margin-top:20px;" >Company logo</div>
                         <div id="update_images"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></div>
                         <div class="clearfloat"></div>
-                        <input type="hidden" name="vOldCompanyLogo" name="vOldCompanyLogo" value="<?php echo $basic['vCompanyLogo'] ?>" />
+                        <input type="hidden" name="vOldCompanyLogo" id="vOldCompanyLogo" value="<?php echo $basic['vCompanyLogo'] ?>" />
                         <input  type="file" name="vCompanyLogo" id="vCompanyLogo" onfocus="this.value=''"  class="signup_file" value="" />
                         <div id="signup_subtitle">Gif, jpg, or png. We’ll resize what you have.</div>
                         <div id="signup_sepline2"></div>

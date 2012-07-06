@@ -49,7 +49,7 @@
                         for($j=0;$j<count($image_slide);$j++) {
                         ?>
                           <div class="glidecontent glidecontent<?echo $i?>">
-                            <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>"/>
+                            <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>" />
                           </div>
                           
                         <?php } ?>

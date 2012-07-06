@@ -9,12 +9,15 @@
         <meta name="keyword" content="<?php echo isset($metaKeyword) ? $metaKeyword : 'Servlio'; ?>" />
         <meta name="generator" content="Servlio" />
         <base href="<?= base_url(); ?>">
-        <link href="<?= base_url() ?>css/style.css" rel="stylesheet" />
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+        <link href="<?= base_url() ?>css/style.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
-        <script src="<?php echo base_url(); ?>js/uploadify/jquery.uploadify-3.1.min.js"></script>
-        <link href="<?php echo base_url(); ?>js/uploadify/uploadify.css" rel="stylesheet" />
+<!--        <script src="<?php echo base_url(); ?>js/uploadify/jquery.uploadify-3.1.min.js"></script>
+        <link href="<?php echo base_url(); ?>js/uploadify/uploadify.css" rel="stylesheet" />-->
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+        <script src="<?php echo base_url(); ?>js/signup.js"></script>
+        
         <style>
             .err {
                 border: 1px red solid  !important;
@@ -27,8 +30,6 @@
             var site_url =  '<?= base_url() ?>';
             var site_path =  '<?= APPPATH ?>';
         </script>
-        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-        <script src="<?php echo base_url(); ?>js/signup.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#cat_services").hide(); 
@@ -102,7 +103,7 @@
 
         <div style="height:79px;" id="inner_container">
             <div style="margin-top:-7px; position:fixed;" class="create_account_pop">
-                <div id="logo"><a href="<?php echo base_url()?>"><img src="images/logo.png" alt="Servlio"></a></div>
+                <div id="logo"><a href="<?php echo base_url() ?>"><img src="images/logo.png" alt="Servlio"></a></div>
                 <div id="accounts_text">Connect to customers in your area.</div>
             </div>  
         </div>
@@ -151,9 +152,6 @@
                     <input onfocus="this.value=''" name="vCompanyLogo" id="vCompanyLogo" class="signup_file" value="" type="file">
                     <div id="signup_subtitle">Gif, jpg, or png. We’ll resize what you have.</div>
 
-
-
-
                     <div id="signup_form_text6" style="margin-top:40px;">Now tell us about your main service</div>
                     <div id="signup_subtitle">You can add more services later.</div>
                     <div id="signup_service_bg">
@@ -187,7 +185,12 @@
 
                         <div id="signup_form_text8" class="image">Image</div>
                         <div id="signup_form_subtext">Upload an image that best represents this service. You can always change it after your listing has been created.</div>
-                        <input onfocus="this.value=''" name="vImage" id="vImage" class="signup_file" value="" type="file"  />
+                        <form method="post" enctype="multipart/form-data"  action="uers/image">
+                            <input name="vImage" id="vImage" class="signup_file" value="" type="file"  />
+                            <button type="submit" id="vFire" >Upload Files!</button>
+                        </form>
+                        <input type="hidden" id="vTmpImage" name="vTmpImage" value="" />
+                        
                         <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
 
 
@@ -211,15 +214,9 @@
                         <div class="clearfloat"></div>
 
                         <div id="signup_sepline"></div>
-
-
-
                     </div>
-
-
-
                     <div id="signup_form_text6" style="margin-top:40px;">Finally, how will customers contact you?</div>
-                    <input onfocus="this.value=''" name="vEmail" id="vEmail" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Email" type="text">
+                    <input onfocus="this.value=(this.value=='Eamil')?'':this.value" name="vEmail" id="vEmail" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Email" type="text">
                     <div class="clearfloat"></div>
 
                     <input onfocus="this.value=''" name="vWebSite" id="vwebSite" class="signup_input_login3" style="width:450px; margin-top:10px;" placeholder="Website" type="text">
@@ -256,7 +253,9 @@
                             <div id="listing_card_small_profession">Service</div>
                         </div>
                         <div class="clearfloat"></div>
-                        <div id="service_card_image_loader"></div>
+                        <div id="service_card_image_loader">
+                            <img  id="vImageload" src="images/default_image.jpg" />
+                        </div>
                         <div id="listing_card_small_price">
                             <div id="listing_card_large_price_small">From</div>
                             <div id="listing_card_large_price_currency_small">£</div>
@@ -270,4 +269,5 @@
             </div>
         </div>
     </body>
+    <script src="<?php echo base_url(); ?>js/upload.js"></script>
 </html>
