@@ -141,7 +141,7 @@
                     </div>
 
                     <div class="selected_entry_header" style="font-size:11px;">Popular</div>
-                    <select id="popular_service" name="popular_service" class="list">
+                    <select class="list" name="iServiceId" id="iServiceId">
                         <option value="volvo">Choose a service</option>
                             <?php
                             foreach ($popularservices as $key => $val) {
@@ -149,23 +149,6 @@
                                 <option value="<?= $val['iServiceId'] ?>"><?= $val['vService'] ?></option>
                             <? } ?>
                     </select>
-                    <div class="selected_entry_header" style="font-size:11px; margin-top:10px;">Category</div>
-                        <select class="list" id="iCategoryId" name="iCategoryId" >
-                            <option value="volvo">Choose a category</option>
-                            <option value="volvo">All categories</option>
-                            <?php
-                            foreach ($categories as $key => $val) {
-                                ?>                            
-                                <option value="<?= $val['iCategoryId'] ?>"><?= $val['vCategory'] ?></option>
-                            <? } ?>
-                        </select>
-                    <div id="cat_services">
-                        <div class="selected_entry_header" style="font-size:11px; margin-top:10px;">Services</div>
-                            <select class="list" name="iServiceId" id="iServiceId">
-
-                            </select>
-                    </div>
-
 
                 </div>
                 <div class="filter_bar_button_center" id="location">ALL LOCATIONS <img src="images/droplist.png" style="margin-left:100px;" /></div>
@@ -175,19 +158,16 @@
                         <img src="images/droplist.png" style="margin-left:103px; float:left; margin-top:9px;" />
                         <div class="clearfloat"></div>
                     </div>
-                    <div class="selected_entry_header" style="font-size:11px;">Country</div>
-                    <?php
-                    echo country_dropdown('vCountryCode', 'vCountryCode', array('US', 'CA', 'GB', 'DE', 'BR', 'IT', 'ES', 'AU', 'NZ', 'HK'), ' class="list" ');
-                    ?>
-                    <div class="selected_entry_header" style="font-size:11px; margin-top:10px;">City</div>
-                    <input onfocus="if(this.value='City')this.value='';" name="vCity" id="vCity" class="field"  placeholder="City" type="text">
-                    <input type="hidden" name="iCityId" id="iCityId" />
-                    <div id="popup_bottom_cont">
-                        <!--div class="inactive" id="country_inactive" title="Apply">Apply</div-->
-                        <div class="btn" id="country_active" title="Apply">Apply</div>
-                        <div class="cancel" id="country_cancel" title="Cancel">Cancel</div>
-                        <div class="clearfloat"></div>
-                    </div>
+                    <div class="selected_entry_header" style="font-size:11px;">Choose a location</div>
+                    <select class="list" name="iCountryId" id="iCountryId">
+                        <option value="All">All locations</option>
+                            <?php
+                            foreach ($popularservices as $key => $val) {
+                                ?>                            
+                                <option value="<?= $val['iServiceId'] ?>"><?= $val['vService'] ?></option>
+                            <? } ?>
+                    </select>
+                    <div id="filter_link"><a href="locations.html">List all locations</a></div>                    
                 </div>
                 <div class="filter_bar_button_center" id="budget">ALL BUDGETS <img src="images/droplist.png" style="margin-left:113px;" /></div>
                 <div class="filter_bar_selected_budget">

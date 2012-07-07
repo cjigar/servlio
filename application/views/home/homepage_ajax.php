@@ -20,8 +20,8 @@
               for($j=0;$j<count($image_group_arr);$j++) {
               
                   
-                  if(file_exists($this->config->config['upload_path'].$image_group_arr[$j]) && $image_group_arr[$j]!="") {
-                      $listingdata[$i]['image_data'][] = $this->config->config['upload_url'].$image_group_arr[$j];
+                  if(file_exists($this->config->config['upload_path']."3_".$image_group_arr[$j]) && $image_group_arr[$j]!="") {
+                      $listingdata[$i]['image_data'][] = $this->config->config['upload_url']."3_".$image_group_arr[$j];
                   }
               }
           ?>
