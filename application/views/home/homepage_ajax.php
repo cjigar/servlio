@@ -3,9 +3,11 @@
         $page = $this->input->post('page');
 ?>  
         <input id="totrec" type="hidden" value="<?echo $total_rows?>">  
+        <input id="ids_inner<?=$page+1?>" type="hidden" value="<?echo $ids?>">
           <?php 
           //pr($listingdata);
           for($i=0;$i<count($listingdata);$i++) { 
+              $time_var = $listingdata[$i]['iCompanyServiceId']*time();
               if($listingdata[$i]['eType']=="Pro") {
               
               $image_group = $listingdata[$i]['image_group'];
@@ -49,19 +51,19 @@
                 </div>
                 <div class="clearfloat"></div>
                 <div id="card_large_img"><a href="users/profile_pro/<?=$listingdata[$i]['iCompanyServiceId']?>">
-                  <div id="slider-<?echo $listingdata[$i]['iCompanyServiceId']?>" class="glidecontentwrapper module">
+                  <div id="slider-<?echo $time_var?>" class="glidecontentwrapper module">
                         <?php
                         $image_slide = $listingdata[$i]['image_data']; 
                         for($j=0;$j<count($image_slide);$j++) {
                         ?>
-                          <div class="glidecontent glidecontent<?echo $listingdata[$i]['iCompanyServiceId']?>">
+                          <div class="glidecontent glidecontent<?echo $time_var?>">
                             <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>" />
                           </div>
                           
                         <?php } ?>
                   </div>                
                 </a></div>
-                <div id="card_large_dots_container<?echo $listingdata[$i]['iCompanyServiceId']?>" class="card_large_dots_container">
+                <div id="card_large_dots_container<?echo $time_var?>" class="card_large_dots_container">
                     <div id="arrow_l" class="prev"></div>
                     <div id="arrow_r" class="next"></div>                
                     <?php for($j=0;$j<count($image_slide);$j++) { ?>
@@ -90,9 +92,9 @@
             $(document).ready(function() {
                 
                 featuredcontentglider.init({
-                	gliderid: "slider-<?echo $listingdata[$i]['iCompanyServiceId']?>", //ID of main glider container
-                	contentclass: "glidecontent<?echo $listingdata[$i]['iCompanyServiceId']?>", //Shared CSS class name of each glider content
-                	togglerid: "card_large_dots_container<?echo $listingdata[$i]['iCompanyServiceId']?>", //ID of toggler container
+                	gliderid: "slider-<?echo $time_var?>", //ID of main glider container
+                	contentclass: "glidecontent<?echo $time_var?>", //Shared CSS class name of each glider content
+                	togglerid: "card_large_dots_container<?echo $time_var?>", //ID of toggler container
                 	remotecontent: "", //Get gliding contents from external file on server? "filename" or "" to disable
                 	selected: 0, //Default selected content index (0=1st)
                 	persiststate: false, //Remember last content shown within browser session (true/false)?

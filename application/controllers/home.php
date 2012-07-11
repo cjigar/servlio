@@ -12,6 +12,7 @@ class Home extends CI_Controller {
         $this->load->model('users_model');
                
         $data = $this->home_model->homepagelisting();
+        #print_R($data);
         $data['currency'] = $this->users_model->getCurrency();
         $data['categories'] = $this->users_model->getCategories();
         $data['popularservices'] = $this->home_model->getPopularServices();

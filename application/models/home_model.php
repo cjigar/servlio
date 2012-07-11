@@ -64,6 +64,7 @@ class Home_model extends CI_Model {
                   $return['iUserId']=$iUserId;
               }            
             } else {
+            
                   $this->db->select('uf.iUserFavoriteId');
                   $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.iUserId = "'.$this->uri->segments[2].'"', 'left');
                   $this->db->where('uf.iUserId',$this->uri->segments[3]);            
@@ -110,8 +111,10 @@ class Home_model extends CI_Model {
         $query = $this->db->get('company_services as cs');
         $tot = $query->result_array();
         $tot_rec_limit = 6;  
-        $total_page = ceil($tot[0]['tot']/$tot_rec_limit);
-        #echo $this->db->last_query()."<hr />";
+        $total_page = ceil(count($tot)/$tot_rec_limit);
+        $this->db->last_query()."<hr />";
+        
+        $excluded_ids = trim($this->input->post('excluded_ids'),",");
         
         $page = $this->input->post('page');
         #echo $page;
@@ -119,11 +122,11 @@ class Home_model extends CI_Model {
           $return['total_rows'] = 0;
           $return['page'] = $page;
           $return['listingdata'] = array();
-          //return $return;
+          return $return;
         }
         
         if(!$page):
-          $offset = 0;
+          $offset = "0";
         else:
           $offset = $page*$tot_rec_limit;
         endif;
@@ -138,14 +141,22 @@ class Home_model extends CI_Model {
         $this->db->join('templates as tem', 'tem.iCompanyServiceId = cs.iCompanyServiceId AND cs.iUserId = u.iUserId', 'left');
         $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');        
         $this->db->where('u.eStatus =  "1"');
+        if(trim($excluded_ids,",")!="")
+          $this->db->where('cs.iCompanyServiceId NOT IN ('.$excluded_ids.')');
+        
         $this->db->group_by('cs.iCompanyServiceId');
         $this->db->order_by('u.eType DESC');
         $this->db->order_by('RAND()');
-        $this->db->limit($tot_rec_limit,$offset);
+        $this->db->limit($tot_rec_limit);
         $query = $this->db->get('company_services as cs');
         #echo $this->db->last_query()."<hr />";
         $db_data = $query->result_array();
         $this->db->flush_cache();        
+        foreach($db_data as $data) {
+            $ret_arr[] = $data['iCompanyServiceId'];
+        }
+        
+        $return['ids'] = @implode(",",$ret_arr);
         $return['total_rows'] = $tot[0]['tot'];
         $return['page'] = $page;
         $return['listingdata'] = $db_data;

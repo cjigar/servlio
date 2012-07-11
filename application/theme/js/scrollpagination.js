@@ -49,15 +49,23 @@ var ajaxreq;
     		 ajaxreq = $.ajax({
     			  type: 'POST',
     			  url: opts.contentPage,
-    			  data: {'page':$('#currpage').val(),'search_text':$('#selected_text').val(),'service_id':$('#selected_service').val(),'country':$('#selected_country').val(),'city':$('#selected_city').val(),'budget_select':$('#selected_budget').val()},
+    			  data: {'page':$('#currpage').val(),'search_text':$('#selected_text').val(),'service_id':$('#selected_service').val(),'country':$('#selected_country').val(),'city':$('#selected_city').val(),'budget_select':$('#selected_budget').val(),'excluded_ids':$('#ids').val()},
     			  success: function(data){
             if(data=="0") {
+                alert(5555)
                 $('#ajax_content').stopScrollPagination();
                 $('#card_loader').fadeOut();
                 return false;
             }
+            
     			  $('#currpage').val(parseInt($('#currpage').val())+1);
-    				$(obj).append(data); 
+    			  gg = $('#currpage').val();
+            //alert(gg);
+    				$(obj).append(data);
+
+    			  //alert($('#ids').val()+','+$('#ids_inner'+gg).val());
+    			  $('#ids').val($('#ids').val()+','+$('#ids_inner'+gg).val());
+            //alert($('#ids').val());             
     				var objectsRendered = $(obj).children();
     				
     				if (opts.afterLoad != null){
