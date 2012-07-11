@@ -119,7 +119,7 @@ class Home_model extends CI_Model {
           $return['total_rows'] = 0;
           $return['page'] = $page;
           $return['listingdata'] = array();
-          //return $return;
+          return $return;
         }
         
         if(!$page):

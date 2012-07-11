@@ -30,7 +30,18 @@ $(document).ready(function() {
             error.appendTo(element);                                                                
         }
     });
-    
+    $("#removeAccount").click(function(){
+        
+        var a = confirm('Are you sure !! No undo. All account info will be permanently deleted.');
+        if(a) {
+            $.ajax({
+                url:'users/removeUser/',
+                success: function(data) {
+                     window.location.href='users/signout';
+                }
+            });
+        }
+    });
     
     $("#vAbout").bind('keyup', function() {
         var characterLimit = 280;

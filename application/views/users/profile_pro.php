@@ -49,8 +49,9 @@
         for ($j = 0; $j < count($gallrey); $j++) {
             if (is_file($this->config->config['upload_path'] . "2_" . $gallrey[$j]['vImage']) && $gallrey[$j]['vImage'] != "") {
                 $udetail[0]['image_data'][] = $this->config->config['upload_url'] . "2_" . $gallrey[$j]['vImage'];
-            }
+            } 
         }
+        
         ?>        
         <div id="inner_container">
             <div id="breadcrumb"><a href="/">Home</a></div>
@@ -114,11 +115,13 @@
                             <img src="<?php echo $udetail[0]['vImage'] ?>" width="655" height="471"/> 
                         </div>
                         <div id="profile_text3">
-                            <?php echo nl2br($udetail[0]['vDescription']);?>
+                            <?php echo nl2br($udetail[0]['vAbout']);?>
                         </div>
                             <?php $image_slide = $udetail[0]['image_data']; ?>
-                            <?php if (count($image_slide) > 0) { ?>
-                            <div id="gallery_container">
+                            <?php if (count($image_slide) > 0) { 
+                                 $width = (132*(count($image_slide)));
+                            ?>
+                            <div id="gallery_container" style="width:<?php echo $width?>px">
                                 <div style="margin-left:13px;">
                                     <?php for ($j = 0; $j < count($image_slide); $j++) { ?>
                                         <div id="gallery_image_container">
@@ -211,11 +214,11 @@
                 <div id="profile_bottom_container">
                     <div id="action_container_text">Like what you see? Contact <?php echo $udetail[0]['vCompanyName'] ?>.</div>
                     <div id="action_container_subtext">(Let them know Servlio sent you.)</div>
-                    <div id="action_container">
+                    <div id="action_container" style="width:560px;">
                         <?php if (isset($udetail[0]['vWebSite']) && !empty($udetail[0]['vWebSite'])): ?>
                             <div class="link"><a href="<?php echo $udetail[0]['vWebSite'] ?>" target="_blank" style="font-size:18px;"><?php echo $udetail[0]['vWebSite'] ?></a></div>
-                            <div class="sep_dot" style="background-color:#666;"></div>
                         <?php endif; ?>
+                        <div class="sep_dot" style="background-color:#666;"></div>    
                         <div class="link"><a href="mailto:<?php echo $udetail[0]['vEmail'] ?>" style="font-size:18px;"><?php echo $udetail[0]['vEmail'] ?></a></div>
                         <div class="sep_dot" style="background-color:#666;"></div>
                         <div class="link" style="color:#CCC;"><?php echo $udetail[0]['vPhone'] ?></div>

@@ -12,10 +12,10 @@
               $image_group_arr = explode(",",$image_group);
               
               //echo count($image_group_arr)."<hr />";
-              
+              /*
               if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {
                   $listingdata[$i]['vCompanyLogo'] = $this->config->config['upload_url'].$listingdata[$i]['vCompanyLogo'];
-              }              
+              }  */            
               //Cover  Image insert here...
               if(file_exists($this->config->config['upload_path']."3_".$listingdata[$i]['vImage'])) {
                   $listingdata[$i]['image_data'][] = $this->config->config['upload_url']."3_".$listingdata[$i]['vImage'];
@@ -43,7 +43,7 @@
                 <div id="listing_card_large_logo" >
                     <?php if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {?>
                     <a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>">
-                        <img src="<?php echo $listingdata[$i]['vCompanyLogo']?>" />
+                        <img src="uploads/<?php echo $listingdata[$i]['vCompanyLogo']?>" />
                     </a>
                     <?php } ?>
                 </div>

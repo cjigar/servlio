@@ -95,22 +95,22 @@ class Users extends CI_Controller {
         $this->load->model('users_model');
         $data['udetail'] = $this->users_model->getUpgrade($iCompanyServiceId);
         $data['udetail'][0] = $data['udetail']['db_other_service'][0];
-        
+
         $this->load->view('users/profile', $data);
     }
 
     function profile_pro() {
-        
+
         $iCompanyServiceId = $this->uri->segments[3];
         //find service user id;
-        $res =  $this->users_model->getServiceUser($iCompanyServiceId);
+        $res = $this->users_model->getServiceUser($iCompanyServiceId);
         $iUserId = $res[0]['iUserId'];
-        
+
         if (empty($iUserId)) {
             redirect('/');
             exit;
         }
-        
+
         $this->load->model('users_model');
         $options = array(
             'iUserId' => $iUserId,
@@ -123,7 +123,7 @@ class Users extends CI_Controller {
         $data['location'] = $this->users_model->getUserLocations($iUserId);
         $this->load->view('users/profile_pro', $data);
     }
-    
+
     public function login() {
         $this->load->view('users/login');
     }
@@ -492,6 +492,7 @@ class Users extends CI_Controller {
         $iUserId = $this->session->userdata('iUserId');
         $user = array(
             'iUserId' => $iUserId,
+            'vAbout' => $this->input->post('vAbout', TRUE),
             'vCompanyName' => $this->input->post('vCompanyName', TRUE),
             'vAddress' => $this->input->post('vAddress', TRUE),
             'vWebSite' => $this->input->post('vWebSite', TRUE),
@@ -526,8 +527,8 @@ class Users extends CI_Controller {
                 'iCityId' => $row['iCityId'],
                 'vCity' => $row['vCity'],
             );
-            
-            
+
+
             if (isset($row['vCity']) && !empty($row['vCity'])) {
                 if (isset($row['iCompanyLocationId']) && !empty($row['iCompanyLocationId'])) {
                     $this->users_model->update_location($location);
@@ -608,7 +609,7 @@ class Users extends CI_Controller {
         $data['basic'] = $this->users_model->editService($iCompanyServiceId);
         $data['location'] = $this->users_model->getUserLocations($iUserId);
         $data['basic'] = $data['basic'][0];
-        
+
 
         $template = array(
             'iUserId' => $iUserId,
@@ -616,9 +617,9 @@ class Users extends CI_Controller {
         );
         $data['gallery'] = $this->users_model->getTemplates($template);
         $data['categories'] = $this->users_model->getCategories();
-        
-        
-        
+
+
+
         $this->load->view('users/edit_service', $data);
     }
 
@@ -642,7 +643,7 @@ class Users extends CI_Controller {
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldImage', TRUE));
         }
-        
+
         $update = $this->users_model->updateService($service);
         $iCompanyServiceId = $this->input->post('iCompanyServiceId', TRUE);
 
@@ -882,7 +883,7 @@ class Users extends CI_Controller {
     function new_service() {
 
         $iUserId = $this->session->userdata('iUserId');
-        if(empty($iUserId)) {
+        if (empty($iUserId)) {
             redirect("/");
             exit;
         }
@@ -987,6 +988,35 @@ class Users extends CI_Controller {
         $serviceimage = $this->file_upload('Image', $_FILES['vImage'], $addpath = 'tmp/');
         echo $serviceimage;
         exit;
+    }
+
+    function removeUser() {
+
+        $iUserId = $this->session->userdata('iUserId');
+        $userdata = $this->users_model->getUserDetail($iUserId);
+        $userservice = $this->users_model->getUserService($iUserId);
+        $tmplates = $this->users_model->getTemplates($iUserId);
+        for ($i = 0; $i < count($tmplates); $i++) {
+            unlink(APPPATH . 'theme/uploads/' . $tmplates[$i]['vImage']);
+            for ($k = 1; $k < 5; $k++) {
+                unlink(APPPATH . 'theme/uploads/' . $k . '_' . $tmplates[$i]['vImage']);
+            }
+            //remove templates.....
+            $iTemplateId = $tmplates[$i]['iTemplateId'];
+            $this->users_model->removeTemplates($iTemplateId);
+        }
+        //Unlink main image of services...
+        for($j=0;$j<count($userservice);$j++) {
+            unlink(APPPATH . 'theme/uploads/' . $userservice[$j]['vImage']);
+            for ($k = 1; $k < 5; $k++) {
+                unlink(APPPATH . 'theme/uploads/' . $k . '_' . $userservice[$j]['vImage']);
+            }
+        }
+        //Company Logo Remove...
+        unlink(APPPATH . 'theme/uploads/' .$userdata[0]['vCompanyLogo']);
+        
+        //remove ALL USER DATA from table..
+        $data = $this->users_model->removeUser($iUserId);
     }
 
 }

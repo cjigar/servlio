@@ -32,6 +32,17 @@ $(document).ready(function() {
         }
     });
     
+    $("#removeAccount").click(function(){
+        var a = confirm('Are you sure !! No undo. All account info will be permanently deleted.');
+        if(a) {
+            $.ajax({
+                url:'users/removeUser/',
+                success: function(data) {
+                     window.location.href='users/signout';
+                }
+            });
+        }
+    });
     
     $('#sbmtButton').click(function(){
         $("#frmsettings").submit();

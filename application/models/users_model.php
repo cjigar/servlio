@@ -35,13 +35,20 @@ class Users_model extends CI_Model {
         $res = $this->db->get('users');
         return $res->result_array();
     }
-
+    
+    function getUserDetail($iUserId) {
+        $this->db->select('*');
+        $this->db->where('iUserId', $iUserId);
+        $res = $this->db->get('users');
+        return $res->result_array();
+    }
+    
     function update_location($options) {
         $this->db->where('iCompanyLocationId', $options['iCompanyLocationId']);
         return $this->db->update('company_location', $options);
     }
     function getServiceUser($iCompanyServiceId) {
-        $this->db->select('iUserId');
+        $this->db->select('*');
         $this->db->where('iCompanyServiceId', $iCompanyServiceId);
         $res = $this->db->get('company_services');
         return $res->result_array();
@@ -431,5 +438,23 @@ class Users_model extends CI_Model {
         $query = $this->db->query($sql_query);
         return $query->result_array();
     }
-
+    
+    function getUserService($iUserId) {
+        $this->db->select('*');
+        $this->db->where('iUserId',$iUserId);
+        $query = $this->db->get('company_services');
+        return $query->result_array();
+    }
+    function removeUser($iUserId) {
+        $this->db->delete('user_favorites', array('iUserId' => $iUserId)); 
+        $this->db->delete('company_location', array('iUserId' => $iUserId)); 
+        $this->db->delete('company_services', array('iUserId' => $iUserId)); 
+        $this->db->delete('templates', array('iUserId' => $iUserId)); 
+        $this->db->delete('payment', array('iUserId' => $iUserId)); 
+        $this->db->delete('cardinfo', array('iUserId' => $iUserId)); 
+        $this->db->delete('users', array('iUserId' => $iUserId)); 
+    }
+    
+    
+    
 }
