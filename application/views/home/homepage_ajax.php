@@ -4,22 +4,24 @@
 ?>  
         <input id="totrec" type="hidden" value="<?echo $total_rows?>">  
           <?php 
-
+          //pr($listingdata);
           for($i=0;$i<count($listingdata);$i++) { 
               if($listingdata[$i]['eType']=="Pro") {
               
               $image_group = $listingdata[$i]['image_group'];
               $image_group_arr = explode(",",$image_group);
-              if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vImage'])) {
-                  $listingdata[$i]['image_data'][] = $this->config->config['upload_url'].$listingdata[$i]['vImage'];
-              }
+              
+              //echo count($image_group_arr)."<hr />";
+              
               if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {
                   $listingdata[$i]['vCompanyLogo'] = $this->config->config['upload_url'].$listingdata[$i]['vCompanyLogo'];
               }              
-                            
-              for($j=0;$j<count($image_group_arr);$j++) {
-              
-                  
+              //Cover  Image insert here...
+              if(file_exists($this->config->config['upload_path']."3_".$listingdata[$i]['vImage'])) {
+                  $listingdata[$i]['image_data'][] = $this->config->config['upload_url']."3_".$listingdata[$i]['vImage'];
+              }
+              // Rest of  5 image comes from here.              
+              for($j=0;$j<5;$j++) {
                   if(file_exists($this->config->config['upload_path']."3_".$image_group_arr[$j]) && $image_group_arr[$j]!="") {
                       $listingdata[$i]['image_data'][] = $this->config->config['upload_url']."3_".$image_group_arr[$j];
                   }
@@ -43,26 +45,27 @@
                 </a></div>
                 <div class="clearfloat"></div>
                 <div id="card_large_img"><a href="users/profile_pro/<?=$listingdata[$i]['iCompanyServiceId']?>">
-                  <div id="slider-<?echo $i?>" class="glidecontentwrapper module" >
+                  <div id="slider-<?echo $listingdata[$i]['iCompanyServiceId']?>" class="glidecontentwrapper module">
                         <?php
                         $image_slide = $listingdata[$i]['image_data']; 
                         for($j=0;$j<count($image_slide);$j++) {
                         ?>
-                          <div class="glidecontent glidecontent<?echo $i?>">
+                          <div class="glidecontent glidecontent<?echo $listingdata[$i]['iCompanyServiceId']?>">
                             <img src="<?php echo $image_slide[$j]?>" data-thumb="<?php echo $image_slide[$j]?>" />
                           </div>
                           
                         <?php } ?>
                   </div>                
                 </a></div>
-                <div id="card_large_dots_container<?echo $i?>" class="card_large_dots_container">
+                <div id="card_large_dots_container<?echo $listingdata[$i]['iCompanyServiceId']?>" class="card_large_dots_container">
                     <div id="arrow_l" class="prev"></div>
                     <div id="arrow_r" class="next"></div>                
-                    <div class="card_large_dots toc" id="card_large_dots_active"></div>
-                    <div class="card_large_dots toc"></div>
-                    <div class="card_large_dots toc"></div>
-                    <div class="card_large_dots toc"></div>
-                    <div class="card_large_dots toc"></div>
+                    <?php for($j=0;$j<count($image_slide);$j++) { ?>
+                        <?php if($j==0) {?>
+                            <div class="card_large_dots toc" id="card_large_dots_active"></div>
+                        <?php } else { ?>
+                         <div class="card_large_dots toc"></div>
+                    <?php } }?>
                     <div class="clearfloat"></div>
                 </div>
                 <div id="listing_card_large_description">Personal Training is all about staying motivated, getting results and getting them on schedule. We recognise that every client is individual, and we know that every client requires a bespoke programme.</div>
@@ -83,9 +86,9 @@
             $(document).ready(function() {
                 
                 featuredcontentglider.init({
-                	gliderid: "slider-<?echo $i?>", //ID of main glider container
-                	contentclass: "glidecontent<?echo $i?>", //Shared CSS class name of each glider content
-                	togglerid: "card_large_dots_container<?echo $i?>", //ID of toggler container
+                	gliderid: "slider-<?echo $listingdata[$i]['iCompanyServiceId']?>", //ID of main glider container
+                	contentclass: "glidecontent<?echo $listingdata[$i]['iCompanyServiceId']?>", //Shared CSS class name of each glider content
+                	togglerid: "card_large_dots_container<?echo $listingdata[$i]['iCompanyServiceId']?>", //ID of toggler container
                 	remotecontent: "", //Get gliding contents from external file on server? "filename" or "" to disable
                 	selected: 0, //Default selected content index (0=1st)
                 	persiststate: false, //Remember last content shown within browser session (true/false)?

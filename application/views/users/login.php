@@ -30,23 +30,16 @@
                             required:true                            
                         }
                     },
-                    messages:{
-                        vEmail : {
-                            required:"Please enter email",
-                            email:"Please enter proper email"
-                        },
-                        vPassword : {
-                            required:"Please enter password"
-                        }
+                    errorPlacement:function(error, element) {
+                       error.appendTo(element);
                     }
-                    
                 });
             });
         </script>    
     </head>
 
     <body>
-        <div id="login_logo" style="margin-top:40px;"><a href="<?php echo base_url()?>"><img src="images/login_logo.png"></a></div>
+        <div id="login_logo" style="margin-top:40px;"><a href="<?php echo base_url() ?>"><img src="images/login_logo.png"></a></div>
         <div id="invite_top_header">Login</div>
         <div id="left_side_interface_login">
 
@@ -84,6 +77,6 @@
         }
     });
     $("#forgot").click(function(){
-       window.location.href = 'users/forget'; 
+        window.location.href = 'users/forget'; 
     });
 </script>    

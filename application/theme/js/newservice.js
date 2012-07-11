@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    $("#frmadd").validate({
+    $("#frmnewservice").validate({
         rules:{
             iCategoryId:{
                 required:true
@@ -35,13 +35,45 @@ $(document).ready(function() {
             }
             
         },
-        errorPlacement:function(error, element){
-            error.appendTo(element);                                                               
+        errorPlacement:function(error, element) {
+            
+            if($(element).attr("name") == "vImage") {
+                $('.image').css({
+                    color:'#F00'
+                });
+                $("#vImage").next().remove();
+                $("#vImage").removeClass('err');
+            } else   {
+                error.appendTo(element);
+            }
+
         }
     });
     $('#sbmtButton').click(function(){
-        $("#frmadd").submit();
-    })
+        $("#frmnewservice").submit();
+    });
+    
+    $("#iCompanyLocationId").change(function(){
+        var val = $(this).find(':selected').text().split(",");
+        $("#listing_card_large_location").html($.trim(val[0]));
+        $("#listing_card_large_location2").html($.trim(val[1]));
+    });
+    
+    
+    $("#vDescription").bind('keyup', function() {
+        var characterLimit = 280;
+        var charactersUsed = $(this).val().length;
+        if(charactersUsed > characterLimit){
+            charactersUsed = characterLimit;
+            $(this).val($(this).val().substr(0,characterLimit));
+            $(this).scrollTop($(this)[0].scrollHeight);
+        }
+        $("#listing_card_large_description").html($(this).val());
+        var charactersRemaining = characterLimit - charactersUsed;
+        $("#desc_count").html(charactersRemaining);
+    }); 
+
+    
 });
 
 $(function() {
@@ -55,16 +87,13 @@ $(function() {
     $("#iCategoryId").change(function() {					  
         $.post('users/getService',{
             iCategoryId:$(this).val()
-            },function(res){
+        },function(res){
             $("#cat_services").show();            
             $("#iServiceId").html(res);
             $('#iServiceId option:first').attr('selected', 'selected');
             $("#iServiceId").trigger('change');
         });
     });
-    
-   
-    
     
     $("#iServiceId").change(function() {
         if($.trim($('#iServiceId option:selected').text())=='') {
@@ -80,7 +109,7 @@ $(function() {
         }
     });
     
-    $("#vServiceName").keydown(function(){
+    $("#vServiceName").keyup(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_large_profession').html('Services');
         } else {
@@ -97,7 +126,7 @@ $(function() {
         }
     });
     
-    $("#fPrice").keydown(function(){
+    $("#fPrice").keyup(function(){
         if($.trim($(this).val())=='') {
             $('#listing_card_large_price_num').html('0.00');
         } else {
@@ -106,18 +135,5 @@ $(function() {
         }
     });
     
-    /*
-    $('#vImage').uploadify({
-        'swf':site_url+"js/uploadify/uploadify.swf",
-        'uploader':site_url+"/users/uploadfile",
-        'folder':'uploads/tmp',
-        'multi': false,
-        'auto': true,
-        'fileExt': '*.jpg;*.jpeg;*.png;*.gif',
-        'buttonText': 'Browse...',
-        'cancelImg': '/svn/handinhand/assets/js/uploadify/cancel.png'
-    });
-    */
-    
 });
-                
+

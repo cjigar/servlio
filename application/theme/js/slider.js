@@ -16,7 +16,7 @@ var featuredcontentglider={
 	glide:function(config, showpage, isprev){
 		var selected=parseInt(showpage)
 		if (selected>=config.$contentdivs.length){ //if no content exists at this index position
-			alert("No content exists at page "+(selected+1)+"! Loading 1st page instead.")
+			//alert("No content exists at page "+(selected+1)+"! Loading 1st page instead.")
 			selected=0
 		}
 		var $target=config.$contentdivs.eq(selected)

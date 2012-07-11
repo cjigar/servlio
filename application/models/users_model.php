@@ -40,8 +40,15 @@ class Users_model extends CI_Model {
         $this->db->where('iCompanyLocationId', $options['iCompanyLocationId']);
         return $this->db->update('company_location', $options);
     }
-
+    function getServiceUser($iCompanyServiceId) {
+        $this->db->select('iUserId');
+        $this->db->where('iCompanyServiceId', $iCompanyServiceId);
+        $res = $this->db->get('company_services');
+        return $res->result_array();
+    }
+    
     function getTemplates($option) {
+        
         $this->db->select('*');
         $this->db->where('iUserId', $option['iUserId']);
         $this->db->where('iCompanyServiceId', $option['iCompanyServiceId']);
@@ -222,18 +229,6 @@ class Users_model extends CI_Model {
 
     function getUpgrade($iCompanyServiceId, $type = "") {
 
-        //make query..  from user,services,location,etc..;
-
-        /* $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.* FROM users AS u 
-          LEFT JOIN company_services AS cs ON cs.iUserId = u.iUserId
-          LEFT JOIN services AS s ON s.iServiceId = cs.iServiceId
-          LEFT JOIN company_location AS cl ON cl.iUserId = u.iUserId
-          LEFT JOIN currencies AS cur ON cur.iCurrencyId = cs.iCurrencyId
-
-          WHERE u.iUserId =  ' . $iUserId; */
-
-        #echo $this->db->last_query();
-
         $this->db->start_cache();
         $iUserId = $this->session->userdata('iUserId');
 
@@ -249,12 +244,9 @@ class Users_model extends CI_Model {
             $this->db->where('uf.iUserId', $iUserId);
             $return['iUserId'] = $iUserId;
         }
-
         $this->db->stop_cache();
 
-        $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
-        cs.*,
-        cl.*,
+        $this->db->select('u.*,cs.*,cl.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
         GROUP_CONCAT(tem.vImage) as image_group');
         $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
         $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
@@ -265,9 +257,9 @@ class Users_model extends CI_Model {
         $this->db->where('cs.iCompanyServiceId', $iCompanyServiceId);
         $this->db->group_by('cs.iCompanyServiceId');
         $query = $this->db->get('company_services as cs');
-        #echo $this->db->last_query();
+        //echo $this->db->last_query();
         $db_service = $query->result_array();
-        #print_r($db_service);exit;
+        //print_r($db_service);exit;
 
         $this->db->flush_cache();
         if ($type == "Pro") {
@@ -321,7 +313,32 @@ class Users_model extends CI_Model {
 
         return $return;
     }
-
+    
+    function userProfile($option) {
+        $this->db->select('u.*,cs.*,cl.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol');
+        $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
+        $this->db->join('company_location as cl', 'cl.iCompanyLocationId = cs.iCompanyLocationId', 'left');
+        $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
+        $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');
+        $this->db->where('u.eStatus =  "1"');
+        $this->db->where('cs.iUserId', $option['iUserId']);
+        $this->db->where('cs.iCompanyServiceId', $option['iCompanyServiceId']);
+        $this->db->group_by('cs.iCompanyServiceId');
+        $query = $this->db->get('company_services as cs');
+        return $query->result_array();
+    }
+    
+    function userSetting($iUserId) {
+        $this->db->select('u.*,cs.*,cl.*,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol');
+        $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
+        $this->db->join('company_location as cl', 'cl.iCompanyLocationId = cs.iCompanyLocationId', 'left');
+        $this->db->join('currencies as cur', 'cur.iCurrencyId = cs.iCurrencyId', 'left');
+        $this->db->where('u.eStatus =  "1"');
+        $this->db->where('cs.iUserId', $iUserId);
+        $query = $this->db->get('company_services as cs');
+        return $query->result_array();
+    }
+    
     function userAccountinfo($iUserId) {
         //make query..  from user,services,location,etc..;
         $sql_query = 'SELECT u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.vCountry,cl.vCountryCode,cl.vState,cl.vStateCode,cl.vCity,cl.iCityId 

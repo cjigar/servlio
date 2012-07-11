@@ -642,3 +642,9 @@ $config['supportname'] = 'Alex Jones';
 $config['upload_path'] = APPPATH . 'theme/uploads/';
 $config['upload_url'] = $config['base_url'] . 'uploads/';
 
+function pr($arr,$flag=1) {
+    echo "<pre>";
+    print_r($arr);
+    if($flag)
+        exit;
+}

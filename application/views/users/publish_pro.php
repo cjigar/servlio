@@ -13,20 +13,11 @@
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
-        <!-- <script src="<?php echo base_url(); ?>js/stripe.js"></script> -->
-        <script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+        <script src="<?php echo base_url(); ?>js/stripe.js"></script> 
+        <!--        <script src="https://js.stripe.com/v1/"></script>-->
         <script src="<?php echo base_url(); ?>js/publish_pro.js"></script>
-        <style>
-            .err {
-                border: 1px red solid  !important;
-                background-color: #FFD3D5;
-                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
-                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
-            }
-        </style>
-
+         
     </head>
-
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
@@ -81,7 +72,7 @@
                             for ($i = $n; $i < $n + 16; $i++) {
                                 ?>
                                 <option value="<?php echo $i ?>"> <?php echo $i ?> </option>
-<?php } ?>
+                            <?php } ?>
                             </select> 
                             <div class="clearfloat"></div>
                         </div>
@@ -89,7 +80,7 @@
                         <input  type="text" value="132" size="4" name="cardcvc" id="cardcvc" class="signup_input_login3" style="width:50px; margin-top:10px;" />
                         <div id="signup_subtitle" style="margin-top:20px;">When you click Create account &amp; Publish you'll be charged £49.00. You are also agreeing to our <a href="#">User Agreement</a>. Thanks for signing up! </div>
                     </div>
-                    <a href="javascript::" id="submit-button" name="submit-button" class="btn" title="Apply" style="width:199px;font-size:15px; height:28px; padding-top:2px; margin-top:0px; margin-left:0px;">Create account & Publish</a>
+                    <a href="javascript:;" id="submit-button" name="submit-button" class="btn" title="Apply" style="width:199px;font-size:15px; height:28px; padding-top:2px; margin-top:0px; margin-left:0px;">Create account & Publish</a>
                     <div class="clearfloat"></div>
 
                 </div>
@@ -149,7 +140,6 @@
     $("#submit-button").click(function() {
         $("#frmpublish_pro").submit();
     });
-    
     // this identifies your website in the createToken call below
     Stripe.setPublishableKey('<?php echo $this->config->config["Stripe"]["PublishableKey"]?>');
     function stripeResponseHandler(status, response) {
@@ -169,10 +159,12 @@
             form$.get(0).submit();
         }
     }
-    
     $(document).ready(function() {
         $("#frmpublish_pro").submit(function(event) {
             // disable the submit button to prevent repeated clicks
+            var r = $("#frmpublish_pro").valid();
+            if(!r)
+                return false;
             $('.submit-button').attr("disabled", "disabled");
             // createToken returns immediately - the supplied callback submits the form if there are no errors
             Stripe.createToken({
@@ -184,5 +176,4 @@
             return false; // submit from callback
         });
     });
-
 </script>    

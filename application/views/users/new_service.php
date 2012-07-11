@@ -12,20 +12,9 @@
         <link href="<?= base_url() ?>css/style.css" rel="stylesheet">
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
-<!--        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>-->
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/newservice.js"></script>
-        <style>
-            .err {
-                border: 1px red solid  !important;
-                background-color: #FFD3D5;
-                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
-                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
-            }
-        </style>
-
     </head>
-
     <body>
         <div id="inner_container" style="height:79px;">
             <div class="create_account_pop" style="margin-top:-7px; position:fixed;">
@@ -33,7 +22,6 @@
                 <div id="accounts_text">Connect to customers in your area.</div>
             </div>  
         </div>
-
         <div id="inner_container" style="width:924px;">
             <div id="breadcrumb"><a href="users/account">Account</a></div>
             <div id="breadcrumb">&rarr;</div> 
@@ -41,7 +29,7 @@
             <div class="booking_btn_back" id="payb3">
                 <div style="margin-top:0px; float:left;"><a href="javascript:javascript:history.go(-1)">&larr; Back</a></div></div>
             <div class="clearfloat"></div>
-            <form name="frmadd" id="frmadd" action="users/new_service_a" method="post" enctype="multipart/form-data">
+            <form name="frmnewservice" id="frmnewservice" action="users/new_service_a" method="post" enctype="multipart/form-data">
             <input type="hidden" name="iCurrencyId" id="iCurrencyId" value="<?php echo $basic['iCurrencyId']?>">
             <div id="signup_left" style="width:443px;">
 
@@ -60,12 +48,10 @@
                     </select>
                     <div>
                          <div id="signup_form_text8">Locations</div>
-                          <select name="iCompanyLocationId" name="iCompanyLocationId">
+                          <select name="iCompanyLocationId" id="iCompanyLocationId">
                               <?php foreach($location as $row) :?>
                                 <option value="<?php echo $row['iCompanyLocationId']?>">
-                                    <?php echo (isset($row['vCity']) && !empty($row['vCity'])?$row['vCity']:'');?>
-                                    <?php echo (isset($row['vState']) && !empty($row['vState'])?(isset($row['vCity']) && !empty($row['vCity'])?','.$row['vState']:$row['vState']):'');?>
-                                    <?php echo (isset($row['vCountry']) && !empty($row['vCountry'])?(isset($row['vState']) && !empty($row['vState'])?','.$row['vCountry']:$row['vCountry']):'');?>
+                                    <?php echo (isset($row['vCity']) && !empty($row['vCity'])?$row['vCity']:'');?><?php echo (isset($row['vCountry']) && !empty($row['vCountry'])?','.$row['vCountry']:'');?>
                                 </option>  
                               <?php endforeach;?>
                           </select>
@@ -88,7 +74,12 @@
 
                     <div id="signup_form_text8">Main image</div>
                     <div id="signup_form_subtext">Upload an image that best represents this service. You can always change it after your listing has been created.</div>
-                    <input  type="file" onfocus="this.value=''" name="vImage" id="vImage" class="signup_file" value="" />
+                    <form method="post" enctype="multipart/form-data"  action="users/image">
+                        <input  type="file" onfocus="this.value=''" name="vImage" id="vImage" class="signup_file" value="" />
+                        <button type="submit" id="vFire" >Upload Files!</button>
+                    </form>
+                    
+                    <input type="hidden" id="vTmpImage" name="vTmpImage" value="" />
                     <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
 
 
@@ -107,7 +98,7 @@
                     <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
                     <div id="signup_form_text8">Description</div>
                     <textarea class="new_service_input_area"  cols="45" rows="5" name="vDescription" id="vDescription" style="width:347px;" ></textarea>
-                    <div id="signup_subtitle"><span style="color:#333;">280</span></div>
+                    <div id="signup_subtitle"><span style="color:#333;" id="desc_count">280</span></div>
                     <div id="signup_form_text8">Price</div>
                     <div id="signup_form_currency" style="margin-top:16px;">From:</div> 
                     <input  type="text" onfocus="this.value=''" name="fPrice" id="fPrice" class="signup_input_login3" style="width:60px; font-size:13px; height:26px; margin-top:10px; margin-left:9px; padding-left:6px;"/>
@@ -121,9 +112,7 @@
             </form>
             <div id="signup_right" style="width:450px;">
                 <div id="large_list_bg" style="margin-top:38px;">
-
                     <div id="upgrade_header2">Your listing card</div>
-
                     <div id="listing_card_large" style="margin-top:0px; margin-bottom:0px;">
                         <div id="listing_card_large_details_container">
                             <div id="listing_card_large_name"><?php echo $basic['vCompanyName']?></div>
@@ -137,13 +126,15 @@
                         </div>
                         <div id="listing_card_large_logo"><img src="uploads/<?php echo $basic['vCompanyLogo']?>"/></div>
                         <div class="clearfloat"></div>
-                        <div id="service_card_image_loader2"><img style="height:347px;width:444px;" src=""/></div>
+                        <div id="service_card_image_loader2">
+                            <img style="height:347px;width:444px;" src="images/default_image.jpg" id="vImageload" />
+                        </div>
                         <div id="card_large_dots_container">
                         </div>
                         <div id="listing_card_large_description"></div>
                         <div id="listing_card_large_bottom_container">
                             <div id="listing_card_large_price">From</div>
-                            <div id="listing_card_large_price_num"><?php echo $basic['vCurrencySymbol']?></div>
+                            <div id="listing_card_large_price_currency"><?php echo $basic['vCurrencySymbol']?></div>
                             <div id="listing_card_large_price_num">0.00</div>
                             <div class="clearfloat"></div>
                         </div>
@@ -153,4 +144,5 @@
                 <div class="clearfloat"></div>
             </div> 
     </body>
-</html>    
+    <script src="<?php echo base_url(); ?>js/upload_service.js"></script>
+</html>

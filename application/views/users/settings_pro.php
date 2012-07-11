@@ -16,14 +16,6 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/settings_pro.js"></script>
-        <style>
-            .err {
-                border: 1px red solid  !important;
-                background-color: #FFD3D5;
-                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
-                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
-            }
-        </style>
         <script>
             $(document).ready(function() {
                 $("#fromlogin").validate({
@@ -106,10 +98,11 @@
                 <div id="signup_left" style="width:824px;">
                     <div id="signup_form_text6" style="margin-top:10px;">Company details</div>
                     <input  type="text"  name="vCompanyName" name="vCompanyName" value="<?php echo $basic['vCompanyName'] ?>" class="signup_input_login3" placeholder="Company name" style="width:450px; margin-top:15px;" />
+
                     <div id="signup_form_text8">About your company</div>
-                    <textarea class="new_service_input_area" style="width:441px;"></textarea>
+                    <textarea class="new_service_input_area" id="vAbout" name="vAbout" style="width:441px;"><?php echo $basic['vAbout'] ?></textarea>
                     <div id="signup_subtitle"><span style="color:#333;">280</span></div>
-                    
+
                     <div id="signup_form_text8">Locations</div>
                     <div id="signup_subtitle">You can add up to 3 locations.</div>
                     <!--
@@ -253,8 +246,10 @@
 
                     <input  type="text" name="vEmail" id="vEmail" value="<?php echo $basic['vEmail'] ?>" class="signup_input_login3" style="width:450px; margin-top:30px;" placeholder="Email" />
                     <div class="clearfloat"></div>
-                    <input  type="password" onfocus="this.value=''" name="vPassword" id="vPasswrod" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
+                    
+                    <input  type="password" onfocus="this.value=''" name="vPassword" id="vPassword" class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="New password" />
                     <div class="clearfloat"></div>
+                    
                     <input  type="password" onfocus="this.value=''" name="vRetPassword" id="vRetPassword"  class="signup_input_login3" style="width:450px; margin-top:15px;" placeholder="Retype password" />
                     <div class="clearfloat"></div>
 

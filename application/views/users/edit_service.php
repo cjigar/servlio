@@ -14,14 +14,6 @@
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/jquery_validate.js"></script>
         <script src="<?php echo base_url(); ?>js/edit_service.js"></script>
-        <style>
-            .err {
-                border: 1px red solid  !important;
-                background-color: #FFD3D5;
-                -webkit-box-shadow: 0 0 5px white,inset 0px 1px 2px #666;
-                -moz-box-shadow: 0 0 5px #fff, inset 0px 1px 2px #666;
-            }
-        </style>
 
     </head>
     <?php $type = $this->session->userdata('eType'); ?>
@@ -82,11 +74,15 @@
                         <div id="signup_form_subtext">Upload an image that best represents this service. You can always change it after your listing has been created.</div>
 
                         <div id="update_images">
-                            <img src="uploads/2_<?php echo $basic['vImage'] ?>" style="width:120px;height:93px;"/>
+                            <img src="uploads/2_<?php echo $basic['vImage'] ?>" style="width:120px;height:93px;" />
                         </div>
                         <div class="clearfloat"></div>
-                        <input  type="file" onfocus="this.value=''" name="vImage" class="signup_file" value="" />
                         <input type="hidden" name="vOldImage" id="vOldImage"  value="<?php echo $basic['vImage'] ?>" />
+                        <form method="post" enctype="multipart/form-data"  action="users/image">
+                            <input  type="file" onfocus="this.value=''" name="vImage" id="vImage" class="signup_file" value="" />
+                            <button type="submit" id="vFire" >Upload Files!</button>
+                        </form>
+                        <input type="hidden" id="vTmpImage" name="vTmpImage" value="" />
                         <div id="signup_subtitle">For best results upload a 650 x 350 jpg or png.</div>
 
 
@@ -173,7 +169,7 @@
                             <div id="card_small_img">
                                 <?php if (is_file(APPPATH . 'theme/uploads/2_' . $basic['vImage'])) : ?>
                                     <a href="users/profile/<?php echo $basic['iCompanyServiceId'] ?>">
-                                       <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" />
+                                       <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" id="vImageload"/>
                                     </a>    
                                 <?php endif; ?>
                             </div>
@@ -204,12 +200,18 @@
                                 <div id="listing_card_large_profession" ><?php echo $basic['vService'] ?></div>
                                 <div class="clearfloat"></div>
                             </div>
-                            <div id="listing_card_large_logo"><img src="uploads/<?php echo $basic['vCompanyLogo'] ?>"/></div>
-                            <div class="clearfloat"></div>
-                            <div id="service_card_image_loader2"><img style="height:347px;width:444px;" src="uploads/<?php echo $basic['vImage'] ?>"/></div>
-                            <div id="card_large_dots_container">
+                            <div id="listing_card_large_logo">
+                                <img src="uploads/<?php echo $basic['vCompanyLogo'] ?>" style="width:90px;height:71px;" />
                             </div>
-                            <div id="listing_card_large_description"></div>
+                            <div class="clearfloat"></div>
+                            <div id="service_card_image_loader2">
+                                <img style="height:347px;width:444px;" src="uploads/3_<?php echo $basic['vImage'] ?>" id="vImageload"/>
+                            </div>
+                            <div id="card_large_dots_container"></div>
+                            
+                            <div id="listing_card_large_description">
+                                <?php echo nl2br($basic['vDescription']); ?>
+                            </div>
                             <div id="listing_card_large_bottom_container">
                                 <div id="listing_card_large_price">From</div>
                                 <div id="listing_card_large_price_currency"><?php echo $basic['vCurrencySymbol'] ?></div>
@@ -223,6 +225,7 @@
                 </div> 
             <?php endif; ?>
     </body>
+    <script src="<?php echo base_url(); ?>js/upload_service.js"></script>    
 </html>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -255,4 +258,6 @@
             $("#not_listed").fadeOut('fast');
         }
     });
+    
+    
 </script>    

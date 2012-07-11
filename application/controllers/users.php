@@ -81,10 +81,10 @@ class Users extends CI_Controller {
                 'eStatus' => $users[0]['eStatus']
             );
             $this->session->set_userdata($signin);
-            $this->session->set_flashdata('signin', 'You have been successfully signin !!');
+            //$this->session->set_flashdata('signin', 'You have been successfully signin !!');
             redirect('users/account');
         } else {
-            $this->session->set_flashdata('signin', 'Email/password not recognised. Please try again.');
+            //$this->session->set_flashdata('signin', 'Email/password not recognised. Please try again.');
             redirect('users/login');
         }
     }
@@ -95,26 +95,40 @@ class Users extends CI_Controller {
         $this->load->model('users_model');
         $data['udetail'] = $this->users_model->getUpgrade($iCompanyServiceId);
         $data['udetail'][0] = $data['udetail']['db_other_service'][0];
+        
         $this->load->view('users/profile', $data);
     }
 
     function profile_pro() {
-
+        
         $iCompanyServiceId = $this->uri->segments[3];
+        //find service user id;
+        $res =  $this->users_model->getServiceUser($iCompanyServiceId);
+        $iUserId = $res[0]['iUserId'];
+        
+        if (empty($iUserId)) {
+            redirect('/');
+            exit;
+        }
+        
         $this->load->model('users_model');
-        $data = $this->users_model->getUpgrade($iCompanyServiceId, "Pro");
-        #print_r($data);
+        $options = array(
+            'iUserId' => $iUserId,
+            'iCompanyServiceId' => $iCompanyServiceId
+        );
+        $data['udetail'] = $this->users_model->userProfile($options);
+        //pr($data);
+        $data['gallrey'] = $this->users_model->getTemplates($options);
+        $data['db_other_service'] = $this->users_model->userAccountinfo($iUserId);
+        $data['location'] = $this->users_model->getUserLocations($iUserId);
         $this->load->view('users/profile_pro', $data);
     }
-
+    
     public function login() {
-        //Add UserId in Session;       
-        $this->load->library('session');
         $this->load->view('users/login');
     }
 
     function getService() {
-        $this->load->model('users_model');
         $options['iCategoryId'] = $this->input->post('iCategoryId', TRUE);
         $html = $this->users_model->getService($options);
         echo $html;
@@ -122,7 +136,6 @@ class Users extends CI_Controller {
 
     public function signup() {
         $this->load->helper('country');
-        $this->load->model('users_model');
         $data['currency'] = $this->users_model->getCurrency();
         $data['categories'] = $this->users_model->getCategories();
         $this->load->view('users/signup', $data);
@@ -165,7 +178,7 @@ class Users extends CI_Controller {
                 $height = $this->config->config['logo_image']['height'];
                 $resizeObj->resizeImage($width, $height, 'auto');
                 //$key = '1_';
-                
+
                 if (isset($addpath) && !empty($addpath)) {
                     $path = APPPATH . "theme/uploads/" . $addpath . $key . $filename;
                 } else {
@@ -403,10 +416,10 @@ class Users extends CI_Controller {
                 'eStatus' => 1
             );
             $this->session->set_userdata($signin);
-            $this->session->set_flashdata('signin', 'You have been successfully signin !!');
+            //$this->session->set_flashdata('signin', 'You have been successfully signin !!');
             redirect('users/account');
         } else {
-            $this->session->set_flashdata('signin', 'Password not updated successfully !!. Please try again.');
+            //$this->session->set_flashdata('signin', 'Password not updated successfully !!. Please try again.');
             redirect('/');
         }
     }
@@ -443,7 +456,7 @@ class Users extends CI_Controller {
         $eType = $this->session->userdata('eType');
 
         if ($eType == 'Pro')
-            $data['basic'] = $this->users_model->getUpgrade($iUserId);
+            $data['basic'] = $this->users_model->userSetting($iUserId);
         else
             $data['basic'] = $this->users_model->userAccountinfo($iUserId);
 
@@ -466,6 +479,7 @@ class Users extends CI_Controller {
         $transinfo = $this->users_model->getTransaction($iUserId);
         $data['transinfo'] = $transinfo;
 
+        //pr($data);
 
         if ($type == 'Pro')
             $this->load->view('users/settings_pro', $data);
@@ -512,10 +526,14 @@ class Users extends CI_Controller {
                 'iCityId' => $row['iCityId'],
                 'vCity' => $row['vCity'],
             );
-            if (isset($row['iCompanyLocationId']) && !empty($row['iCompanyLocationId'])) {
-                $this->users_model->update_location($location);
-            } else {
-                $this->users_model->signup_location($location);
+            
+            
+            if (isset($row['vCity']) && !empty($row['vCity'])) {
+                if (isset($row['iCompanyLocationId']) && !empty($row['iCompanyLocationId'])) {
+                    $this->users_model->update_location($location);
+                } else {
+                    $this->users_model->signup_location($location);
+                }
             }
         }
         //update currency.
@@ -568,6 +586,7 @@ class Users extends CI_Controller {
         }
 
         $this->users_model->updateUser($user);
+
         $location = array(
             'iCompanyLocationId' => $this->input->post('iCompanyLocationId', true),
             'vCountryCode' => $this->input->post('vCountryCode', true),
@@ -577,6 +596,7 @@ class Users extends CI_Controller {
             'iCityId' => $this->input->post('iCityId', true),
             'vCity' => $this->input->post('vCity', true),
         );
+
         $this->users_model->update_location($location);
         $this->session->set_flashdata('signin', 'Settings updated successfully !!');
         redirect('users/account');
@@ -588,17 +608,22 @@ class Users extends CI_Controller {
         $data['basic'] = $this->users_model->editService($iCompanyServiceId);
         $data['location'] = $this->users_model->getUserLocations($iUserId);
         $data['basic'] = $data['basic'][0];
+        
+
         $template = array(
             'iUserId' => $iUserId,
             'iCompanyServiceId' => $iCompanyServiceId
         );
         $data['gallery'] = $this->users_model->getTemplates($template);
         $data['categories'] = $this->users_model->getCategories();
+        
+        
+        
         $this->load->view('users/edit_service', $data);
     }
 
     function edit_service_a() {
-
+        $iUserId = $this->session->userdata('iUserId');
         $service = array(
             'iUserId' => $this->session->userdata('iUserId'),
             'iCompanyLocationId' => $this->input->post('iCompanyLocationId', TRUE),
@@ -617,6 +642,7 @@ class Users extends CI_Controller {
             //unlink old;
             unlink(APPPATH . 'theme/uploads/' . $this->input->post('vOldImage', TRUE));
         }
+        
         $update = $this->users_model->updateService($service);
         $iCompanyServiceId = $this->input->post('iCompanyServiceId', TRUE);
 
@@ -855,12 +881,13 @@ class Users extends CI_Controller {
 
     function new_service() {
 
-        $this->load->model('users_model');
-        $this->load->library('session');
         $iUserId = $this->session->userdata('iUserId');
+        if(empty($iUserId)) {
+            redirect("/");
+            exit;
+        }
         $type = $this->session->userdata('eType');
         $data['basic'] = $this->users_model->userAccountinfo($iUserId);
-
         $data['categories'] = $this->users_model->getCategories();
         $data['location'] = $this->users_model->getUserLocations($iUserId);
         $data['basic'] = $data['basic'][0];

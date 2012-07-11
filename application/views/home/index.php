@@ -162,12 +162,12 @@
                     <select class="list" name="iCountryId" id="iCountryId">
                         <option value="All">All locations</option>
                             <?php
-                            foreach ($popularservices as $key => $val) {
+                            foreach ($popularcountry as $key => $val) {
                                 ?>                            
-                                <option value="<?= $val['iServiceId'] ?>"><?= $val['vService'] ?></option>
+                                <option value="<?= $val['vCountryCode'] ?>"><?= $val['vCountry'] ?></option>
                             <? } ?>
                     </select>
-                    <div id="filter_link"><a href="locations.html">List all locations</a></div>                    
+                    <div id="filter_link"><a href="home/locations">List all locations</a></div>                    
                 </div>
                 <div class="filter_bar_button_center" id="budget">ALL BUDGETS <img src="images/droplist.png" style="margin-left:113px;" /></div>
                 <div class="filter_bar_selected_budget">

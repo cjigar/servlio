@@ -1,7 +1,7 @@
 .glidecontentwrapper{
 position: relative; /* Do not change this value */
 width: 444px;
-height: 230px; /* Set height to be able to contain height of largest content shown*/
+height: 350px; /* Set height to be able to contain height of largest content shown*/
 overflow: hidden;
 }
 /*
@@ -14,7 +14,7 @@ overflow: hidden;
 .glidecontent{ /*style for each glide content DIV within wrapper.*/
 position: absolute; /* Do not change this value */
 background: white;
-padding: 10px;
+padding: 10px 10px 10px 0px;
 visibility: hidden;
 width: 330px;
 }

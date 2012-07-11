@@ -29,6 +29,7 @@
                 <div class="clearfloat"></div>
             </div>  
         </div>
+        <?php    $type = $this->session->userdata('eType');  ?>
         <div id="inner_container" style="width:924px;">
             <div id="signup_left" style="width:675px;">
                 <div id="signup_form_text6">Your <?php echo $this->session->userdata('eType'); ?> account</div>
@@ -42,7 +43,6 @@
                 <div class="clearfloat"></div>
                 <div id="profile_sepline_left" style="margin-bottom:14px;"></div>
                 <?php  foreach($account as $basic) :?>
-                
                 <div id="listing_card_small_profile">
                     <div id="listing_card_small_details_container">
                         <div id="listing_card_small_name"><a href="users/publish_pro"><?php echo $basic['vCompanyName'] ?></a></div>
@@ -56,7 +56,7 @@
                     <div class="clearfloat"></div>
                     <div id="card_small_img">
                         <?php if (is_file(APPPATH."theme/uploads/2_" . $basic['vImage'])) { ?>
-                        <a href="users/profile/<?php echo $basic['iCompanyServiceId']?>">
+                        <a href="users/<?php echo ($type=='Basic')?'publish':'profile_pro'?>/<?php echo $basic['iCompanyServiceId']?>">
                             <img src="uploads/2_<?php echo $basic['vImage'] ?>" width="209" height="163" />
                         </a>
                         <?php } ?>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <?php  endforeach;  ?>
-                <?php    $type = $this->session->userdata('eType');  ?>
+                
                 <?php if(count($account)==1):?>
                 <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>
                 <a href="users/<?php echo ($type=='Basic')?'publish_pro':'new_service'?>" id="listing_card_small_profile_new"></a>

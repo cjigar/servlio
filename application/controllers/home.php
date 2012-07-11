@@ -15,12 +15,13 @@ class Home extends CI_Controller {
         $data['currency'] = $this->users_model->getCurrency();
         $data['categories'] = $this->users_model->getCategories();
         $data['popularservices'] = $this->home_model->getPopularServices();
+        $data['popularcountry'] = $this->home_model->getPopularCountry();
+        
         $this->load->view('home/index',$data);
     }
      public function favorites() {
         
         $this->load->library('session');
-
         
         if($this->uri->segments[2]=="" && $this->session->userdata('iUserId')=="") {
           header("location:".base_url());
@@ -59,6 +60,8 @@ class Home extends CI_Controller {
     function homepage_ajax() {
         $this->load->model('home_model');
         $data = $this->home_model->homepagelisting();
+        
+        
         if($data['total_rows']==0) {
             echo "0";exit;
         }

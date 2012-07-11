@@ -51,7 +51,7 @@ class Home_model extends CI_Model {
        
         } else {
           $this->db->start_cache();
-#print_r($this->uri->segments);exit;
+            #print_r($this->uri->segments);exit;
             if($this->uri->segments[3]=="") {
               if($iUserId=="") {
                   $ip = $_SERVER["REMOTE_ADDR"];
@@ -111,7 +111,7 @@ class Home_model extends CI_Model {
         $tot = $query->result_array();
         $tot_rec_limit = 6;  
         $total_page = ceil($tot[0]['tot']/$tot_rec_limit);
-        #echo $this->db->last_query();
+        //echo $this->db->last_query()."<hr />";
         $page = $this->input->post('page');
         if($page>$total_page) {
           $return['total_rows'] = 0;
@@ -127,9 +127,7 @@ class Home_model extends CI_Model {
 
                 
         //make query..  from user,services,location,etc..;
-        $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
-        cs.*,
-        cl.*,
+        $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.*,
         GROUP_CONCAT(tem.vImage) as image_group');
         $this->db->join('users AS u', 'cs.iUserId = u.iUserId', 'left');
         $this->db->join('company_location as cl', 'cl.iUserId = u.iUserId', 'left');
@@ -142,7 +140,7 @@ class Home_model extends CI_Model {
         $this->db->order_by('RAND()');
         $this->db->limit($tot_rec_limit,$offset);
         $query = $this->db->get('company_services as cs');
-       
+        //echo $this->db->last_query()."<hr />";
         $db_data = $query->result_array();
         $this->db->flush_cache();        
         $return['total_rows'] = $tot[0]['tot'];
@@ -231,6 +229,15 @@ class Home_model extends CI_Model {
     function getPopularServices() {
         $this->db->select('iServiceId,vService');
         $query = $this->db->get('services');
+        return $query->result_array();
+    }
+    function getPopularCountry() {
+        $this->db->select('c.vCountryCode,c.vCountry');
+        $this->db->join('country c','c.vCountryCode = cl.vCountryCode');
+        $this->db->group_by('cl.vCountryCode');
+        $this->db->order_by('COUNT(cl.vCountryCode)','DESC');
+        $query = $this->db->get('company_location as cl');
+        //echo $this->db->last_query();
         return $query->result_array();
     }
     function insertFav($iUserId, $iCompanyServiceId,$from) {
