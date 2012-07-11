@@ -111,20 +111,23 @@ class Home_model extends CI_Model {
         $tot = $query->result_array();
         $tot_rec_limit = 6;  
         $total_page = ceil($tot[0]['tot']/$tot_rec_limit);
-        //echo $this->db->last_query()."<hr />";
+        #echo $this->db->last_query()."<hr />";
+        
         $page = $this->input->post('page');
+        #echo $page;
         if($page>$total_page) {
           $return['total_rows'] = 0;
           $return['page'] = $page;
           $return['listingdata'] = array();
-          return $return;
+          //return $return;
         }
+        
         if(!$page):
           $offset = 0;
         else:
           $offset = $page*$tot_rec_limit;
         endif;
-
+        
                 
         //make query..  from user,services,location,etc..;
         $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,cs.*,cl.*,
@@ -140,7 +143,7 @@ class Home_model extends CI_Model {
         $this->db->order_by('RAND()');
         $this->db->limit($tot_rec_limit,$offset);
         $query = $this->db->get('company_services as cs');
-        //echo $this->db->last_query()."<hr />";
+        #echo $this->db->last_query()."<hr />";
         $db_data = $query->result_array();
         $this->db->flush_cache();        
         $return['total_rows'] = $tot[0]['tot'];

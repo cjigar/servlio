@@ -40,9 +40,13 @@
                     <div id="listing_card_large_profession" ><?php echo $listingdata[$i]['vService']?></div>
                     <div class="clearfloat"></div>
                 </div>
-                <div id="listing_card_large_logo" ><a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>">
-                    <img src="<?php echo $listingdata[$i]['vCompanyLogo']?>" />
-                </a></div>
+                <div id="listing_card_large_logo" >
+                    <?php if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {?>
+                    <a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>">
+                        <img src="<?php echo $listingdata[$i]['vCompanyLogo']?>" />
+                    </a>
+                    <?php } ?>
+                </div>
                 <div class="clearfloat"></div>
                 <div id="card_large_img"><a href="users/profile_pro/<?=$listingdata[$i]['iCompanyServiceId']?>">
                   <div id="slider-<?echo $listingdata[$i]['iCompanyServiceId']?>" class="glidecontentwrapper module">
