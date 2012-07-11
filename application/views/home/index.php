@@ -192,8 +192,10 @@
             </div>
         </div>
         <div id="inner_container">
+
             <input type="hidden" id="currpage"  value="1">
             <input type="hidden" id="ids"  value="<?=$ids?>">
+
             <div id="ajax_content">
                 <?php echo $this->load->view('home/homepage_ajax'); ?>
             </div>
