@@ -32,15 +32,18 @@ class Users extends CI_Controller {
         $email = $this->input->post('vEmail', TRUE);
         $res = $this->users_model->getUserPassword($email);
         if (count($res) > 0) {
+            
             $this->load->library('email');
+            $this->email->initialize($this->config->config['email']);
+            
             $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
-            $this->email->to('root.nodes@gmail.com');
+            $this->email->to($email);
             $this->email->subject('Here is your info ' . $name);
             $data['data'] = $res[0];
             $msg = $this->load->view('email/forgot_password', $data, TRUE);
             $this->email->message($msg);
             $this->email->send();
-            #echo $this->email->print_debugger();
+            $this->email->print_debugger();
             $this->session->set_flashdata('signin', 'Your forgot password successfully send to email!!');
             redirect('users/login');
         } else {
@@ -838,21 +841,23 @@ class Users extends CI_Controller {
 
                 $this->session->set_userdata('eType', 'Pro');
                 //Mail to member...
-
-                $this->load->library('email');
+                $vEmail = $this->session->userdata('vEmail');
+                
+                $this->email->initialize($this->config->config['email']);
+                
                 $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
-                $this->email->to('root.nodes@gmail.com');
+                $this->email->to($vEmail);
                 $this->email->subject('Welcome to Servlio!');
                 $data['vCompanyName'] = $this->session->userdata('vCompanyName');
                 $msg = $this->load->view('email/email_pro_signup', $data, TRUE);
                 $this->email->message($msg);
                 $this->email->send();
-
-
+                
                 $userinfo = $this->users_model->getUsersInfo($this->session->userdata('iUserId'));
-
+                
+                    
                 $this->email->from($this->config->config['supportemail'], $this->config->config['supportname']);
-                $this->email->to('root.nodes@gmail.com');
+                $this->email->to($vEmail);
                 $this->email->subject('Servlio monthly invoice');
                 $data['vCompanyName'] = $this->session->userdata('vCompanyName');
                 $data['userinfo'] = $userinfo;
@@ -994,8 +999,10 @@ class Users extends CI_Controller {
 
         $iUserId = $this->session->userdata('iUserId');
         $userdata = $this->users_model->getUserDetail($iUserId);
+        
         $userservice = $this->users_model->getUserService($iUserId);
-        $tmplates = $this->users_model->getTemplates($iUserId);
+        $tmplates = $this->users_model->getTemplatesofuser($iUserId);
+                
         for ($i = 0; $i < count($tmplates); $i++) {
             unlink(APPPATH . 'theme/uploads/' . $tmplates[$i]['vImage']);
             for ($k = 1; $k < 5; $k++) {
@@ -1005,6 +1012,7 @@ class Users extends CI_Controller {
             $iTemplateId = $tmplates[$i]['iTemplateId'];
             $this->users_model->removeTemplates($iTemplateId);
         }
+        
         //Unlink main image of services...
         for($j=0;$j<count($userservice);$j++) {
             unlink(APPPATH . 'theme/uploads/' . $userservice[$j]['vImage']);
@@ -1017,6 +1025,8 @@ class Users extends CI_Controller {
         
         //remove ALL USER DATA from table..
         $data = $this->users_model->removeUser($iUserId);
+        echo $iUserId;
+        exit;
     }
 
 }

@@ -642,6 +642,17 @@ $config['supportname'] = 'Alex Jones';
 $config['upload_path'] = APPPATH . 'theme/uploads/';
 $config['upload_url'] = $config['base_url'] . 'uploads/';
 
+$config['email']['protocol']='smtp';  
+$config['email']['smtp_host']='ssl://smtp.googlemail.com';  
+$config['email']['smtp_port']='465';  
+$config['email']['smtp_timeout']='30';  
+$config['email']['smtp_user']='alex.php1982@gmail.com';  
+$config['email']['smtp_pass']='nil.dollar3388';  
+$config['email']['charset']='utf-8';  
+$config['email']['newline']="\r\n"; 
+$config['email']['mailtype']="html";  
+
+
 function pr($arr,$flag=1) {
     echo "<pre>";
     print_r($arr);

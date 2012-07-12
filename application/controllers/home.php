@@ -95,4 +95,19 @@ class Home extends CI_Controller {
 
         echo $keywords;
     }    
+    
+    function locations() {
+        $this->load->model('home_model');
+        $this->load->library('session');
+        
+        $data['top_location'] = $this->home_model->topLocation();
+        $data['location'] = $this->home_model->getcompanyLocations();
+        $notin = array();
+        foreach($data['location'] as $key => $val) {
+            $notin[] = $key;
+        }
+        $data['other'] = $this->home_model->otherCountry($notin);
+        #pr($data['other']);
+        $this->load->view('home/locations',$data);
+    }
 }

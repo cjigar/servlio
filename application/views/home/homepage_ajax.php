@@ -33,17 +33,19 @@
                 <div id="listing_card_large_details_container">
                     <div id="listing_card_large_name"><a href="users/profile_pro/<?=$listingdata[$i]['iCompanyServiceId']?>"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
                     <div class="clearfloat"></div>
-                    <div id="listing_card_large_location" >
-                    <a href="<?=base_url()?>?city=<?echo $listingdata[$i]['iCityId']?>"><?php echo $listingdata[$i]['vCity']?></a>
-                    </div>
+                    <a href="<?=base_url()?>?city=<?echo $listingdata[$i]['iCityId']?>" style="text-decoration: none;cursor: pointer;">
+                        <div id="listing_card_large_location" ><?php echo $listingdata[$i]['vCity']?></div>
+                    </a>    
                     <div id="listing_card_large_location3">,</div>
-                    <div id="listing_card_large_location2"><a href="<?=base_url()?>?country=<?echo $listingdata[$i]['vCountryCode']?>"><?php echo $listingdata[$i]['vCountry']?></a></div>
+                    <a href="<?=base_url()?>?country=<?echo $listingdata[$i]['vCountryCode']?>" style="text-decoration: none;cursor: pointer;">
+                        <div id="listing_card_large_location2"><?php echo $listingdata[$i]['vCountry']?></div>
+                    </a>
                     <div class="clearfloat"></div>
-                    <div id="listing_card_large_profession" ><?php echo $listingdata[$i]['vService']?></div>
+                    <div id="listing_card_large_profession" ><?php echo !empty($listingdata[$i]['vService'])?$listingdata[$i]['vService']:$listingdata[$i]['vServiceName']?></div>
                     <div class="clearfloat"></div>
                 </div>
                 <div id="listing_card_large_logo" >
-                    <?php if(file_exists($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {?>
+                    <?php if(is_file($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {?>
                     <a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>">
                         <img src="uploads/<?php echo $listingdata[$i]['vCompanyLogo']?>" />
                     </a>

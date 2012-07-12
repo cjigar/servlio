@@ -55,7 +55,6 @@ class Users_model extends CI_Model {
     }
     
     function getTemplates($option) {
-        
         $this->db->select('*');
         $this->db->where('iUserId', $option['iUserId']);
         $this->db->where('iCompanyServiceId', $option['iCompanyServiceId']);
@@ -445,6 +444,15 @@ class Users_model extends CI_Model {
         $query = $this->db->get('company_services');
         return $query->result_array();
     }
+    
+    function getTemplatesofuser($iUserId) {
+        $this->db->select('*');
+        $this->db->where('iUserId', $iUserId);
+        $res = $this->db->get('templates');
+        return $res->result_array();
+    }
+
+    
     function removeUser($iUserId) {
         $this->db->delete('user_favorites', array('iUserId' => $iUserId)); 
         $this->db->delete('company_location', array('iUserId' => $iUserId)); 

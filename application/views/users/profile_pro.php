@@ -107,7 +107,7 @@
                     <div id="profile_container_left">
                         <div id="profile_header4" style="margin-top:10px;">About</div>
                         <div id="profile_header5" style="margin-top:10px;">
-                            <?php echo (isset($udetail[0]['vService']) && !empty($udetail[0]['vService'])) ? $udetail[0]['vService'] : '--'; ?>
+                            <?php echo (!empty($udetail[0]['vService'])) ? $udetail[0]['vService'] : $udetail[0]['vServiceName']; ?>
                         </div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline_left"></div>

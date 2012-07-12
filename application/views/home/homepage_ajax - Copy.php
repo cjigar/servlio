@@ -14,7 +14,7 @@
                     <div id="listing_card_large_name"><a href="profile_pro.html"><?php echo $listingdata[$i]['vCompanyName']?></a></div>
                     <div class="clearfloat"></div>
                     <div id="listing_card_large_location" >
-                    <?php echo $listingdata[$i]['vCity']?>
+                        <?php echo $listingdata[$i]['vCity']?>
                     </div>
                     <div id="listing_card_large_location3">,</div>
                     <div id="listing_card_large_location2"><?php echo $listingdata[$i]['vCountry']?></div>

@@ -285,6 +285,61 @@ class Home_model extends CI_Model {
         }
         return "Its your Favorite";        
     }
+    function topLocation() {
+        $this->db->select('*');
+        $this->db->where('vCity  != ""');
+        $this->db->group_by('iCityId');
+        $this->db->order_by('COUNT(iCityId)','DESC');
+        $res = $this->db->get('company_location');
+        return $res->result_array();
+    }
+    
+    function getcompanyLocations() {
+        $this->db->select('vCountryCode');
+        $this->db->where('vCountry  != ""');
+        $this->db->group_by('vCountryCode');
+        $this->db->order_by('COUNT(vCountryCode)','DESC');
+        $res = $this->db->get('company_location');
+        //echo $this->db->last_query();
+        $data = $res->result_array();        
+        for($i=0;$i<count($data);$i++) {
+            //$row = $data['top_location'][$i]['vCountryCode'];
+            $code = $data[$i]['vCountryCode'];
+            if($code=='US') {
+                $tmprow = $this->findCity($code);
+                //$row[$data[$i]['vCountryCode']][] = $tmprow;
+                for($k=0;$k<count($tmprow);$k++) {
+                    $state_code = $tmprow[$k]['vStateCode'];
+                    $row[$data[$i]['vCountryCode']][$state_code][] = $tmprow[$k];
+                }
+            } else {
+                $tmprow = $this->findCity($code);
+                $row[$data[$i]['vCountryCode']][] = $tmprow;
+            
+            }
+        }
+        
+        return $row;
+    }
+    
+    function findCity($code) {
+        $this->db->select('*');
+        $this->db->where('vCountryCode',$code);
+        $this->db->where('vCity != ""');
+        $this->db->group_by('iCityId');
+        $this->db->order_by('COUNT(iCityId)','DESC');
+        $res = $this->db->get('company_location');
+        
+        return $res->result_array();
+    }
+    function otherCountry($notin=array()) {
+        $this->db->select('*');
+        $this->db->where_not_in('vCountryCode',$notin);
+        $this->db->order_by('vCountry','ASC');
+        $res = $this->db->get('country');
+        return $res->result_array();
+    }
+    
 }
 
 /*

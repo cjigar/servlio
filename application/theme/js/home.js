@@ -72,6 +72,7 @@ $(document).ready(function($){
             window.location = "?search_text="+$(this).val();
         }
     })    
+    /*
     $('#country_active').click(function(){
         if($('#vCountryCode').val()!="") {  
             str_var = "?country="+$('#vCountryCode').val();
@@ -80,7 +81,17 @@ $(document).ready(function($){
             str_var += "&city="+$('#iCityId').val();
         }
         window.location = str_var; 
+    }); */
+    $('#iCountryId').change(function(){
+        var val = $(this).val();
+        var str_var ;
+        if(val!="") {  
+            str_var = "?country="+val;
+        }
+        window.location = str_var; 
     });
+    
+    
     $('#popular_service, #iServiceId, #budget_select').change(function(){
         if($(this).attr("id")=="popular_service" || $(this).attr("id")=="iServiceId") {
             window.location = "?service_id="+$(this).val();
