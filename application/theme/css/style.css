@@ -389,7 +389,7 @@ body
     border-radius: 100px 100px 100px 100px;
     background-color:#4795DF;
     display:block;
-    margin-right:8px;
+    margin-right:5px;
     float:left;
     transition: all 0.09s ease-in-out;
     -webkit-transition: all 0.09s ease-in-out;
@@ -454,7 +454,7 @@ body
     height:34px;
     position:absolute;
     z-index:999999;
-    margin-top:-150px;
+    margin-top:-195px;
     margin-left:-172px;
     background-image:url(images/arrow_l.png);
     background-repeat:no-repeat;
@@ -484,7 +484,7 @@ body
     height:34px;
     position:absolute;
     z-index:999999;
-    margin-top:-150px;
+    margin-top:-195px;
     margin-left:237px;
     background-image:url(images/arrow_r.png);
     background-repeat:no-repeat;
@@ -1291,6 +1291,31 @@ body
     background-color:#4795DF;
     color:#fff;
 
+}
+
+#filter_link
+{
+	font-family:"Arial", Helvetica, sans-serif;
+	font-size:11px;
+	color:#444;
+	padding:0px 14px 0px 14px;
+	line-height:23px;
+	margin-top:10px;
+	
+}
+
+#filter_link a
+{
+	text-decoration:none;
+	color:#4795DF;
+	
+}
+
+#filter_link a:hover
+{
+	text-decoration:underline;
+	color:#4795DF;
+	
 }
 
 #current

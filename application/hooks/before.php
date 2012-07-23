@@ -17,10 +17,12 @@ class commonclass {
         
                 
         $iUserId = $this->CI->session->userdata('iUserId');
-        
-        if(!$iUserId && ($this->CI->uri->uri_string != "users/login" && $this->CI->uri->uri_string != "users/signup" && strstr($this->CI->uri->uri_string,"favorites")!==false)) {
+        /*
+        if(!$iUserId && ($this->CI->uri->uri_string != "" && $this->CI->uri->uri_string != "home/homepage_ajax" && $this->CI->uri->uri_string != "favpage_ajax" && $this->CI->uri->uri_string != "users/login" && $this->CI->uri->uri_string != "users/signup" && strstr($this->CI->uri->uri_string,"favorites")===false && strstr($this->CI->uri->uri_string,"favpage_ajax")===false)) {
             redirect('users/login', 'location');
-        }        
+        }  
+        */
+        
         if($this->CI->uri->segments[1]=="favorites") {
             if($this->CI->uri->segments[2]=="") {
               if($iUserId=="") {

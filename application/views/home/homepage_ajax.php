@@ -44,10 +44,10 @@
                     <div id="listing_card_large_profession" ><?php echo !empty($listingdata[$i]['vService'])?$listingdata[$i]['vService']:$listingdata[$i]['vServiceName']?></div>
                     <div class="clearfloat"></div>
                 </div>
-                <div id="listing_card_large_logo" >
+                <div id="listing_card_large_logo" style="margin-top:17px;">
                     <?php if(is_file($this->config->config['upload_path'].$listingdata[$i]['vCompanyLogo'])) {?>
                     <a href="users/profile/<?=$listingdata[$i]['iCompanyServiceId']?>">
-                        <img src="uploads/<?php echo $listingdata[$i]['vCompanyLogo']?>" />
+                        <img src="uploads/<?php echo $listingdata[$i]['vCompanyLogo']?>" style="width:80px;height:50px" />
                     </a>
                     <?php } ?>
                 </div>

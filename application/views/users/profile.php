@@ -64,7 +64,8 @@
 
                 <div id="large_profile_details_container">
                     <div id="profile_logo">
-                        <?php if (is_file(APPPATH . 'theme/uploads' . $udetail[0]['vCompanyLogo'])) : ?>
+                    
+                        <?php if (is_file(APPPATH . 'theme/uploads/' . $udetail[0]['vCompanyLogo'])) : ?>
                             <img src="<?php echo 'uploads/'.$udetail[0]['vCompanyLogo'] ?>" width="118" height="84" />
                         <?php endif; ?>
                     </div>

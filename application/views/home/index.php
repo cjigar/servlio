@@ -15,7 +15,9 @@
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>        
         <script src="<?php echo base_url(); ?>js/scrollpagination.js"></script>
-        <script src="<?php echo base_url(); ?>js/slider.js"></script>        
+<!--        <script src="<?php echo base_url(); ?>js/slider.js"></script> -->
+        <script src="<?php echo base_url(); ?>js/featuredcontentglider.js"></script> 
+        
         <script src="<?php echo base_url(); ?>js/home.js"></script>
 
 
@@ -140,9 +142,9 @@
                         <div class="clearfloat"></div>
                     </div>
 
-                    <div class="selected_entry_header" style="font-size:11px;">Popular</div>
+                    <div class="selected_entry_header" style="font-size:11px;">Choose a service</div>
                     <select class="list" name="iServiceId" id="iServiceId">
-                        <option value="volvo">Choose a service</option>
+                            <option value="">All services</option>
                             <?php
                             foreach ($popularservices as $key => $val) {
                                 ?>                            

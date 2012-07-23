@@ -3,41 +3,36 @@
 //Updated (Jan 29th, 08): Added four possible slide directions: "updown", "downup", "leftright", or "rightleft"
 //Updated (Feb 1st, 08): Changed glide behavior to reverse direction when previous button is clicked
 //Updated (Feb 12th, 08): Added ability to retrieve gliding contents from an external file using Ajax ("remotecontent" variable added to configuration)
-//Updated (July 21st, 09): Updated to work in jQuery 1.3.x
-//Updated (Dec 13th, 09): Added keyboard navigation, so left/ right arrow keys now move glider. Fixed bug with auto rotation when "next" link isn't defined.
 
-
+//Feb 17th, 09": Custom mod to fade the contents into view (instead of glide)
 
 var featuredcontentglider={
-	leftrightkeys: [37, 39], //keycodes to move glider back and forth 1 slide, respectively. Enter [] to disable feature.
 	csszindex: 100,
 	ajaxloadingmsg: '<b>Fetching Content. Please wait...</b>',
-
 	glide:function(config, showpage, isprev){
 		var selected=parseInt(showpage)
 		if (selected>=config.$contentdivs.length){ //if no content exists at this index position
-			//alert("No content exists at page "+(selected+1)+"! Loading 1st page instead.")
+			alert("No content exists at page "+(selected+1)+"! Loading 1st page instead.")
 			selected=0
 		}
 		var $target=config.$contentdivs.eq(selected)
 		//Test for toggler not being initialized yet, or user clicks on the currently selected page):
 		if (config.$togglerdiv.attr('lastselected')==null || parseInt(config.$togglerdiv.attr('lastselected'))!=selected){
 			var $selectedlink=config.$toc.eq(selected)
-			config.nextslideindex=(selected<config.$contentdivs.length-1)? selected+1 : 0
-			config.prevslideindex=(selected==0)? config.$contentdivs.length-1 : selected-1
-			config.$next.attr('loadpage', config.nextslideindex+"pg") //store slide index to go to when "next" link is clicked on
-			config.$prev.attr('loadpage', config.prevslideindex+'pg')
+			config.$next.attr('loadpage', (selected<config.$contentdivs.length-1)? selected+1+'pg' : 0+'pg')
+			config.$prev.attr('loadpage', (selected==0)? config.$contentdivs.length-1+'pg' : selected-1+'pg')
 			var startpoint=(isprev=="previous")? -config.startpoint : config.startpoint
 			$target.css(config.leftortop, startpoint).css("zIndex", this.csszindex++) //hide content so it's just out of view before animating it
 			var endpoint=(config.leftortop=="left")? {left:0} : {top:0} //animate it into view
-			$target.animate(endpoint, config.speed)
+			//$target.animate(endpoint, config.speed)
+			$target.css(endpoint).css({opacity:0}).animate({opacity:1}, config.speed) //custom code
 			config.$toc.removeClass('selected')
 			$selectedlink.addClass('selected')
 			config.$togglerdiv.attr('lastselected', selected+'pg')
 		}
 	},
 
-	getremotecontent:function($, config){
+	getremotecontent:function(config){
 		config.$glider.html(this.ajaxloadingmsg)
 		$.ajax({
 			url: config.remotecontent,
@@ -46,19 +41,18 @@ var featuredcontentglider={
 			},
 			success:function(content){
 				config.$glider.html(content)
-				featuredcontentglider.setuptoggler($, config)
+				featuredcontentglider.setuptoggler(config)
 			}
 		})
 	},
 
-	aligncontents:function($, config){
+	aligncontents:function(config){
 		config.$contentdivs=$("#"+config.gliderid+" ."+config.contentclass)
 		config.$contentdivs.css(config.leftortop, config.startpoint).css({height: config.$glider.height(), visibility: 'visible'}) //position content divs so they're out of view:
 	},
 
-	setuptoggler:function($, config){
-                
-		this.aligncontents($, config)
+	setuptoggler:function(config){
+		this.aligncontents(config)
 		config.$togglerdiv.hide()
 		config.$toc.each(function(index){
 				$(this).attr('pagenumber', index+'pg')
@@ -75,7 +69,6 @@ var featuredcontentglider={
 			event.preventDefault()
 		})
 		config.$togglerdiv.fadeIn(1000, function(){
-                        
 			featuredcontentglider.glide(config, config.selected)
 			if (config.autorotate==true){ //auto rotate contents?
 				config.stepcount=0 //set steps taken
@@ -86,11 +79,6 @@ var featuredcontentglider={
 		config.$togglerdiv.click(function(){
 			featuredcontentglider.cancelautorotate(config.togglerid)
 		})
-		if (this.leftrightkeys.length==2){
-			$(document).bind('keydown', function(e){
-				featuredcontentglider.keyboardnav(config, e.keyCode)
-			})
-		}
 	},
 
 	autorotate:function(config){
@@ -100,7 +88,7 @@ var featuredcontentglider={
 				clearInterval(window[config.togglerid+"timer"])
 			}
 			else{
-				featuredcontentglider.glide(config, config.nextslideindex, "next")
+				config.$next.click()
 				config.stepcount++
 			}
 		}, rotatespeed)
@@ -109,15 +97,6 @@ var featuredcontentglider={
 	cancelautorotate:function(togglerid){
 		if (window[togglerid+"timer"])
 			clearInterval(window[togglerid+"timer"])
-	},
-
-	keyboardnav:function(config, keycode){
-		if (keycode==this.leftrightkeys[0])
-			featuredcontentglider.glide(config, config.prevslideindex, "previous")
-		else if (keycode==this.leftrightkeys[1])
-			featuredcontentglider.glide(config, config.nextslideindex, "next")
-		if (keycode==this.leftrightkeys[0] || keycode==this.leftrightkeys[1])
-			featuredcontentglider.cancelautorotate(config.togglerid)
 	},
 
 	getCookie:function(Name){ 
@@ -132,7 +111,7 @@ var featuredcontentglider={
 	},
 
 	init:function(config){
-		jQuery(document).ready(function($){
+		$(document).ready(function(){
 			config.$glider=$("#"+config.gliderid)
 			config.$togglerdiv=$("#"+config.togglerid)
 			config.$toc=config.$togglerdiv.find('.toc')
@@ -145,9 +124,9 @@ var featuredcontentglider={
 			config.heightorwidth=(/up/i.test(config.direction))? config.$glider.height() : config.$glider.width() //Get glider height or width based on "direction"
 			config.startpoint=(/^(left|up)/i.test(config.direction))? -config.heightorwidth : config.heightorwidth //set initial position of contents based on "direction"
 			if (typeof config.remotecontent!="undefined" && config.remotecontent.length>0)
-				featuredcontentglider.getremotecontent($, config)
+				featuredcontentglider.getremotecontent(config)
 			else
-				featuredcontentglider.setuptoggler($, config)
+				featuredcontentglider.setuptoggler(config)
 			$(window).bind('unload', function(){ //clean up and persist
 				config.$togglerdiv.unbind('click')
 				config.$toc.unbind('click')

@@ -294,7 +294,7 @@ class Users_model extends CI_Model {
             }
         } else {
             $iUserId = $this->session->userdata('iUserId');
-            if (isset($iUserId) && !empty($iUserId)) {
+            if (isset($iCompanyServiceId) && !empty($iCompanyServiceId)) {
                 $this->db->select('u.*,s.vService,cur.vCurrencyVal,cur.iCurrencyId,cur.vCurrencySymbol,
                 cs.*,
                 cl.*');
@@ -305,11 +305,11 @@ class Users_model extends CI_Model {
                 $this->db->join('services AS s', 's.iServiceId = cs.iServiceId', 'left');
                 $this->db->where('u.eStatus =  "1"');
                 $this->db->where('cs.iCompanyServiceId =', $iCompanyServiceId);
-                $this->db->where('cs.iUserId', $iUserId);
+                //$this->db->where('cs.iUserId', $iUserId);
                 $this->db->group_by('cs.iCompanyServiceId');
                 $query = $this->db->get('company_services as cs');
                 $db_other_service = $query->result_array();
-                #print_r($db_other_service);exit;
+                //print_r($db_other_service);exit;
             }
         }
 

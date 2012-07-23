@@ -46,6 +46,7 @@ $route['pages/(:any)'] = 'pages/index/$1';
 $route['favorites/(:any)'] = 'home/favorites/$1';
 $route['favorites'] = 'home/favorites';
 $route['favpage_ajax/(:any)'] = 'home/favpage_ajax/$1';
+$route['favpage_ajax'] = 'home/favpage_ajax';
 //$route['posts'] = 'posts';
 
 //$route['default_controller'] = 'pages/view';

@@ -25,16 +25,17 @@ class Home extends CI_Controller {
         $this->load->library('session');
         
         if($this->uri->segments[2]=="" && $this->session->userdata('iUserId')=="") {
-          header("location:".base_url());
+          //header("location:".base_url());
         } 
         $this->load->model('home_model');
          
         $data = array();
-        
+       
         $this->load->helper('country');
         $this->load->model('users_model');
                
         $data = $this->home_model->homepagelisting("favorite");
+        
         $data['currency'] = $this->users_model->getCurrency();
         $data['categories'] = $this->users_model->getCategories();
         $data['popularservices'] = $this->home_model->getPopularServices();

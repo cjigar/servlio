@@ -27,7 +27,7 @@ class Home_model extends CI_Model {
         if($from=="favorite") {
             $this->db->start_cache();        
             $iUserId = $this->session->userdata('iUserId');
-            
+            #echo $this->uri->segments[2];exit;
             if($this->uri->segments[2]=="") {
               if($iUserId=="") {
                   $ip = $_SERVER["REMOTE_ADDR"];
@@ -42,10 +42,18 @@ class Home_model extends CI_Model {
                   $return['iUserId']=$iUserId;
               }            
             } else {
-                  $this->db->select('uf.iUserFavoriteId');
-                  $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.iUserId = "'.$this->uri->segments[2].'"', 'left');
-                  $return['iUserId']=$this->uri->segments[2];
-                  $this->db->where('uf.iUserId',$this->uri->segments[2]);            
+                   if(is_integer($this->uri->segments[2])) {
+                        $this->db->select('uf.iUserFavoriteId');
+                        $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.iUserId = "'.$this->uri->segments[2].'"', 'left');
+                        $return['iUserId']=$this->uri->segments[2];
+                        $this->db->where('uf.iUserId',$this->uri->segments[2]);            
+                   } else {
+                        $ip = $_SERVER["REMOTE_ADDR"];
+                        $this->db->select('uf.iUserFavoriteId');
+                        $this->db->join('user_favorites as uf', 'uf.iCompanyServiceId = cs.iCompanyServiceId AND uf.vIP = "'.$ip.'"', 'left');
+                        $this->db->where('uf.vIP',$ip);
+                        $return['IP']=$ip;                                       
+                   }
             }
             $this->db->stop_cache();
        
@@ -112,16 +120,17 @@ class Home_model extends CI_Model {
         $tot = $query->result_array();
         $tot_rec_limit = 6;  
         $total_page = ceil(count($tot)/$tot_rec_limit);
-        $this->db->last_query()."<hr />";
+        #$this->db->last_query()."<hr />";
         
         $excluded_ids = trim($this->input->post('excluded_ids'),",");
         
         $page = $this->input->post('page');
-        #echo $page;
-        if($page>$total_page) {
+        #$page = ($page=="")?"1":$page;
+        if($page>$total_page ) {
           $return['total_rows'] = 0;
           $return['page'] = $page;
           $return['listingdata'] = array();
+            $this->db->flush_cache();
           return $return;
         }
         
@@ -146,8 +155,13 @@ class Home_model extends CI_Model {
         
         $this->db->group_by('cs.iCompanyServiceId');
         $this->db->order_by('u.eType DESC');
-        $this->db->order_by('RAND()');
-        $this->db->limit($tot_rec_limit);
+        if($from=="favorite") {
+            $this->db->order_by('RAND()');
+            $this->db->limit($tot_rec_limit,$offset);
+        } else {
+            $this->db->limit($tot_rec_limit);
+        }
+        
         $query = $this->db->get('company_services as cs');
         #echo $this->db->last_query()."<hr />";
         $db_data = $query->result_array();

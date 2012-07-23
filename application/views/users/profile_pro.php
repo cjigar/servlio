@@ -11,9 +11,11 @@
         <base href="<?= base_url(); ?>">
         <link href="<?= base_url() ?>css/style.css" rel="stylesheet">
         <link href="<?= base_url() ?>css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+        <link href="<?= base_url() ?>css/jquery.lightbox-0.5.css" rel="stylesheet">
+
         <script src="<?php echo base_url(); ?>js/jquery-1.7.2.min.js"></script>
         <script src="<?php echo base_url(); ?>js/profile.js"></script>
-
+        <script src="<?php echo base_url(); ?>js/jquery.lightbox-0.5.min.js"></script>
     </head>
 
     <body>
@@ -49,9 +51,12 @@
         for ($j = 0; $j < count($gallrey); $j++) {
             if (is_file($this->config->config['upload_path'] . "2_" . $gallrey[$j]['vImage']) && $gallrey[$j]['vImage'] != "") {
                 $udetail[0]['image_data'][] = $this->config->config['upload_url'] . "2_" . $gallrey[$j]['vImage'];
-            } 
+            }
+            if (is_file($this->config->config['upload_path'] . "3_" . $gallrey[$j]['vImage']) && $gallrey[$j]['vImage'] != "") {
+                $gallery['full_data'][] = $this->config->config['upload_url'] . "3_" . $gallrey[$j]['vImage'];
+            }
+            
         }
-        
         ?>        
         <div id="inner_container">
             <div id="breadcrumb"><a href="/">Home</a></div>
@@ -63,7 +68,7 @@
             <div id="large_profile">
 
                 <div id="large_profile_details_container">
-                    <div id="profile_logo"><img src="<?php echo $udetail[0]['vCompanyLogo'] ?>" width="118" height="84" /></div>
+                    <div id="profile_logo"><img src="<?php echo $udetail[0]['vCompanyLogo'] ?>" style="margin-top:13px;width:99px;height:75px;" /></div>
                     <div id="large_profile_text_container">
                         <div id="large_profile_name"><?php echo $udetail[0]['vCompanyName'] ?></div>
                         <div class="error_msg2"><?php echo $this->session->flashdata('signin'); ?></div>
@@ -81,13 +86,14 @@
                             <div class="link"><?php echo $udetail[0]['vPhone'] ?></div>
                         <?php } ?>
                         <div class="clearfloat"></div>
+
                         <div class="fblike"> 
                             <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
                             <div>
                                 <a href="http://twitter.com/share" class="twitter-share-button"
-                                   data-url="http://servlio.com/123456"
+                                   data-url="<?php echo base_url() . $this->uri->uri_string; ?>"
                                    data-via="servlio"
-                                   data-text="Checking out "<?php echo $udetail[0]['vCompanyName'] ?>
+                                   data-text="Checking out <?php echo $udetail[0]['vCompanyName'] ?>"
                                    data-related="anywhere:The Javascript API"
                                    data-count="none">Tweet</a>
                             </div>
@@ -115,17 +121,20 @@
                             <img src="<?php echo $udetail[0]['vImage'] ?>" width="655" height="471"/> 
                         </div>
                         <div id="profile_text3">
-                            <?php echo nl2br($udetail[0]['vAbout']);?>
+                            <?php echo nl2br($udetail[0]['vAbout']); ?>
                         </div>
-                            <?php $image_slide = $udetail[0]['image_data']; ?>
-                            <?php if (count($image_slide) > 0) { 
-                                 $width = (132*(count($image_slide)));
+                        <?php $image_slide = $udetail[0]['image_data']; ?>
+                        <?php
+                        if (count($image_slide) > 0) {
+                            $width = (132 * (count($image_slide)));
                             ?>
-                            <div id="gallery_container" style="width:<?php echo $width?>px">
+                            <div id="gallery_container" style="width:<?php echo $width ?>px">
                                 <div style="margin-left:13px;">
                                     <?php for ($j = 0; $j < count($image_slide); $j++) { ?>
                                         <div id="gallery_image_container">
-                                            <img src="<?php echo $image_slide[$j] ?>" style="width:114px;height:114px;" />
+                                            <a href="<?php echo $gallery['full_data'][$j] ?>">
+                                                <img src="<?php echo $image_slide[$j] ?>" style="width:114px;height:114px;" />
+                                            </a>
                                         </div>
                                     <?php } ?>                                                
                                 </div>
@@ -140,7 +149,7 @@
                             <div id="profile_header5" style="margin-top:40px;"><? echo $udetail[0]['vCompanyName'] ?></div>
                             <div class="clearfloat"></div>
                             <div id="profile_sepline_left" style="margin-bottom:14px;"></div>
-                                <?php for ($k = 0; $k < count($db_other_service); $k++) { ?>
+                            <?php for ($k = 0; $k < count($db_other_service); $k++) { ?>
                                 <div id="listing_card_small_profile">
                                     <div id="listing_card_small_details_container">
                                         <div id="listing_card_small_name">
@@ -150,11 +159,11 @@
                                         </div>
                                         <div class="clearfloat"></div>
                                         <div id="listing_card_small_location" ><? echo $db_other_service[$k]['vCity'] ?></div>
-                                        <!-- <div id="listing_card_small_location3" ><?php  (!empty($db_other_service[$k]['vState'])) ? ',' . $db_other_service[$k]['vState'] : '' ?></div>  -->
-                                        <div id="listing_card_small_location3" ><?php echo ', '.$db_other_service[$k]['vCountry'] ?></div>
+                                        <!-- <div id="listing_card_small_location3" ><?php (!empty($db_other_service[$k]['vState'])) ? ',' . $db_other_service[$k]['vState'] : '' ?></div>  -->
+                                        <div id="listing_card_small_location3" ><?php echo ', ' . $db_other_service[$k]['vCountry'] ?></div>
                                         <div class="clearfloat"></div>
                                         <div id="listing_card_small_profession">
-                                             <?php echo (!empty($db_other_service[$k]['vService']) ? $db_other_service[$k]['vService'] : $db_other_service[$k]['vServiceName']) ?>
+                                            <?php echo (!empty($db_other_service[$k]['vService']) ? $db_other_service[$k]['vService'] : $db_other_service[$k]['vServiceName']) ?>
                                         </div>
                                     </div>
                                     <div class="clearfloat"></div>
@@ -174,18 +183,18 @@
                                         <div class="clearfloat"></div>
                                     </div>
                                 </div>
-                                    <?php
-                                    }
-                                }
-                                ?>
+                                <?php
+                            }
+                        }
+                        ?>
                         <div class="clearfloat"></div>
                     </div>
                     <div id="profile_container_right">
                         <div id="profile_header4" style="margin-top:10px;">About</div>
                         <div id="profile_header5" style="margin-top:10px;"><?php echo $udetail[0]['vCompanyName'] ?></div>
                         <div class="clearfloat"></div>
-                        <div id="profile_sepline"><?php echo nl2br($udetail[0]['vDescription']) ?></div>
-                        <div id="profile_text"></div>
+                        <div id="profile_sepline"></div>
+                        <div id="profile_text"><?php echo nl2br($udetail[0]['vDescription']) ?></div>
                         <div id="profile_header4">Address</div>
                         <div class="clearfloat"></div>
                         <div id="profile_sepline"></div>
@@ -195,9 +204,9 @@
                         <div id="profile_sepline"></div>
                         <div id="profile_text">
                             <?php foreach ($location as $row) { ?>
-                            <a href="users/account">
-                                <?php echo $row['vCity'] ?><?php echo ', ' . $row['vCountry'] ?><br />
-                            </a>
+                                <a href="users/account">
+                                    <?php echo $row['vCity'] ?><?php echo ', ' . $row['vCountry'] ?><br />
+                                </a>
                             <?php } ?>
                         </div>
                         <div id="profile_header4">Price</div>
@@ -214,14 +223,37 @@
                 <div id="profile_bottom_container">
                     <div id="action_container_text">Like what you see? Contact <?php echo $udetail[0]['vCompanyName'] ?>.</div>
                     <div id="action_container_subtext">(Let them know Servlio sent you.)</div>
-                    <div id="action_container" style="width:560px;">
+
+                    <?php
+                    if (isset($udetail[0]['vWebSite']) && !empty($udetail[0]['vWebSite'])) :
+                        $width = 30;
+                    endif;
+
+                    if (isset($udetail[0]['vEmail']) && !empty($udetail[0]['vEmail'])):
+                        $width += 20;
+                    endif;
+
+                    if (isset($udetail[0]['vPhone']) && !empty($udetail[0]['vPhone'])):
+                        $width += 10;
+                    endif;
+                    ?>
+                    <div id="action_container" style="<?php echo (isset($width)) ? 'width:' . $width . '%;' : '' ?>text-align: center;">
                         <?php if (isset($udetail[0]['vWebSite']) && !empty($udetail[0]['vWebSite'])): ?>
-                            <div class="link"><a href="<?php echo $udetail[0]['vWebSite'] ?>" target="_blank" style="font-size:18px;"><?php echo $udetail[0]['vWebSite'] ?></a></div>
+                            <div class="link" >
+                                <a href="<?php echo $udetail[0]['vWebSite'] ?>" target="_blank" style="font-size:18px;"><?php echo $udetail[0]['vWebSite'] ?></a>
+                            </div>
+                            <div class="sep_dot" style="background-color:#666;"></div>
                         <?php endif; ?>
-                        <div class="sep_dot" style="background-color:#666;"></div>    
-                        <div class="link"><a href="mailto:<?php echo $udetail[0]['vEmail'] ?>" style="font-size:18px;"><?php echo $udetail[0]['vEmail'] ?></a></div>
-                        <div class="sep_dot" style="background-color:#666;"></div>
-                        <div class="link" style="color:#CCC;"><?php echo $udetail[0]['vPhone'] ?></div>
+
+                        <?php if (isset($udetail[0]['vEmail']) && !empty($udetail[0]['vEmail'])): ?>
+
+                            <div class="link" > <a href="mailto:<?php echo $udetail[0]['vEmail'] ?>" style="font-size:18px;"><?php echo $udetail[0]['vEmail'] ?></a></div>
+                            <div class="sep_dot" style="background-color:#666;"></div>   
+                        <?php endif; ?>
+                        <?php if (isset($udetail[0]['vPhone']) && !empty($udetail[0]['vPhone'])): ?>
+
+                            <div class="link" style="color:#CCC;"><?php echo $udetail[0]['vPhone'] ?></div>
+                        <?php endif; ?>
                         <div class="clearfloat"></div>
                     </div>
                 </div>
@@ -229,4 +261,12 @@
             <div id="logo_icon_text">© 2012 Area 20 Technology Ltd. All screenshots are owned by their respective owners.</div>
         </div>
     </body>
+    <script type="text/javascript">
+        $(function() {
+            $('#gallery_container a').lightBox({
+                    fixedNavigation:true
+                    
+                });
+        });
+    </script>    
 </html>
